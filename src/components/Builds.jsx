@@ -1066,7 +1066,20 @@ export default function Builds() {
 
   function onRequest(id) {
     const payload = ctaPayload(id, lang);
-    window.location.assign(buildContactUrl(payload));
+    const nextUrl = buildContactUrl(payload);
+
+    // 1) cerramos el modal
+    closeModal();
+
+    // 2) actualizamos URL sin recargar
+    window.history.pushState({}, "", nextUrl);
+
+    // 3) avisamos a Contact que re-lea query params
+    window.dispatchEvent(new Event("popstate"));
+
+    // 4) scroll al form
+    const el = document.getElementById("contact");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   const Card = ({ id, eyebrow, title, Visual }) => (

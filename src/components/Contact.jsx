@@ -73,16 +73,29 @@ export default function Contact() {
   const [status, setStatus] = useState({ kind: "idle", msg: "" });
 
   useEffect(() => {
-    const sp = new URLSearchParams(window.location.search);
-    const rawService = sp.get("service") || sp.get("type") || "";
-    const rawMsg = sp.get("msg") || "";
+    const applyFromUrl = () => {
+      const sp = new URLSearchParams(window.location.search);
+      const rawService = sp.get("service") || sp.get("type") || "";
+      const rawMsg = sp.get("msg") || "";
 
-    const nextType = normalizeService(rawService);
-    setValues((v) => ({
-      ...v,
-      type: nextType || v.type,
-      message: rawMsg ? rawMsg : v.message,
-    }));
+      const nextType = normalizeService(rawService);
+
+      setValues((v) => ({
+        ...v,
+        type: nextType || v.type,
+        message: rawMsg ? rawMsg : v.message,
+      }));
+    };
+
+    applyFromUrl();
+
+    window.addEventListener("popstate", applyFromUrl);
+    window.addEventListener("hashchange", applyFromUrl);
+
+    return () => {
+      window.removeEventListener("popstate", applyFromUrl);
+      window.removeEventListener("hashchange", applyFromUrl);
+    };
   }, []);
 
   const errors = useMemo(() => {
