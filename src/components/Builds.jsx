@@ -1083,7 +1083,19 @@ export default function Builds() {
   }
 
   const Card = ({ id, eyebrow, title, Visual }) => (
-    <article className="buildCard buildCard--minimal" data-id={id}>
+    <article
+      className="buildCard buildCard--minimal"
+      data-id={id}
+      role="button"
+      tabIndex={0}
+      onClick={(e) => openModal(id, e)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal(id, e);
+        }
+      }}
+    >
       <div className="buildCard__media">
         <div className="build__mediaInner build__tilt">
           <Visual />
@@ -1099,7 +1111,11 @@ export default function Builds() {
         <button
           type="button"
           className="buildLink"
-          onClick={(e) => openModal(id, e)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openModal(id, e);
+          }}
         >
           {viewLabel} <span aria-hidden="true">→</span>
         </button>
