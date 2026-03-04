@@ -1,0 +1,262 @@
+:root {
+  --bg: #07090c;
+  --fg: #e9edf3;
+  --muted: rgba(233, 237, 243, 0.68);
+  --line: rgba(233, 237, 243, 0.1);
+
+  --max: 1120px;
+  --pad: clamp(18px, 4vw, 40px);
+
+  --h1: clamp(44px, 6vw, 84px);
+  --h2: clamp(18px, 2vw, 22px);
+  --body: clamp(16px, 1.2vw, 18px);
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.container {
+  width: min(var(--max), calc(100% - (var(--pad) * 2)));
+  margin: 0 auto;
+}
+
+.page {
+  width: 100%;
+  position: relative;
+  isolation: isolate;
+}
+
+/* System background (SVG fixed) */
+.sysbg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--bg);
+}
+
+.sysbg__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  shape-rendering: crispEdges;
+}
+
+/* Todo el contenido arriba del fondo
+   (excluimos overlays fixed para no romperlos) */
+.page
+  > *:not(.sysbg):not(.cursor):not(.rail):not(.sidenav):not(.sidenav__toggle) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Si estás usando SystemBackground global, no uses GridOverlay por sección */
+.gridOverlay {
+  display: none !important;
+}
+
+/* Custom cursor (desktop only) */
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body {
+    cursor: none;
+  }
+
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea {
+    cursor: text;
+  }
+
+  html.has-custom-cursor select {
+    cursor: pointer;
+  }
+
+  .cursor {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .cursor__dot,
+  .cursor__ring {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity;
+  }
+
+  .cursor__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(245, 247, 250, 0.92);
+    opacity: 0.85;
+  }
+
+  .cursor__ring {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 247, 250, 0.18);
+    opacity: 0.85;
+    transition:
+      width 220ms ease,
+      height 220ms ease,
+      border-color 220ms ease,
+      opacity 220ms ease,
+      transform 220ms ease;
+  }
+
+  .cursor__ring.is-hover {
+    width: 34px;
+    height: 34px;
+    border-color: rgba(79, 140, 255, 0.35);
+    opacity: 0.95;
+  }
+
+  .cursor__ring.is-down {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.9;
+  }
+
+  .cursor__dot.is-hover {
+    opacity: 0.7;
+  }
+}
+
+/* Progress rail (desktop) */
+@media (pointer: fine) {
+  .rail {
+    position: fixed;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+
+    display: grid;
+    gap: 10px;
+    padding: 10px 8px;
+
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(15, 17, 21, 0.35);
+
+    backdrop-filter: none;
+    pointer-events: none;
+  }
+
+  .rail__dot {
+    pointer-events: auto;
+
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 247, 250, 0.22);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.8;
+
+    transition:
+      transform 220ms ease,
+      background 220ms ease,
+      border-color 220ms ease,
+      opacity 220ms ease;
+  }
+
+  .rail__dot:hover {
+    transform: scale(1.15);
+    border-color: rgba(79, 140, 255, 0.4);
+    opacity: 1;
+  }
+
+  .rail__dot.is-active {
+    background: rgba(79, 140, 255, 0.55);
+    border-color: rgba(79, 140, 255, 0.7);
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail__dot {
+    transition: none !important;
+  }
+}
+
+/* GSAP pin: disable snap only when needed */
+html.no-snap,
+html.no-snap body,
+html.no-snap .page {
+  scroll-snap-type: none !important;
+}
+
+html.no-snap {
+  scroll-behavior: auto !important;
+}
+
+html.no-snap .section,
+html.no-snap .build {
+  scroll-snap-align: none !important;
+  scroll-snap-stop: normal !important;
+}
+
+html,
+body {
+  cursor: none;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  cursor: none;
+}
