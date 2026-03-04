@@ -51,9 +51,11 @@ function normalizeService(raw) {
   return "Other";
 }
 
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xqedrvvq";
+
 export default function Contact() {
   const rootRef = useRef(null);
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
 
   const [values, setValues] = useState({
     name: "",
@@ -158,14 +160,37 @@ export default function Contact() {
     setStatus({ kind: "loading", msg: t("form_sending") });
 
     try {
-      const res = await fetch("/api/contact", {
+      const subject =
+        values.type && values.type !== "Other"
+          ? `COREXA — ${values.type}`
+          : "COREXA — New inquiry";
+
+      const payload = {
+        name: values.name,
+        email: values.email,
+        service: values.type,
+        message: values.message,
+        _subject: subject,
+        _language: lang || "en",
+        _source: window.location.href,
+      };
+
+      const res = await fetch("https://formspree.io/f/xqedrvvq", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          type: values.type,
+          message: values.message,
+        }),
       });
 
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data?.ok) throw new Error(data?.error || "Send failed");
+      if (!res.ok) throw new Error(data?.error || "Send failed");
 
       setStatus({ kind: "ok", msg: t("form_ok") });
 
