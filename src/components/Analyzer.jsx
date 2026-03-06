@@ -69,12 +69,44 @@ export default function Analyzer() {
   }
 
   function onRequestAudit() {
+    if (!result) return;
+
+    const categories = result.categories
+      .map((c) => `- ${c.label}: ${c.value}/100`)
+      .join("\n");
+
+    const issues = result.issues.map((i) => `- ${i}`).join("\n");
+
+    const fullReport = `
+Hi COREXA. I want an audit & restructure.
+
+Website analyzed:
+${submittedUrl}
+
+Overall score:
+${result.total}/100
+
+Category scores:
+${categories}
+
+Issues detected:
+${issues}
+
+Page data:
+Title: ${result.title || "Not detected"}
+Meta description: ${result.metaDescription || "Not detected"}
+Response time: ${result.responseTime ? result.responseTime + "ms" : "Unknown"}
+
+Goal: __
+`;
+
     const payload = {
       service: "Audit & Restructure",
-      msg: `Hi COREXA. I want an audit & restructure.\n\nCurrent URL: ${submittedUrl}\nScore: ${result?.total ?? ""}\nMain issue: ${result?.issues?.[0] ?? "__"}\nGoal: __`,
+      msg: fullReport.trim(),
     };
 
     sessionStorage.setItem("corexa_audit_request", JSON.stringify(payload));
+
     window.location.href = "/#contact";
   }
 
