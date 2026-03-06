@@ -51,8 +51,6 @@ function normalizeService(raw) {
   return "Other";
 }
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xqedrvvq";
-
 export default function Contact() {
   const rootRef = useRef(null);
   const { t, lang } = useI18n();
@@ -78,13 +76,27 @@ export default function Contact() {
       const rawService = sp.get("service") || sp.get("type") || "";
       const rawMsg = sp.get("msg") || "";
 
-      const nextType = normalizeService(rawService);
+      const stored = sessionStorage.getItem("corexa_audit_request");
+      const parsedStored = stored ? JSON.parse(stored) : null;
+
+      const nextType = normalizeService(
+        rawService || parsedStored?.service || "",
+      );
+      const nextMsg = rawMsg || parsedStored?.msg || "";
 
       setValues((v) => ({
         ...v,
         type: nextType || v.type,
-        message: rawMsg ? rawMsg : v.message,
+        message: nextMsg ? nextMsg : v.message,
       }));
+
+      if (stored) {
+        sessionStorage.removeItem("corexa_audit_request");
+        setTimeout(() => {
+          const el = document.getElementById("contact");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 120);
+      }
     };
 
     applyFromUrl();
@@ -173,21 +185,6 @@ export default function Contact() {
     setStatus({ kind: "loading", msg: t("form_sending") });
 
     try {
-      const subject =
-        values.type && values.type !== "Other"
-          ? `COREXA — ${values.type}`
-          : "COREXA — New inquiry";
-
-      const payload = {
-        name: values.name,
-        email: values.email,
-        service: values.type,
-        message: values.message,
-        _subject: subject,
-        _language: lang || "en",
-        _source: window.location.href,
-      };
-
       const res = await fetch("https://formspree.io/f/xqedrvvq", {
         method: "POST",
         headers: {

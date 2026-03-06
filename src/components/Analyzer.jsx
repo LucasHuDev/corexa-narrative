@@ -69,14 +69,13 @@ export default function Analyzer() {
   }
 
   function onRequestAudit() {
-    const url = new URL(window.location.origin);
-    url.searchParams.set("service", "Audit & Restructure");
-    url.searchParams.set(
-      "msg",
-      `Hi COREXA. I want an audit & restructure.\n\nCurrent URL: ${submittedUrl}\nMain issue: __\nGoal: __`,
-    );
-    url.hash = "contact";
-    window.location.assign(url.toString());
+    const payload = {
+      service: "Audit & Restructure",
+      msg: `Hi COREXA. I want an audit & restructure.\n\nCurrent URL: ${submittedUrl}\nScore: ${result?.total ?? ""}\nMain issue: ${result?.issues?.[0] ?? "__"}\nGoal: __`,
+    };
+
+    sessionStorage.setItem("corexa_audit_request", JSON.stringify(payload));
+    window.location.href = "/#contact";
   }
 
   return (
