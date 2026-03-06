@@ -5,7 +5,7 @@ import { useI18n } from "../i18n/I18nProvider";
 
 export default function Hero() {
   const rootRef = useRef(null);
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
 
   useLayoutEffect(() => {
     const prefersReduce = window.matchMedia(
@@ -32,6 +32,10 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
 
+  const projectLabel = lang === "es" ? "Solicitar proyecto" : "Start a Project";
+  const analyzerLabel =
+    lang === "es" ? "Análisis gratuito" : "Free Website Analysis";
+
   return (
     <section id="hero" className="section hero" aria-label="Intro">
       <GridOverlay variant="default" />
@@ -46,6 +50,21 @@ export default function Hero() {
           </h1>
 
           <p className="sub">{t("hero_sub")}</p>
+
+          <div className="hero__actions">
+            <a
+              href="#contact"
+              className="btn btn--primary"
+              data-cursor="cta"
+              data-hover-intent="cta"
+            >
+              {projectLabel} <span aria-hidden="true">→</span>
+            </a>
+
+            <a href="/analyzer" className="btn btn--ghost">
+              {analyzerLabel} <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
