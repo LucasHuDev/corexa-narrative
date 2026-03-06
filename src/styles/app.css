@@ -1603,3 +1603,19 @@
     justify-content: center;
   }
 }
+
+.analyzer__metaBlock {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(245, 247, 250, 0.76);
+  line-height: 1.6;
+}
+
+.analyzer__metaBlock p {
+  margin: 10px 0 0;
+}
+
+.analyzer__metaBlock strong {
+  color: rgba(245, 247, 250, 0.92);
+}

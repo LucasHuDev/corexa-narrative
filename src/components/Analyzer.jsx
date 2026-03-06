@@ -1,48 +1,10 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 function normalizeUrl(value) {
   const raw = value.trim();
   if (!raw) return "";
   if (/^https?:\/\//i.test(raw)) return raw;
   return `https://${raw}`;
-}
-
-function fakeAnalyze(url) {
-  const seed = url.length;
-
-  const performance = Math.max(52, Math.min(94, 62 + (seed % 19)));
-  const seo = Math.max(48, Math.min(96, 58 + ((seed * 3) % 23)));
-  const structure = Math.max(55, Math.min(95, 61 + ((seed * 5) % 21)));
-  const security = url.startsWith("https://") ? 92 : 64;
-  const mobile = Math.max(50, Math.min(93, 57 + ((seed * 7) % 24)));
-
-  const total = Math.round(
-    (performance + seo + structure + security + mobile) / 5,
-  );
-
-  const issues = [];
-
-  if (performance < 75) issues.push("Slow loading speed");
-  if (seo < 75) issues.push("Weak SEO foundation");
-  if (structure < 75) issues.push("Unclear information structure");
-  if (security < 75) issues.push("Security setup could be improved");
-  if (mobile < 75) issues.push("Mobile experience needs refinement");
-
-  if (!issues.length) {
-    issues.push("Strong base, but there is still room to improve conversion.");
-  }
-
-  return {
-    total,
-    categories: [
-      { label: "Performance", value: performance },
-      { label: "SEO", value: seo },
-      { label: "Structure", value: structure },
-      { label: "Security", value: security },
-      { label: "Mobile", value: mobile },
-    ],
-    issues,
-  };
 }
 
 function ScoreBar({ label, value }) {
@@ -63,15 +25,13 @@ export default function Analyzer() {
   const [input, setInput] = useState("");
   const [submittedUrl, setSubmittedUrl] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
 
-  const result = useMemo(() => {
-    if (!submittedUrl) return null;
-    return fakeAnalyze(submittedUrl);
-  }, [submittedUrl]);
-
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault();
     setError("");
+    setResult(null);
 
     const nextUrl = normalizeUrl(input);
 
@@ -82,9 +42,29 @@ export default function Analyzer() {
 
     try {
       new URL(nextUrl);
-      setSubmittedUrl(nextUrl);
     } catch {
       setError("Enter a valid URL.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `/api/analyze?url=${encodeURIComponent(nextUrl)}`,
+      );
+      const data = await response.json();
+
+      if (!response.ok || !data?.ok) {
+        throw new Error(data?.error || "Analysis failed");
+      }
+
+      setSubmittedUrl(data.url || nextUrl);
+      setResult(data);
+    } catch (err) {
+      setError(err.message || "Could not analyze this website.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -118,8 +98,12 @@ export default function Analyzer() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <button type="submit" className="btn btn--primary">
-              Analyze
+            <button
+              type="submit"
+              className="btn btn--primary"
+              disabled={loading}
+            >
+              {loading ? "Analyzing..." : "Analyze"}
             </button>
           </form>
 
@@ -132,6 +116,12 @@ export default function Analyzer() {
                 <div className="analyzer__score">{result.total}</div>
                 <p className="analyzer__scoreLabel">Website Score</p>
                 <p className="analyzer__url">{submittedUrl}</p>
+
+                {result.responseTime ? (
+                  <p className="analyzer__url">
+                    Response time: {result.responseTime}ms
+                  </p>
+                ) : null}
               </div>
 
               <div className="analyzer__details">
@@ -152,6 +142,18 @@ export default function Analyzer() {
                       <li key={issue}>{issue}</li>
                     ))}
                   </ul>
+
+                  <div className="analyzer__metaBlock">
+                    <p className="eyebrow">PAGE DATA</p>
+                    <p>
+                      <strong>Title:</strong>{" "}
+                      {result.title || "No title detected"}
+                    </p>
+                    <p>
+                      <strong>Meta description:</strong>{" "}
+                      {result.metaDescription || "No meta description detected"}
+                    </p>
+                  </div>
 
                   <div className="analyzer__actions">
                     <button
