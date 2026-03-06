@@ -11,8 +11,21 @@ import Cursor from "./components/Cursor.jsx";
 import ProgressRail from "./components/ProgressRail.jsx";
 import SideNav from "./components/SideNav.jsx";
 import SystemBackground from "./components/SystemBackground.jsx";
+import Analyzer from "./components/Analyzer.jsx";
 
 export default function App() {
+  const path = window.location.pathname;
+
+  if (path === "/analyzer") {
+    return (
+      <div className="page">
+        <SystemBackground />
+        <Cursor />
+        <Analyzer />
+      </div>
+    );
+  }
+
   return (
     <div className="page">
       <SystemBackground />
