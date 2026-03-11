@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 function buildContactHref(service, msg) {
   const s = encodeURIComponent(service);
   const m = encodeURIComponent(msg);
-  // ✅ correcto: query en search + hash para scroll a #contact
+
   return `/?service=${s}&msg=${m}#contact`;
 }
 
@@ -16,7 +16,6 @@ export default function Extensions() {
   const rootRef = useRef(null);
   const { t, lang } = useI18n();
 
-  // ✅ Mensajes prefill por idioma (no van en translations porque son multi-línea “form templates”)
   const MSG = useMemo(() => {
     const en = {
       audit:

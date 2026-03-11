@@ -42,8 +42,6 @@ export default function Cursor() {
 
     const ringPos = { x, y };
 
-    // ✅ Estela: más bajo = más trail (más lento siguiendo al mouse)
-    // Valores recomendados: 0.06 (mucha estela), 0.08 (medio), 0.10 (más preciso)
     const RING_FOLLOW = reduce ? 0.18 : 0.06;
 
     const scaleTo = (target, s) =>
@@ -70,7 +68,6 @@ export default function Cursor() {
       x = e.clientX;
       y = e.clientY;
 
-      // Dot: súper preciso
       setDotX(x);
       setDotY(y);
     };

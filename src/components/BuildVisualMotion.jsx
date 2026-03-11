@@ -21,10 +21,8 @@ export default function BuildVisualMotion({ children, variant = "premium" }) {
       const lines = gsap.utils.toArray(".v-line");
       const highlight = el.querySelector(".v-highlight");
 
-      // timeline maestro (LOOP infinito)
       const tl = gsap.timeline({ repeat: -1 });
 
-      // 1) micro “breathing” general (muy sutil)
       tl.to(
         el,
         {
@@ -43,7 +41,6 @@ export default function BuildVisualMotion({ children, variant = "premium" }) {
         2.8,
       );
 
-      // 2) barras (scan) - wave infinita
       if (bars.length) {
         gsap.to(bars, {
           opacity: (i) => 0.55 + (i % 3) * 0.08,
@@ -64,7 +61,6 @@ export default function BuildVisualMotion({ children, variant = "premium" }) {
         });
       }
 
-      // 3) rings orbitando + pulso
       if (rings.length) {
         gsap.to(rings, {
           rotation: (i) => (i % 2 ? 360 : -360),
@@ -95,7 +91,6 @@ export default function BuildVisualMotion({ children, variant = "premium" }) {
         });
       }
 
-      // 4) líneas “tipo texto” (Launch/Custom)
       if (lines.length) {
         gsap.to(lines, {
           x: (i) => (i % 2 ? 2 : -2),
@@ -108,7 +103,6 @@ export default function BuildVisualMotion({ children, variant = "premium" }) {
         });
       }
 
-      // 5) highlight block “sweep”
       if (highlight) {
         gsap.to(highlight, {
           x: 14,
@@ -118,8 +112,6 @@ export default function BuildVisualMotion({ children, variant = "premium" }) {
           repeat: -1,
         });
       }
-
-      // Importantísimo: nada de ScrollTrigger acá. Esto es loop puro.
     }, wrapRef);
 
     return () => ctx.revert();

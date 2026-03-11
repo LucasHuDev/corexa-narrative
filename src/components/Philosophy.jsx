@@ -24,7 +24,7 @@ export default function Philosophy() {
     const items = q("[data-ph-item]");
     const scan = q("[data-ph-scan]");
 
-    // estado inicial (evita “flash”)
+    // estado inicial
     gsap.set([title, copy], { opacity: 0, y: 14 });
     gsap.set(items, { opacity: 0, y: 14 });
     gsap.set(scan, { clipPath: "inset(0 100% 0 0)" });

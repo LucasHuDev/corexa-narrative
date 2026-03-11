@@ -17,8 +17,8 @@ export default function Magnetic() {
     const cleanups = [];
 
     els.forEach((el) => {
-      // sutil, premium
-      const strength = 0.22; // bajá/subí: 0.15–0.3
+      // premium
+      const strength = 0.22;
       const max = 10; // px
 
       const onMove = (e) => {

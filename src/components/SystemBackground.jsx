@@ -1,8 +1,7 @@
 import { useId } from "react";
 
 export default function SystemBackground() {
-  // ✅ IDs únicos para evitar colisiones entre SVGs / StrictMode
-  const uid = useId().replace(/:/g, ""); // por si el browser mete ":" en el id
+  const uid = useId().replace(/:/g, "");
 
   const GRID_ID = `grid-${uid}`;
   const HAZE1_ID = `haze1-${uid}`;
@@ -13,7 +12,6 @@ export default function SystemBackground() {
     <div
       className="sysbg"
       aria-hidden="true"
-      // ✅ hardening: siempre fixed atrás, nunca intercepta mouse
       style={{
         position: "fixed",
         inset: 0,
@@ -25,7 +23,6 @@ export default function SystemBackground() {
         className="sysbg__svg"
         viewBox="0 0 1200 800"
         preserveAspectRatio="none"
-        // ✅ hardening render
         style={{
           width: "100%",
           height: "100%",

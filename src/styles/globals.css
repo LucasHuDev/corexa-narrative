@@ -87,15 +87,12 @@ a {
   shape-rendering: crispEdges;
 }
 
-/* Todo el contenido arriba del fondo
-   (excluimos overlays fixed para no romperlos) */
 .page
   > *:not(.sysbg):not(.cursor):not(.rail):not(.sidenav):not(.sidenav__toggle) {
   position: relative;
   z-index: 1;
 }
 
-/* Si estás usando SystemBackground global, no uses GridOverlay por sección */
 .gridOverlay {
   display: none !important;
 }

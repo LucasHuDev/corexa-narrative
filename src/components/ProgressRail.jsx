@@ -17,7 +17,6 @@ export default function ProgressRail({ sections = DEFAULT_SECTIONS }) {
 
   useEffect(() => {
     if (!ids.includes(active)) setActive(ids[0] ?? "");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids.join("|")]);
 
   useEffect(() => {

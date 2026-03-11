@@ -26,7 +26,6 @@ export const translations = {
     hero_cta_audit: "Audit",
     hero_cta_hint: "Opens the request form with a prefilled brief.",
 
-    // Hero por las dudas
     hero_title_line1: "Digital systems.",
     hero_title_line2: "Built with precision.",
 
@@ -213,60 +212,63 @@ export const translations = {
     hero_line1: "Sistemas digitales.",
     hero_line2: "Construidos con precisión.",
     hero_sub: "Diseñamos y desarrollamos sitios web de alto rendimiento.",
-    hero_cta_launch: "Launch",
+    hero_cta_launch: "Lanzamiento",
     hero_cta_premium: "Premium",
     hero_cta_audit: "Auditoría",
     hero_cta_hint: "Abre el formulario con un brief precargado.",
 
-    // Aliases por si tu Hero.jsx
     hero_title_line1: "Sistemas digitales.",
     hero_title_line2: "Construidos con precisión.",
 
-    // Builds (legacy keys)
+    // Builds
     builds_cta: "Solicitar →",
     builds_eyebrow_1: "Servicio 01",
     builds_eyebrow_2: "Servicio 02",
     builds_eyebrow_3: "Servicio 03",
-    builds_title_1: "Launch (WordPress).",
-    builds_title_2: "Custom Frontend.",
-    builds_title_3: "Premium System.",
+
+    builds_title_1: "Lanzamiento (WordPress).",
+    builds_title_2: "Frontend personalizado.",
+    builds_title_3: "Sistema premium.",
+
     builds_meta_1: "Entrega rápida · estructura clara · base escalable",
-    builds_meta_2: "HTML · CSS · JS · performance-first",
+    builds_meta_2: "HTML · CSS · JS · enfocado en rendimiento",
     builds_meta_3: "React · GSAP · nivel producto",
+
     builds_note_1:
       "Ideal para negocios locales que necesitan presencia profesional rápido, con setup técnico correcto.",
-    builds_note_2:
-      "Build editable con código limpio, más control de marca y excelente velocidad sin CMS pesado.",
-    builds_note_3:
-      "Secciones narrativas, motion diseñado y un sistema que se siente producto — alto impacto.",
 
-    // Keys que usa tu Builds.jsx actual
+    builds_note_2:
+      "Desarrollo editable con código limpio, más control de marca y excelente velocidad sin CMS pesado.",
+
+    builds_note_3:
+      "Secciones narrativas, movimiento diseñado y un sistema que se comporta como producto — alto impacto.",
+
     builds_aria: "Servicios principales",
     cta_request_build: "Solicitar",
 
     build_01_eyebrow: "Servicio 01",
-    build_01_title: "Launch (WordPress).",
+    build_01_title: "Lanzamiento (WordPress).",
     build_01_meta: "Entrega rápida · estructura clara · base escalable",
     build_01_note:
       "Ideal para negocios locales que necesitan presencia profesional rápido, con setup técnico correcto.",
 
     build_02_eyebrow: "Servicio 02",
-    build_02_title: "Custom Frontend.",
-    build_02_meta: "HTML · CSS · JS · performance-first",
+    build_02_title: "Frontend personalizado.",
+    build_02_meta: "HTML · CSS · JS · enfocado en rendimiento",
     build_02_note:
-      "Build editable con código limpio, más control de marca y excelente velocidad sin CMS pesado.",
+      "Desarrollo editable con código limpio, más control de marca y excelente velocidad sin CMS pesado.",
 
     build_03_eyebrow: "Servicio 03",
-    build_03_title: "Premium System.",
+    build_03_title: "Sistema premium.",
     build_03_meta: "React · GSAP · nivel producto",
     build_03_note:
-      "Secciones narrativas, motion diseñado y un sistema que se siente producto — alto impacto.",
+      "Secciones narrativas, movimiento diseñado y un sistema que se comporta como producto — alto impacto.",
 
     // Extensions
     ext_eyebrow: "Extensiones del sistema",
-    ext_heading: "Add-ons que escalan el sistema.",
+    ext_heading: "Extensiones que escalan el sistema.",
     ext_copy:
-      "Mejorá, mantené y extendé builds existentes — sin rehacer todo desde cero.",
+      "Mejorá, mantené y extendé desarrollos existentes — sin rehacer todo desde cero.",
     ext_cta: "Solicitar →",
 
     ext_item_1_eyebrow: "Extensión 01",
@@ -278,22 +280,24 @@ export const translations = {
     ext_item_3_title: "Herramientas & Automatización.",
 
     ext_item_1_meta: "UX/UI · estructura · claridad de conversión",
-    ext_item_2_meta: "Updates · monitoreo · performance",
+    ext_item_2_meta: "Actualizaciones · monitoreo · rendimiento",
     ext_item_3_meta: "APIs · dashboards · apps internas",
 
     ext_item_1_note:
-      "Analizamos tu sitio y entregamos un plan priorizado: qué arreglar, por qué importa y el camino más rápido al impacto.",
+      "Analizamos tu sitio y entregamos un plan priorizado: qué mejorar, por qué importa y el camino más rápido al impacto.",
+
     ext_item_2_note:
-      "Mantenimiento mensual confiable: cambios, optimizaciones, checks técnicos y estabilidad en el tiempo.",
+      "Mantenimiento mensual confiable: cambios, optimizaciones, revisiones técnicas y estabilidad en el tiempo.",
+
     ext_item_3_note:
-      "Construimos herramientas que bajan trabajo manual: integraciones, mini apps y sistemas para operar mejor.",
+      "Construimos herramientas que reducen trabajo manual: integraciones, mini apps y sistemas que mejoran operaciones.",
 
     // Contact
     contact_eyebrow: "SOLICITAR PROYECTO",
     contact_title_line1: "Construyamos algo",
     contact_title_line2: "preciso.",
     contact_lead:
-      "Inputs mínimos. Alcance claro. Un build que se comporta como producto.",
+      "Datos mínimos. Alcance claro. Un sistema que se comporta como producto.",
 
     form_name: "Nombre",
     form_name_ph: "Tu nombre",
@@ -312,27 +316,31 @@ export const translations = {
     next_title: "Próximos pasos",
     next_1: "Respuesta en 24–48 horas",
     next_2: "Propuesta de alcance + timeline",
-    next_3: "Plan de build con hitos",
+    next_3: "Plan de desarrollo con hitos",
     next_4: "Lanzamiento + optimización",
 
     // Philosophy
     philo_aria: "Filosofía",
     philo_principles_aria: "Principios",
     philo_eyebrow: "FILOSOFÍA",
-    philo_title: "La restricción es una feature.",
+
+    philo_title: "La restricción es una ventaja.",
     philo_copy:
-      "Construimos sistemas con restricción: jerarquía clara, defaults sólidos y motion solo cuando se lo gana.",
+      "Construimos sistemas con restricción: jerarquía clara, bases sólidas y movimiento solo cuando aporta valor.",
     philo_tag:
       "Diseñado como una página de producto. Ingenierizado como un sistema.",
 
     philo_01_k: "Jerarquía",
     philo_01_v: "Señal primero. Detalle después.",
-    philo_02_k: "Defaults",
+
+    philo_02_k: "Bases",
     philo_02_v: "Con criterio. Consistente. Reutilizable.",
-    philo_03_k: "Motion",
+
+    philo_03_k: "Movimiento",
     philo_03_v: "Estado + estructura. Nunca decoración.",
-    philo_04_k: "Performance",
-    philo_04_v: "Presupuestada. Medida. Protegida.",
+
+    philo_04_k: "Rendimiento",
+    philo_04_v: "Presupuestado. Medido. Protegido.",
 
     // Architecture
     arch_aria: "Arquitectura",
@@ -349,20 +357,20 @@ export const translations = {
 
     arch_word_frontend: "Frontend.",
     arch_desc_frontend:
-      "Ingeniería de UI precisa: semántica, responsive y mantenible sin perder velocidad.",
+      "Ingeniería de interfaz precisa: semántica, responsive y mantenible sin perder velocidad.",
 
-    arch_word_motion: "Motion.",
+    arch_word_motion: "Movimiento.",
     arch_desc_motion:
-      "Motion con propósito: transiciones sutiles que comunican estado y estructura.",
+      "Movimiento con propósito: transiciones sutiles que comunican estado y estructura.",
 
     arch_word_optimization: "Optimización.",
     arch_desc_optimization:
-      "Performance como feature: cargas rápidas, layout estable y runtime limpio.",
+      "Rendimiento como ventaja: cargas rápidas, layout estable y ejecución limpia.",
 
     // Metrics
     metrics_aria: "Ficha",
     metrics_eyebrow: "FICHA TÉCNICA",
-    metrics_title: "Performance, por diseño.",
+    metrics_title: "Rendimiento, por diseño.",
 
     metrics_01_label: "Disciplina de carga.",
     metrics_01_value: "< 2s de carga percibida.",
@@ -370,7 +378,7 @@ export const translations = {
     metrics_02_label: "Layout estable.",
     metrics_02_value: "Sin saltos visuales.",
 
-    metrics_03_label: "Motion con restricción.",
+    metrics_03_label: "Movimiento con restricción.",
     metrics_03_value: "Solo cuando agrega claridad.",
 
     metrics_04_label: "Sistema mantenible.",
@@ -379,7 +387,7 @@ export const translations = {
     metrics_05_label: "Accesible por defecto.",
     metrics_05_value: "Teclado + estados de foco.",
 
-    metrics_06_label: "Estructura SEO-ready.",
+    metrics_06_label: "Estructura preparada para SEO.",
     metrics_06_value: "Semántico y estructurado.",
 
     cta_micro: "Respuesta en 24–48h",
