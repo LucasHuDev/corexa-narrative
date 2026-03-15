@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "../i18n/I18nProvider";
+import ServiceModals from "./ServiceModals";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -90,7 +91,6 @@ function VisualLaunch() {
           <rect x="56" y="64" width="488" height="292" rx="18" />
         </clipPath>
       </defs>
-
       <rect
         x="56"
         y="64"
@@ -108,7 +108,6 @@ function VisualLaunch() {
         rx="18"
         fill="url(#launchGlow)"
       />
-
       <g clipPath="url(#launchClip)">
         <g className="vl_grid">
           {Array.from({ length: 10 }).map((_, i) => (
@@ -134,7 +133,6 @@ function VisualLaunch() {
             />
           ))}
         </g>
-
         <rect
           className="vl_title"
           x="92"
@@ -171,7 +169,6 @@ function VisualLaunch() {
           rx="7"
           fill="rgba(245,247,250,0.05)"
         />
-
         <rect
           className="vl_btn"
           x="92"
@@ -192,7 +189,6 @@ function VisualLaunch() {
           fill="rgba(245,247,250,0.02)"
           stroke="rgba(245,247,250,0.10)"
         />
-
         <rect
           className="vl_sheen"
           x="-220"
@@ -220,7 +216,6 @@ function VisualCustom() {
           <rect x="56" y="64" width="488" height="292" rx="18" />
         </clipPath>
       </defs>
-
       <rect
         x="56"
         y="64"
@@ -241,7 +236,6 @@ function VisualCustom() {
       <circle cx="90" cy="85" r="6" fill="rgba(245,247,250,0.18)" />
       <circle cx="112" cy="85" r="6" fill="rgba(245,247,250,0.12)" />
       <circle cx="134" cy="85" r="6" fill="rgba(245,247,250,0.08)" />
-
       <g clipPath="url(#customClip)">
         <rect
           x="84"
@@ -252,7 +246,6 @@ function VisualCustom() {
           fill="rgba(245,247,250,0.02)"
           stroke="rgba(245,247,250,0.06)"
         />
-
         <g className="vc_gutter">
           {Array.from({ length: 9 }).map((_, i) => (
             <rect
@@ -268,7 +261,6 @@ function VisualCustom() {
             />
           ))}
         </g>
-
         <g className="vc_code">
           {Array.from({ length: 14 }).map((_, i) => (
             <rect
@@ -286,7 +278,6 @@ function VisualCustom() {
               }
             />
           ))}
-
           <rect
             className="vc_highlight"
             x="150"
@@ -324,7 +315,6 @@ function VisualPremium() {
           <rect x="56" y="64" width="488" height="292" rx="18" />
         </clipPath>
       </defs>
-
       <rect
         x="56"
         y="64"
@@ -334,7 +324,6 @@ function VisualPremium() {
         fill="rgba(245,247,250,0.02)"
         stroke="rgba(245,247,250,0.10)"
       />
-
       <g clipPath="url(#premiumClip)">
         <rect
           x="92"
@@ -352,7 +341,6 @@ function VisualPremium() {
           rx="7"
           fill="rgba(245,247,250,0.06)"
         />
-
         <g className="vp_bars">
           {Array.from({ length: 6 }).map((_, i) => (
             <rect
@@ -367,7 +355,6 @@ function VisualPremium() {
             />
           ))}
         </g>
-
         <g className="vp_orb">
           <circle cx="424" cy="230" r="92" fill="url(#orbGlow)" opacity="0.9" />
           <circle
@@ -419,7 +406,6 @@ function VisualAudit() {
           <stop offset="1" stopColor="rgba(245,247,250,0.00)" />
         </linearGradient>
       </defs>
-
       <rect
         x="56"
         y="64"
@@ -453,7 +439,6 @@ function VisualAudit() {
             />
           ))}
         </g>
-
         <g className="va_marks">
           {Array.from({ length: 6 }).map((_, i) => (
             <circle
@@ -467,7 +452,6 @@ function VisualAudit() {
             />
           ))}
         </g>
-
         <rect
           className="va_sweep"
           x="-260"
@@ -490,7 +474,6 @@ function VisualMaintenance() {
           <rect x="56" y="64" width="488" height="292" rx="18" />
         </clipPath>
       </defs>
-
       <rect
         x="56"
         y="64"
@@ -500,7 +483,6 @@ function VisualMaintenance() {
         fill="rgba(245,247,250,0.02)"
         stroke="rgba(245,247,250,0.10)"
       />
-
       <g clipPath="url(#maintClip)">
         <rect
           x="92"
@@ -518,7 +500,6 @@ function VisualMaintenance() {
           rx="6"
           fill="rgba(245,247,250,0.05)"
         />
-
         <g className="vm_ring">
           <circle
             cx="430"
@@ -545,7 +526,6 @@ function VisualMaintenance() {
             fill="rgba(245,247,250,0.28)"
           />
         </g>
-
         <g className="vm_logs">
           {Array.from({ length: 7 }).map((_, i) => (
             <rect
@@ -574,7 +554,6 @@ function VisualTools() {
           <rect x="56" y="64" width="488" height="292" rx="18" />
         </clipPath>
       </defs>
-
       <rect
         x="56"
         y="64"
@@ -584,7 +563,6 @@ function VisualTools() {
         fill="rgba(245,247,250,0.02)"
         stroke="rgba(245,247,250,0.10)"
       />
-
       <g clipPath="url(#toolsClip)">
         <rect
           x="92"
@@ -602,7 +580,6 @@ function VisualTools() {
           rx="6"
           fill="rgba(245,247,250,0.05)"
         />
-
         <g className="vt_nodes">
           <circle
             className="vt_n"
@@ -641,7 +618,6 @@ function VisualTools() {
             strokeLinecap="round"
           />
         </g>
-
         <g className="vt_pulses">
           <circle
             className="vt_p"
@@ -711,7 +687,6 @@ function useGlassMagnetic(rootRef) {
         duration: 0.55,
         ease: "power3.out",
       });
-
       const qgo = gsap.quickTo(glare, "opacity", {
         duration: 0.35,
         ease: "power3.out",
@@ -727,16 +702,11 @@ function useGlassMagnetic(rootRef) {
         const r = card.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width;
         const py = (e.clientY - r.top) / r.height;
-
-        const mx = (px - 0.5) * 18;
-        const my = (py - 0.5) * 14;
-
-        qx(mx);
-        qy(my);
+        qx((px - 0.5) * 18);
+        qy((py - 0.5) * 14);
         qrY((px - 0.5) * 10);
         qrX(-(py - 0.5) * 10);
         qs(1.012);
-
         const gx = Math.round(px * 100);
         const gy = Math.round(py * 100);
         glare.style.background = `radial-gradient(420px 260px at ${gx}% ${gy}%, rgba(245,247,250,0.14), rgba(245,247,250,0.00) 62%)`;
@@ -849,21 +819,23 @@ export default function Builds() {
   function openModal(id, ev) {
     if (ev?.currentTarget) lastActiveRef.current = ev.currentTarget;
     setActiveId(id);
+    const topbar = document.querySelector(".topbar");
+    if (topbar) topbar.style.visibility = "hidden";
   }
 
   function closeModal() {
     setActiveId(null);
     const el = lastActiveRef.current;
     if (el && typeof el.focus === "function") el.focus();
+    const topbar = document.querySelector(".topbar");
+    if (topbar) topbar.style.visibility = "visible";
   }
 
   useEffect(() => {
     if (!activeId) return;
-
     const onKey = (e) => {
       if (e.key === "Escape") closeModal();
     };
-
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [activeId]);
@@ -884,7 +856,6 @@ export default function Builds() {
       const sheen = scopeEl.querySelector(".vl_sheen");
       const lines = scopeEl.querySelectorAll(".vl_line");
       const btn = scopeEl.querySelector(".vl_btn");
-
       tl.set(sheen, { x: -240 })
         .to(sheen, { x: 920, duration: 2.4 }, 0)
         .to(sheen, { x: -240, duration: 0.001 }, 2.4)
@@ -902,7 +873,6 @@ export default function Builds() {
       const code = scopeEl.querySelector(".vc_code");
       const sweep = scopeEl.querySelector(".vc_sweep");
       const gdot = scopeEl.querySelectorAll(".vc_gdot");
-
       tl.to(code, { y: -12, duration: 1.2 }, 0)
         .to(code, { y: 0, duration: 1.2 }, 1.2)
         .set(sweep, { x: -260 }, 0)
@@ -919,7 +889,6 @@ export default function Builds() {
       const sat = scopeEl.querySelector(".vp_sat");
       const bars = scopeEl.querySelectorAll(".vp_bar");
       const orb = scopeEl.querySelector(".vp_orb");
-
       tl.to(orb, { scale: 1.012, transformOrigin: "50% 50%", duration: 1.4 }, 0)
         .to(orb, { scale: 1.0, duration: 1.4 }, 1.4)
         .to(
@@ -955,7 +924,6 @@ export default function Builds() {
       const rows = scopeEl.querySelectorAll(".va_row");
       const dots = scopeEl.querySelectorAll(".va_dot");
       const sweep = scopeEl.querySelector(".va_sweep");
-
       tl.set(sweep, { x: -300 })
         .to(sweep, { x: 980, duration: 2.6 }, 0)
         .to(sweep, { x: -300, duration: 0.001 }, 2.6)
@@ -969,9 +937,7 @@ export default function Builds() {
       const arc = scopeEl.querySelector(".vm_arc");
       const coreDot = scopeEl.querySelector(".vm_core");
       const logs = scopeEl.querySelectorAll(".vm_log");
-
       gsap.set(arc, { strokeDasharray: 120, strokeDashoffset: 120 });
-
       tl.to(arc, { strokeDashoffset: 0, duration: 1.6, ease: "power2.out" }, 0)
         .to(
           arc,
@@ -988,7 +954,6 @@ export default function Builds() {
       const nodes = scopeEl.querySelectorAll(".vt_n");
       const pulses = scopeEl.querySelectorAll(".vt_p");
       const link = scopeEl.querySelector(".vt_link");
-
       tl.to(nodes, { y: -4, stagger: 0.08, duration: 1.0 }, 0)
         .to(nodes, { y: 4, stagger: 0.08, duration: 1.0 }, 1.0)
         .to(nodes, { y: 0, stagger: 0.08, duration: 0.9 }, 2.0)
@@ -1020,12 +985,10 @@ export default function Builds() {
 
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray(root.querySelectorAll(".buildCard"));
-
       cards.forEach((card) => {
         const id = card.dataset.id;
         const tl = createLoop(card, id, reduce);
         if (!tl) return;
-
         ScrollTrigger.create({
           trigger: card,
           start: "top 85%",
@@ -1067,13 +1030,9 @@ export default function Builds() {
   function onRequest(id) {
     const payload = ctaPayload(id, lang);
     const nextUrl = buildContactUrl(payload);
-
     closeModal();
-
     window.history.pushState({}, "", nextUrl);
-
     window.dispatchEvent(new Event("popstate"));
-
     const el = document.getElementById("contact");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -1099,11 +1058,9 @@ export default function Builds() {
         <div className="build__glare" aria-hidden="true" />
         <div className="build__film" aria-hidden="true" />
       </div>
-
       <div className="buildCard__body">
         <p className="eyebrow">{eyebrow}</p>
         <h3 className="build__title">{title}</h3>
-
         <button
           type="button"
           className="buildLink"
@@ -1158,7 +1115,14 @@ export default function Builds() {
         </div>
       </div>
 
-      {activeItem ? (
+      {["launch", "custom", "premium"].includes(activeId) ? (
+        <ServiceModals
+          activeId={activeId}
+          onClose={closeModal}
+          onRequest={onRequest}
+          lang={lang}
+        />
+      ) : activeItem ? (
         <div
           className="modal"
           role="dialog"
@@ -1173,7 +1137,6 @@ export default function Builds() {
                 <span />
                 <span />
               </div>
-
               <button
                 type="button"
                 className="modal__close"
@@ -1182,20 +1145,17 @@ export default function Builds() {
                 {closeLabel}
               </button>
             </div>
-
             <div className="modal__media" ref={modalMediaRef}>
               <div className="build__mediaInner">
                 <activeItem.Visual />
               </div>
               <div className="build__film" aria-hidden="true" />
             </div>
-
             <div className="modal__body">
               <p className="eyebrow">{activeItem.eyebrow}</p>
               <h3 className="modal__title">{activeItem.title}</h3>
               <p className="modal__meta">{activeItem.meta}</p>
               <p className="modal__note">{activeItem.note}</p>
-
               <div className="modal__actions">
                 <button
                   type="button"
@@ -1204,7 +1164,6 @@ export default function Builds() {
                 >
                   {requestLabel} <span aria-hidden="true">→</span>
                 </button>
-
                 <button
                   type="button"
                   className="btn btn--ghost"
