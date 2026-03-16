@@ -556,7 +556,7 @@
 }
 
 .next__item::before {
-  content: "â€”";
+  content: "\2014";
   position: absolute;
   left: 0;
   color: rgba(245, 247, 250, 0.35);
