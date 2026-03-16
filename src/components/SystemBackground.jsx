@@ -21,7 +21,7 @@ export default function SystemBackground() {
     >
       <svg
         className="sysbg__svg"
-        viewBox="0 0 1200 800"
+        viewBox="0 0 1200 8000"
         preserveAspectRatio="none"
         style={{
           width: "100%",
@@ -84,22 +84,22 @@ export default function SystemBackground() {
         </defs>
 
         {/* Base */}
-        <rect width="1200" height="800" fill="transparent" />
+        <rect width="1200" height="8000" fill="transparent" />
 
         {/* Haze layers */}
-        <rect width="1200" height="800" fill={`url(#${HAZE1_ID})`} />
-        <rect width="1200" height="800" fill={`url(#${HAZE2_ID})`} />
+        <rect width="1200" height="8000" fill={`url(#${HAZE1_ID})`} />
+        <rect width="1200" height="8000" fill={`url(#${HAZE2_ID})`} />
 
         {/* Grid */}
         <rect
           width="1200"
-          height="800"
+          height="8000"
           fill={`url(#${GRID_ID})`}
           opacity="0.85"
         />
 
         {/* Vignette */}
-        <rect width="1200" height="800" fill={`url(#${VIGNETTE_ID})`} />
+        <rect width="1200" height="8000" fill={`url(#${VIGNETTE_ID})`} />
       </svg>
     </div>
   );

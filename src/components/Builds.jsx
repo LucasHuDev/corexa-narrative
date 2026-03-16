@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "../i18n/I18nProvider";
 import ServiceModals from "./ServiceModals";
+import ExtensionModals from "./ExtensionModals";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -644,10 +645,13 @@ function VisualTools() {
 function useLockBody(locked) {
   useEffect(() => {
     if (!locked) return;
-    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.removeProperty("overflow");
+      document.documentElement.style.removeProperty("overflow");
     };
   }, [locked]);
 }
@@ -656,17 +660,13 @@ function useGlassMagnetic(rootRef) {
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-
     const fine = window.matchMedia("(pointer: fine)").matches;
     if (!fine) return;
-
     const cards = Array.from(root.querySelectorAll(".buildCard"));
-
     const cleanups = cards.map((card) => {
       const tilt = card.querySelector(".build__tilt");
       const glare = card.querySelector(".build__glare");
       if (!tilt || !glare) return () => {};
-
       const qx = gsap.quickTo(tilt, "x", {
         duration: 0.35,
         ease: "power3.out",
@@ -691,13 +691,11 @@ function useGlassMagnetic(rootRef) {
         duration: 0.35,
         ease: "power3.out",
       });
-
       gsap.set(tilt, {
         transformPerspective: 900,
         transformStyle: "preserve-3d",
       });
       gsap.set(glare, { opacity: 0 });
-
       const onMove = (e) => {
         const r = card.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width;
@@ -707,12 +705,9 @@ function useGlassMagnetic(rootRef) {
         qrY((px - 0.5) * 10);
         qrX(-(py - 0.5) * 10);
         qs(1.012);
-        const gx = Math.round(px * 100);
-        const gy = Math.round(py * 100);
-        glare.style.background = `radial-gradient(420px 260px at ${gx}% ${gy}%, rgba(245,247,250,0.14), rgba(245,247,250,0.00) 62%)`;
+        glare.style.background = `radial-gradient(420px 260px at ${Math.round(px * 100)}% ${Math.round(py * 100)}%, rgba(245,247,250,0.14), rgba(245,247,250,0.00) 62%)`;
         qgo(1);
       };
-
       const onLeave = () => {
         qx(0);
         qy(0);
@@ -721,16 +716,13 @@ function useGlassMagnetic(rootRef) {
         qs(1);
         qgo(0);
       };
-
       card.addEventListener("pointermove", onMove);
       card.addEventListener("pointerleave", onLeave);
-
       return () => {
         card.removeEventListener("pointermove", onMove);
         card.removeEventListener("pointerleave", onLeave);
       };
     });
-
     return () => cleanups.forEach((fn) => fn());
   }, [rootRef]);
 }
@@ -741,6 +733,7 @@ export default function Builds() {
   const modalRef = useRef(null);
   const modalMediaRef = useRef(null);
   const lastActiveRef = useRef(null);
+  const scrollYRef = useRef(0); // ← fix: guardar posición de scroll
 
   const [activeId, setActiveId] = useState(null);
 
@@ -813,22 +806,33 @@ export default function Builds() {
   useGlassMagnetic(rootRef);
 
   const viewLabel = lang === "es" ? "Ver" : "View";
-  const requestLabel = lang === "es" ? "Solicitar" : "Request";
   const closeLabel = lang === "es" ? "Cerrar" : "Close";
+  const requestLabel = lang === "es" ? "Solicitar" : "Request";
 
   function openModal(id, ev) {
+    scrollYRef.current = window.scrollY;
     if (ev?.currentTarget) lastActiveRef.current = ev.currentTarget;
     setActiveId(id);
     const topbar = document.querySelector(".topbar");
     if (topbar) topbar.style.visibility = "hidden";
   }
 
-  function closeModal() {
+  function closeModal({ skipScrollRestore = false } = {}) {
     setActiveId(null);
-    const el = lastActiveRef.current;
-    if (el && typeof el.focus === "function") el.focus();
     const topbar = document.querySelector(".topbar");
     if (topbar) topbar.style.visibility = "visible";
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+    document.body.style.removeProperty("overflow");
+    document.documentElement.style.removeProperty("overflow");
+    if (!skipScrollRestore) {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: scrollYRef.current, behavior: "instant" });
+        const el = lastActiveRef.current;
+        if (el && typeof el.focus === "function")
+          el.focus({ preventScroll: true });
+      });
+    }
   }
 
   useEffect(() => {
@@ -843,13 +847,11 @@ export default function Builds() {
   function createLoop(scopeEl, id, reduce) {
     const svg = scopeEl.querySelector("svg");
     if (!svg) return null;
-
     const tl = gsap.timeline({
       paused: true,
       repeat: reduce ? 0 : -1,
       defaults: { ease: "power1.inOut" },
     });
-
     if (reduce) return tl;
 
     if (id === "launch") {
@@ -868,7 +870,6 @@ export default function Builds() {
         )
         .to(btn, { scale: 1.0, duration: 0.9 }, 1.5);
     }
-
     if (id === "custom") {
       const code = scopeEl.querySelector(".vc_code");
       const sweep = scopeEl.querySelector(".vc_sweep");
@@ -881,7 +882,6 @@ export default function Builds() {
         .to(gdot, { opacity: 0.35, stagger: 0.05, duration: 0.5 }, 0.4)
         .to(gdot, { opacity: 0.9, stagger: 0.05, duration: 0.6 }, 1.2);
     }
-
     if (id === "premium") {
       const ring1 = scopeEl.querySelector(".vp_ring1");
       const ring2 = scopeEl.querySelector(".vp_ring2");
@@ -919,7 +919,6 @@ export default function Builds() {
         .to(sat, { x: -30, y: 6, duration: 1.6, ease: "sine.inOut" }, 1.6)
         .to(sat, { x: 0, y: 0, duration: 1.6, ease: "sine.inOut" }, 3.2);
     }
-
     if (id === "audit") {
       const rows = scopeEl.querySelectorAll(".va_row");
       const dots = scopeEl.querySelectorAll(".va_dot");
@@ -932,7 +931,6 @@ export default function Builds() {
         .to(dots, { opacity: 0.85, stagger: 0.08, duration: 0.5 }, 0.6)
         .to(dots, { opacity: 0.25, stagger: 0.08, duration: 0.7 }, 1.4);
     }
-
     if (id === "maintenance") {
       const arc = scopeEl.querySelector(".vm_arc");
       const coreDot = scopeEl.querySelector(".vm_core");
@@ -949,7 +947,6 @@ export default function Builds() {
         .to(logs, { opacity: 0.6, stagger: 0.06, duration: 0.6 }, 0.4)
         .to(logs, { opacity: 0.95, stagger: 0.06, duration: 0.7 }, 1.2);
     }
-
     if (id === "tools") {
       const nodes = scopeEl.querySelectorAll(".vt_n");
       const pulses = scopeEl.querySelectorAll(".vt_p");
@@ -971,18 +968,15 @@ export default function Builds() {
         .to(link, { opacity: 0.65, duration: 0.8 }, 0.4)
         .to(link, { opacity: 1, duration: 0.8 }, 1.4);
     }
-
     return tl;
   }
 
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray(root.querySelectorAll(".buildCard"));
       cards.forEach((card) => {
@@ -1000,27 +994,22 @@ export default function Builds() {
         });
       });
     }, root);
-
     return () => ctx.revert();
   }, [items]);
 
   useLayoutEffect(() => {
     if (!activeId) return;
-
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const media = modalMediaRef.current;
     if (!media) return;
-
     const ctx = gsap.context(() => {
       const tl = createLoop(media, activeId, reduce);
       if (tl) tl.play(0);
     }, media);
-
     const modal = modalRef.current;
     if (modal) modal.focus();
-
     return () => ctx.revert();
   }, [activeId]);
 
@@ -1030,11 +1019,13 @@ export default function Builds() {
   function onRequest(id) {
     const payload = ctaPayload(id, lang);
     const nextUrl = buildContactUrl(payload);
-    closeModal();
+    closeModal({ skipScrollRestore: true });
     window.history.pushState({}, "", nextUrl);
     window.dispatchEvent(new Event("popstate"));
-    const el = document.getElementById("contact");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => {
+      const el = document.getElementById("contact");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
   }
 
   const Card = ({ id, eyebrow, title, Visual }) => (
@@ -1090,15 +1081,12 @@ export default function Builds() {
             {lang === "es" ? "Core services." : "Core services."}
           </h2>
         </header>
-
         <div className="builds__grid">
           {core.map((it) => (
             <Card key={it.id} {...it} />
           ))}
         </div>
-
         <div className="builds__divider" aria-hidden="true" />
-
         <header className="builds__head builds__head--sub">
           <p className="eyebrow">
             {lang === "es" ? "EXTENSIONES" : "EXTENSIONS"}
@@ -1107,7 +1095,6 @@ export default function Builds() {
             {lang === "es" ? "System extensions." : "System extensions."}
           </h2>
         </header>
-
         <div className="builds__grid">
           {ext.map((it) => (
             <Card key={it.id} {...it} />
@@ -1122,59 +1109,13 @@ export default function Builds() {
           onRequest={onRequest}
           lang={lang}
         />
-      ) : activeItem ? (
-        <div
-          className="modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label={activeItem.title}
-        >
-          <div className="modal__backdrop" onClick={closeModal} />
-          <div className="modal__panel" ref={modalRef} tabIndex={-1}>
-            <div className="modal__top">
-              <div className="modal__traffic" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <button
-                type="button"
-                className="modal__close"
-                onClick={closeModal}
-              >
-                {closeLabel}
-              </button>
-            </div>
-            <div className="modal__media" ref={modalMediaRef}>
-              <div className="build__mediaInner">
-                <activeItem.Visual />
-              </div>
-              <div className="build__film" aria-hidden="true" />
-            </div>
-            <div className="modal__body">
-              <p className="eyebrow">{activeItem.eyebrow}</p>
-              <h3 className="modal__title">{activeItem.title}</h3>
-              <p className="modal__meta">{activeItem.meta}</p>
-              <p className="modal__note">{activeItem.note}</p>
-              <div className="modal__actions">
-                <button
-                  type="button"
-                  className="btn btn--primary"
-                  onClick={() => onRequest(activeItem.id)}
-                >
-                  {requestLabel} <span aria-hidden="true">→</span>
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--ghost"
-                  onClick={closeModal}
-                >
-                  {closeLabel}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      ) : ["audit", "maintenance", "tools"].includes(activeId) ? (
+        <ExtensionModals
+          activeId={activeId}
+          onClose={closeModal}
+          onRequest={onRequest}
+          lang={lang}
+        />
       ) : null}
     </section>
   );
