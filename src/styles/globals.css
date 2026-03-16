@@ -257,3 +257,7 @@ textarea,
 select {
   cursor: none;
 }
+
+.pin-spacer {
+  padding: 0 !important;
+}

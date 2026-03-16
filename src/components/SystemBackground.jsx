@@ -66,13 +66,13 @@ export default function SystemBackground() {
           </pattern>
 
           {/* Haze */}
-          <radialGradient id={HAZE1_ID} cx="18%" cy="55%" r="60%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.06)" />
+          <radialGradient id={HAZE1_ID} cx="25%" cy="50%" r="55%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.035)" />
             <stop offset="60%" stopColor="rgba(255,255,255,0.00)" />
           </radialGradient>
 
-          <radialGradient id={HAZE2_ID} cx="86%" cy="42%" r="60%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.045)" />
+          <radialGradient id={HAZE2_ID} cx="75%" cy="50%" r="55%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.025)" />
             <stop offset="62%" stopColor="rgba(255,255,255,0.00)" />
           </radialGradient>
 

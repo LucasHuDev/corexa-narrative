@@ -556,7 +556,7 @@
 }
 
 .next__item::before {
-  content: "\2014";
+  content: "â€”";
   position: absolute;
   left: 0;
   color: rgba(245, 247, 250, 0.35);
@@ -1616,4 +1616,80 @@
 
 .analyzer__metaBlock strong {
   color: rgba(245, 247, 250, 0.92);
+}
+
+.hero__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 70%,
+    transparent 100%
+  );
+  top: 0;
+  opacity: 0;
+  z-index: 7;
+  pointer-events: none;
+}
+.hero__deco-line {
+  position: absolute;
+  left: calc((100% - min(1120px, calc(100% - var(--pad) * 2))) / 2 - 20px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 160px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  z-index: 5;
+  pointer-events: none;
+}
+.hero__eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.hero__eyebrow-num {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.14);
+  letter-spacing: 0.04em;
+}
+.hero__eyebrow-line {
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  display: block;
+  flex-shrink: 0;
+}
+.hero__eyebrow-text {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+}
+.hero__headline {
+  margin: 0;
+}
+.hero__line {
+  display: block;
+}
+.hero__line--2 {
+  color: rgba(233, 237, 243, 0.78);
+}
+.hero__sub {
+  margin-top: 12px;
+}
+.hero__inner {
+  position: relative;
+  z-index: 4;
 }
