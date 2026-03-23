@@ -117,10 +117,10 @@ export const translations = {
     form_error_send: "Send failed. Try again in a moment.",
 
     next_title: "What happens next",
-    next_1: "Reply in 24–48 hours",
-    next_2: "Scope + timeline proposal",
-    next_3: "Build plan with milestones",
-    next_4: "Launch + optimization pass",
+    next_1: "Reply in 24–48 hours.",
+    next_2: "Scope + timeline proposal.",
+    next_3: "Build plan with milestones.",
+    next_4: "Launch + optimization pass.",
 
     // Philosophy
     philo_aria: "Philosophy",
@@ -314,10 +314,10 @@ export const translations = {
     form_error_send: "No se pudo enviar. Probá de nuevo en un momento.",
 
     next_title: "Próximos pasos",
-    next_1: "Respuesta en 24–48 horas",
-    next_2: "Propuesta de alcance + timeline",
-    next_3: "Plan de desarrollo con hitos",
-    next_4: "Lanzamiento + optimización",
+    next_1: "Respuesta en 24–48 horas.",
+    next_2: "Propuesta de alcance + timeline.",
+    next_3: "Plan de desarrollo con hitos.",
+    next_4: "Lanzamiento + optimización.",
 
     // Philosophy
     philo_aria: "Filosofía",

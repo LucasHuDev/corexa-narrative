@@ -14,6 +14,12 @@ const WA_NUMBERS = [
 ];
 
 const IG_URL = "https://www.instagram.com/corexa.studio/";
+const LI_URL = "https://www.linkedin.com/in/lucas-huenul-4328853ab/";
+const GH_URL = "https://github.com/LucasHuDev";
+const FIVERR_URL = "https://www.fiverr.com/corexastudio";
+const CONTRA_URL = "https://contra.com/corexastudio";
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
 
 const IconWA = () => (
   <svg
@@ -39,6 +45,60 @@ const IconIG = () => (
   </svg>
 );
 
+const IconLI = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+  </svg>
+);
+
+const IconGH = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+  </svg>
+);
+
+const IconFiverr = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M14.5 4C12 4 10 6 10 8.5V10H8v2h2v8h2.5v-8H15l.5-2h-3V8.5C12.5 7.1 13.4 6 14.5 6c.6 0 1.1.2 1.5.5l1-2C16.3 4.2 15.4 4 14.5 4z" />
+    <circle cx="17.5" cy="5.5" r="1.5" />
+  </svg>
+);
+
+const IconContra = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <polygon points="12,2 14,10 12,9 10,10" />
+    <polygon points="22,12 14,14 13,12 14,10" />
+    <polygon points="12,22 10,14 12,15 14,14" />
+    <polygon points="2,12 10,10 11,12 10,14" />
+  </svg>
+);
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
 export default function SideNav() {
   const { t, lang } = useI18n();
   const [open, setOpen] = useState(false);
@@ -57,12 +117,17 @@ export default function SideNav() {
     { id: "contact", labelKey: "nav_request" },
   ];
 
+  const PROFILE_LINKS = [
+    { url: LI_URL, label: "LinkedIn", Icon: IconLI },
+    { url: GH_URL, label: "GitHub", Icon: IconGH },
+    { url: FIVERR_URL, label: "Fiverr", Icon: IconFiverr },
+    { url: CONTRA_URL, label: "Contra", Icon: IconContra },
+  ];
+
   useEffect(() => {
     if (!waOpen) return;
     const handler = (e) => {
-      if (waRef.current && !waRef.current.contains(e.target)) {
-        setWaOpen(false);
-      }
+      if (waRef.current && !waRef.current.contains(e.target)) setWaOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -85,8 +150,7 @@ export default function SideNav() {
     const prevOverflow = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
     requestAnimationFrame(() => {
-      const first = panelRef.current?.querySelector("button, a");
-      first?.focus?.();
+      panelRef.current?.querySelector("button, a")?.focus?.();
     });
     return () => {
       document.documentElement.style.overflow = prevOverflow || "";
@@ -112,12 +176,8 @@ export default function SideNav() {
     });
   };
 
-  const getWaMessage = () => {
-    return String(lang).startsWith("es") ? WA_MSG_ES : WA_MSG_EN;
-  };
-
   const openWA = (number) => {
-    const msg = getWaMessage();
+    const msg = String(lang).startsWith("es") ? WA_MSG_ES : WA_MSG_EN;
     window.open(
       `https://wa.me/${number}?text=${encodeURIComponent(msg)}`,
       "_blank",
@@ -126,9 +186,14 @@ export default function SideNav() {
     setWaOpen(false);
   };
 
+  const openURL = (url) => window.open(url, "_blank", "noopener,noreferrer");
+
+  // ─── Topbar ───────────────────────────────────────────────────────────────
+
   const topbar = (
     <div className="topbar" aria-label="Top controls">
       <div className="social-btns">
+        {/* WhatsApp */}
         <div className="wa-wrap" ref={waRef}>
           <button
             className="icon-btn"
@@ -158,15 +223,33 @@ export default function SideNav() {
           )}
         </div>
 
+        {/* Instagram */}
         <button
           className="icon-btn"
           type="button"
           aria-label="Instagram"
-          onClick={() => window.open(IG_URL, "_blank", "noopener,noreferrer")}
+          onClick={() => openURL(IG_URL)}
           data-cursor="hover"
         >
           <IconIG />
         </button>
+
+        {/* Separator */}
+        <span className="social-btns__sep" aria-hidden="true" />
+
+        {/* Profile links: LinkedIn, GitHub, Fiverr, Contra */}
+        {PROFILE_LINKS.map(({ url, label, Icon }) => (
+          <button
+            key={label}
+            className="icon-btn"
+            type="button"
+            aria-label={label}
+            onClick={() => openURL(url)}
+            data-cursor="hover"
+          >
+            <Icon />
+          </button>
+        ))}
       </div>
 
       <div className="topbar__right">
@@ -185,6 +268,8 @@ export default function SideNav() {
       </div>
     </div>
   );
+
+  // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
     <>
