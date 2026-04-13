@@ -1,0 +1,1695 @@
+/* ═══════════════════════════════════════════════════
+   INDUSTRY DEMO — interactive dashboard simulator
+   ═══════════════════════════════════════════════════ */
+
+/* ── Section shell ────────────────────────────────── */
+.idemo {
+  position: relative;
+  padding: clamp(120px, 14vw, 180px) 0 clamp(80px, 10vw, 140px);
+  background: #020202;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: visible;
+}
+
+.idemo__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+  overflow: visible;
+}
+
+.idemo__head {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 780px;
+}
+
+.idemo__title {
+  margin: 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0 0.15em 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #fff;
+  overflow: visible;
+}
+
+.idemo__sub {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 600px;
+}
+
+/* ── Step 1: Industry Selector ───────────────────── */
+.idemo__selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(36px, 5vw, 56px);
+  padding: clamp(40px, 8vw, 100px) 0;
+  overflow: visible;
+}
+
+.idemo__sel-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  max-width: 640px;
+  overflow: visible;
+}
+
+/* Search input ── Inter, underline style */
+.idemo__search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+.idemo__search-icon {
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.idemo__search {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 0 14px 30px;
+  font-family: 'Inter', var(--font-body), sans-serif;
+  font-size: 1rem;
+  color: #fff;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition: border-color 0.3s ease;
+}
+
+.idemo__search::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Inter', var(--font-body), sans-serif;
+}
+
+.idemo__search:focus {
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+.idemo__no-results {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  padding: 40px 20px;
+  max-width: 560px;
+}
+
+.idemo__no-results-link {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.3s ease;
+}
+
+.idemo__no-results-link:hover {
+  opacity: 0.7;
+}
+
+.idemo__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 960px;
+}
+
+.idemo__card {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 200px;
+  padding: 32px 20px;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  text-align: center;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  will-change: transform;
+}
+
+.idemo__card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 -20px 40px -12px rgba(255, 255, 255, 0.04);
+}
+
+.idemo__card:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 3px;
+}
+
+.idemo__card-icon {
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.idemo__card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.idemo__card-desc {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Impact panel (for industries without a full dashboard) ── */
+.idemo__impact-panel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4vw, 48px);
+  padding: clamp(40px, 6vw, 72px) clamp(24px, 5vw, 56px);
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+.idemo__impact-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.idemo__impact-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.idemo__impact-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.idemo__impact-desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 500px;
+}
+
+.idemo__impact-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.idemo__impact-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px 20px;
+  background: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  text-align: center;
+}
+
+.idemo__impact-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.idemo__impact-label {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.idemo__impact-note {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: center;
+}
+
+/* ── Features strip (What's included) ─────────────── */
+.idemo__features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.idemo__features-title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+.idemo__features-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.idemo__features-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1;
+}
+
+.idemo__features-check {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.idemo__features-text {
+  line-height: 1;
+}
+
+/* ── Step 2: Dashboard stage ─────────────────────── */
+.idemo__dash-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.idemo__dash-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.idemo__back-btn {
+  all: unset;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.2s;
+}
+
+.idemo__back-btn:hover {
+  color: #fff;
+}
+
+.idemo__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.idemo__breadcrumb-root {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.idemo__breadcrumb-sep {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.idemo__breadcrumb-current {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Tabs — mirrors ImpactCalculator ──────────────── */
+.idemo__tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.idemo__tab {
+  all: unset;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 20px;
+  min-height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.idemo__tab:hover { color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+.idemo__tab.is-active { background: #fff; color: #000; border-color: #fff; }
+.idemo__tab-icon { font-size: 1.1rem; }
+.idemo__tab:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.5); outline-offset: 3px; }
+
+/* ── Dashboard wrapper ────────────────────────────── */
+.idemo__dash-wrap {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #0a0a0a;
+  min-height: 480px;
+}
+
+/* ── Simulation note ──────────────────────────────── */
+.idemo__sim-note {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Bottom CTA ───────────────────────────────────── */
+.idemo__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.idemo__cta-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.idemo__cta-btn { padding: 16px 36px; }
+
+/* ═══════════════════════════════════════════════════
+   INNER DASHBOARD — shared primitives
+   ═══════════════════════════════════════════════════ */
+.idash {
+  display: flex;
+  width: 100%;
+  min-height: 480px;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+/* ── Sidebar (hospitality) ────────────────────────── */
+.idash__sidebar {
+  width: 180px;
+  flex-shrink: 0;
+  background: #050505;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.idash__logo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.idash__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.idash__nav-item {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: default;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.idash__nav-item.is-active {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+/* ── Main area ────────────────────────────────────── */
+.idash__main {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.idash__main--full { width: 100%; }
+
+/* ── Stat cards row ───────────────────────────────── */
+.idash__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.idash__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 18px;
+  background: #0e0e0e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.idash__stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.idash__stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.65rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1;
+}
+
+.idash__stat-value--sm { font-size: 1.1rem; }
+
+.idash__stat-dim { color: rgba(255, 255, 255, 0.35); }
+
+.idash__stat-note {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.idash__stat-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 3px;
+}
+
+.idash__stat-badge--up {
+  background: rgba(140, 255, 190, 0.12);
+  color: rgba(140, 255, 190, 0.9);
+}
+
+/* ── Capacity bar ─────────────────────────────────── */
+.idash__bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.idash__bar-fill {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+}
+
+/* ── Panels (two-column row) ──────────────────────── */
+.idash__mid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.idash__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 18px;
+  background: #0c0c0c;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.idash__panel--wide {
+  flex: 1.4;
+}
+
+.idash__panel-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── Tables ───────────────────────────────────────── */
+.idash__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.idash__table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.idash__table td {
+  padding: 10px 10px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.idash__table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+
+/* ── Badges ───────────────────────────────────────── */
+.idash__badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 0.68rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.idash__badge--ok   { background: rgba(255, 255, 255, 0.1);  color: rgba(200, 255, 220, 0.9); }
+.idash__badge--wait { background: rgba(255, 255, 255, 0.04); color: rgba(255, 255, 255, 0.5); }
+.idash__badge--hot  { background: rgba(255, 200, 100, 0.1);  color: rgba(255, 210, 130, 0.95); }
+
+/* ── Room grid (hospitality) ──────────────────────── */
+.idash__room-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 16px);
+  gap: 4px;
+}
+
+.idash__room {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.idash__room--avail { background: rgba(255, 255, 255, 0.65); }
+.idash__room--occ   { background: rgba(255, 255, 255, 0.15); }
+.idash__room--clean { background: rgba(255, 220, 120, 0.45); }
+
+.idash__legend {
+  display: flex;
+  gap: 16px;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.idash__legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.idash__legend .idash__room { width: 10px; height: 10px; }
+
+/* ── Staff cards (hospitality) ────────────────────── */
+.idash__staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.idash__staff-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.idash__staff-name { font-weight: 500; color: rgba(255, 255, 255, 0.75); }
+.idash__staff-shift {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: right;
+}
+.idash__staff-role {
+  grid-column: 1 / -1;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Deliveries (hospitality) ─────────────────────── */
+.idash__deliveries { display: flex; flex-direction: column; gap: 8px; }
+
+.idash__delivery-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 14px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.idash__delivery-sup { font-weight: 500; color: rgba(255, 255, 255, 0.7); }
+.idash__delivery-time {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: right;
+}
+.idash__delivery-items {
+  grid-column: 1 / -1;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Timeline (clinics) ───────────────────────────── */
+.idash__timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.idash__tl-slot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.idash__tl-slot.is-filled { border-left-color: rgba(255, 255, 255, 0.3); }
+.idash__tl-slot.is-empty  { opacity: 0.45; }
+
+.idash__tl-time {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+  min-width: 40px;
+}
+
+.idash__tl-info { color: rgba(255, 255, 255, 0.65); }
+.idash__tl-avail {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Reminder list (clinics) ──────────────────────── */
+.idash__reminder-list { display: flex; flex-direction: column; gap: 10px; }
+
+.idash__reminder-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.78rem;
+}
+
+.idash__reminder-note {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(140, 255, 190, 0.7);
+}
+
+/* ── CSS bar chart (clinics) ──────────────────────── */
+.idash__chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100px;
+}
+
+.idash__chart-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.idash__chart-bar {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px 2px 0 0;
+  transition: height 0.6s ease;
+}
+
+.idash__chart-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Procedure list (clinics) ─────────────────────── */
+.idash__proc-list { display: flex; flex-direction: column; gap: 10px; }
+
+.idash__proc-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.idash__proc-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Week calendar (real estate) ──────────────────── */
+.idash__week-cal {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.idash__cal-day {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.idash__cal-day-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.idash__cal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+}
+
+.idash__cal-prop {
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.idash__cal-client {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.idash__cal-empty {
+  padding: 8px 10px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Big metric (real estate) ─────────────────────── */
+.idash__big-metric {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1;
+}
+
+.idash__metric-note {
+  margin: 4px 0 0;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Conversion funnel (real estate) ──────────────── */
+.idash__funnel {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.idash__funnel-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.idash__funnel-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #fff;
+}
+
+.idash__funnel-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.idash__funnel-arrow {
+  margin: 0 10px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Barber schedule (barbershop) ─────────────────── */
+.idash__barber-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.idash__barber-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.idash__barber-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.idash__barber-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+}
+
+.idash__barber-slot.is-filled { border-left-color: rgba(255, 255, 255, 0.3); }
+.idash__barber-slot.is-empty  { background: rgba(140, 255, 190, 0.03); border-left-color: rgba(140, 255, 190, 0.2); }
+
+.idash__barber-time {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.4);
+  min-width: 36px;
+}
+
+.idash__barber-client { color: rgba(255, 255, 255, 0.65); }
+.idash__barber-avail  { color: rgba(140, 255, 190, 0.5); font-style: italic; font-size: 0.72rem; }
+
+/* ── Week stats (barbershop) ──────────────────────── */
+.idash__week-stats { display: flex; flex-direction: column; gap: 6px; }
+
+.idash__ws-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.idash__ws-val {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── Reviews (barbershop) ─────────────────────────── */
+.idash__reviews { display: flex; flex-direction: column; gap: 14px; }
+
+.idash__review {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.idash__review-stars {
+  font-size: 0.75rem;
+  color: rgba(255, 220, 120, 0.85);
+  letter-spacing: 2px;
+}
+
+.idash__review-name {
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.idash__review-text {
+  margin: 0;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.5;
+}
+
+/* ── Live status (barbershop) ─────────────────────── */
+.idash__live-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(140, 255, 190, 0.04);
+  border: 1px solid rgba(140, 255, 190, 0.12);
+}
+
+.idash__live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(140, 255, 190, 0.9);
+  flex-shrink: 0;
+  animation: idash-pulse 2s ease-in-out infinite;
+}
+
+@keyframes idash-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.idash__live-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: rgba(140, 255, 190, 0.85);
+}
+
+/* ═══════════════════════════════════════════════════
+   INTERACTIVE ELEMENTS
+   ═══════════════════════════════════════════════════ */
+
+/* ── Editable indicator ──────────────────────────── */
+.idash__editable {
+  cursor: pointer;
+  border-bottom: 1px dashed transparent;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.idash__editable:hover {
+  border-bottom-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+/* ── Inline input ────────────────────────────────── */
+.idash__inline-input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+  color: #fff;
+  font: inherit;
+  font-size: inherit;
+  padding: 2px 8px;
+  width: 80px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.idash__inline-input:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Tooltip ─────────────────────────────────────── */
+.idemo__dash-wrap { position: relative; }
+
+.idash__tooltip {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  animation: idash-tooltip-in 0.5s ease both;
+}
+
+@keyframes idash-tooltip-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.idash__tooltip-close {
+  all: unset;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.idash__tooltip-close:hover { color: #fff; }
+
+/* ── Reset button ────────────────────────────────── */
+.idash__reset-btn {
+  all: unset;
+  cursor: pointer;
+  align-self: flex-end;
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  transition: color 0.25s, border-color 0.25s;
+}
+.idash__reset-btn:hover {
+  color: rgba(255, 255, 255, 0.65);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Callout box ─────────────────────────────────── */
+.idash__callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.idash__callout-text {
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.55;
+}
+.idash__callout-text strong {
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: capitalize;
+}
+
+.idash__callout-link {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.65);
+  transition: color 0.2s;
+}
+.idash__callout-link:hover { color: #fff; }
+
+/* ── Toggle switch ───────────────────────────────── */
+.idash__toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.idash__toggle {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.3s;
+}
+.idash__toggle.is-on { background: rgba(140, 255, 190, 0.35); }
+
+.idash__toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  transition: transform 0.25s ease;
+}
+.idash__toggle.is-on .idash__toggle-knob {
+  transform: translateX(16px);
+  background: rgba(140, 255, 190, 0.95);
+}
+
+.idash__toggle-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── +/- adjustment buttons ──────────────────────── */
+.idash__adj-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.idash__adj-btn {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.idash__adj-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Clickable room cells ────────────────────────── */
+.idash__room--clickable {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.idash__room--clickable:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
+}
+
+/* ── Clickable timeline slots ────────────────────── */
+.idash__tl-slot--clickable {
+  cursor: pointer;
+  transition: background 0.2s, padding-left 0.2s;
+}
+.idash__tl-slot--clickable:hover {
+  background: rgba(255, 255, 255, 0.03);
+  padding-left: 16px;
+}
+
+/* ── Clickable barber slots ──────────────────────── */
+.idash__barber-slot--clickable {
+  cursor: pointer;
+  transition: background 0.2s, padding-left 0.2s;
+}
+.idash__barber-slot--clickable:hover {
+  background: rgba(255, 255, 255, 0.03);
+  padding-left: 14px;
+}
+
+/* ── Clickable chart bars ────────────────────────── */
+.idash__chart-bar--interactive {
+  cursor: pointer;
+  transition: height 0.4s ease, background 0.2s;
+}
+.idash__chart-bar--interactive:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Response row (metric + toggle) ──────────────── */
+.idash__response-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ── Live status off state ───────────────────────── */
+.idash__live-status--off {
+  background: rgba(255, 100, 100, 0.04);
+  border-color: rgba(255, 100, 100, 0.12);
+}
+
+.idash__live-dot--off {
+  background: rgba(255, 100, 100, 0.7);
+  animation: none;
+}
+
+.idash__live-status--off .idash__live-text {
+  color: rgba(255, 100, 100, 0.7);
+}
+
+/* ═══════════════════════════════════════════════════
+   TOPBAR
+   ═══════════════════════════════════════════════════ */
+.idash__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 4px;
+}
+
+.idash__topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.idash__topbar-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.idash__topbar-date {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.idash__topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.idash__topbar-alerts {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 220, 120, 0.8);
+}
+
+.idash__topbar-btn {
+  all: unset;
+  cursor: pointer;
+  padding: 6px 14px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.idash__topbar-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
+.idash__toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  padding: 12px 22px;
+  background: rgba(140, 255, 190, 0.15);
+  border: 1px solid rgba(140, 255, 190, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: rgba(140, 255, 190, 0.95);
+  animation: idash-toast-in 0.35s ease both;
+  pointer-events: none;
+}
+
+@keyframes idash-toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════
+   ROOM MANAGEMENT GRID (expanded)
+   ═══════════════════════════════════════════════════ */
+.idash__room-mgmt {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.idash__room-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.idash__room-cell:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+.idash__room-cell--avail { background: rgba(140, 255, 190, 0.1); border: 1px solid rgba(140, 255, 190, 0.2); }
+.idash__room-cell--occ   { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); }
+.idash__room-cell--clean { background: rgba(255, 220, 120, 0.1); border: 1px solid rgba(255, 220, 120, 0.2); }
+.idash__room-cell--maint { background: rgba(255, 100, 100, 0.08); border: 1px solid rgba(255, 100, 100, 0.15); }
+
+.idash__room-cell-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.idash__room-cell-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Room summary bar ────────────────────────────── */
+.idash__room-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.idash__room-summary-dot {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Maintenance room color ──────────────────────── */
+.idash__room--maint { background: rgba(255, 100, 100, 0.35); }
+
+/* ═══════════════════════════════════════════════════
+   PANEL HEAD / ACTION BUTTONS
+   ═══════════════════════════════════════════════════ */
+.idash__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.idash__add-btn {
+  all: unset;
+  cursor: pointer;
+  padding: 7px 16px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: rgba(140, 255, 190, 0.85);
+  border: 1px solid rgba(140, 255, 190, 0.2);
+  border-radius: 3px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.idash__add-btn:hover {
+  background: rgba(140, 255, 190, 0.08);
+  color: rgba(140, 255, 190, 1);
+  border-color: rgba(140, 255, 190, 0.4);
+}
+
+.idash__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.idash__action-btn {
+  all: unset;
+  cursor: pointer;
+  padding: 4px 10px;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.idash__action-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.idash__action-btn--danger {
+  color: rgba(255, 100, 100, 0.65);
+  border-color: rgba(255, 100, 100, 0.15);
+}
+
+.idash__action-btn--danger:hover {
+  color: rgba(255, 100, 100, 1);
+  border-color: rgba(255, 100, 100, 0.4);
+  background: rgba(255, 100, 100, 0.06);
+}
+
+/* ═══════════════════════════════════════════════════
+   EXTRA BADGES / UTILITIES
+   ═══════════════════════════════════════════════════ */
+.idash__badge--cancel {
+  background: rgba(255, 100, 100, 0.1);
+  color: rgba(255, 100, 100, 0.85);
+}
+
+.idash__inline-input--wide {
+  width: 160px;
+}
+
+.idash__mono {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Sidebar nav cursor fix ──────────────────────── */
+.idash__nav-item { cursor: pointer; }
+.idash__nav-item:hover { background: rgba(255, 255, 255, 0.04); color: rgba(255, 255, 255, 0.65); }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .idemo__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 720px; }
+  .idemo__impact-stats { grid-template-columns: 1fr; }
+  .idemo__tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .idash__sidebar { display: none; }
+  .idash { flex-direction: column; }
+  .idash__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .idash__mid { grid-template-columns: 1fr; }
+  .idash__week-cal { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .idash__barber-grid { grid-template-columns: 1fr; }
+  .idash__room-mgmt { grid-template-columns: repeat(4, 1fr); }
+  .idash__topbar { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+@media (max-width: 768px) {
+  .idemo__cards { grid-template-columns: 1fr; max-width: 400px; }
+  .idemo__card { min-height: 160px; }
+  .idemo__dash-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .idemo__search-wrap { max-width: 100%; }
+  .idemo__search {
+    font-size: 16px; /* prevents iOS auto-zoom on focus */
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 560px) {
+  .idemo { padding: 72px 0 56px; }
+  .idemo__tab { padding: 14px 10px; font-size: 0.7rem; }
+  .idash__main { padding: 16px; }
+  .idash__stats { grid-template-columns: 1fr; }
+  .idash__stat-value { font-size: 1.3rem; }
+  .idash__funnel { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .idash__funnel-arrow { transform: rotate(90deg); margin: 2px 0; }
+  .idash__tooltip { font-size: 0.65rem; padding: 8px 12px; white-space: normal; text-align: center; }
+  .idash__callout { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .idash__room-mgmt { grid-template-columns: repeat(3, 1fr); }
+  .idash__room-summary { flex-wrap: wrap; }
+  .idash__actions { flex-direction: column; gap: 4px; }
+  .idash__toast { left: 16px; right: 16px; bottom: 16px; text-align: center; }
+}
+
+/* ── Selector hints (under subtitle, above search) ── */
+.idemo__hints {
+  display: flex;
+  flex-direction: row;
+  gap: clamp(16px, 3vw, 32px);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 0 clamp(24px, 4vw, 40px);
+}
+
+.idemo__hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 180px;
+  text-align: left;
+}
+
+.idemo__hint-icon {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.08em;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.idemo__hint-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+  color: rgba(255,255,255,0.45);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* ── Browse-all dropdown ───────────────────────────── */
+.idemo__dropdown {
+  display: block;
+  margin: 24px auto 0;
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 44px 14px 18px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.03);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.5L6 6.5L11 1.5' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.idemo__dropdown:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.idemo__dropdown:focus-visible {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.idemo__dropdown option {
+  background-color: #0a0a0a;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 10px;
+}

@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
     // ⚠️ IMPORTANTE:
     // Cambiá este "from" por el que te permita Resend en tu cuenta.
-    // Ideal cuando verifiques dominio: "COREXA <hello@corexastudio.com>"
+    // Ideal cuando verifiques dominio: "COREXA <corexastudio@gmail.com>"
     const from = "COREXA <onboarding@resend.dev>";
 
     const subject = `COREXA — ${type || "Service"} request (${name})`;

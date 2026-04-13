@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fade & Blade — Premium Barbershop Dublin</title>
+<meta name="description" content="Sharp cuts. Sharper style. Walk-ins welcome, appointments preferred. Dublin's premium barbershop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#0D0D0D;color:#F5F0E8;
+  font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+/* ── Navbar ────────────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;width:100%;z-index:100;
+  background:#0D0D0D;border-bottom:1px solid rgba(245,240,232,0.06);
+}
+.nav__inner{
+  max-width:1060px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:60px;
+}
+.nav__logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:0.12em;color:#F5F0E8;
+}
+.nav__links{display:flex;align-items:center;gap:28px}
+.nav__links a{font-size:0.82rem;color:rgba(245,240,232,0.5);letter-spacing:0.04em}
+.nav__links a:hover{color:#F5F0E8}
+.nav__cta{
+  padding:8px 20px;border:1px solid #C8A96E;color:#C8A96E;
+  font-size:0.75rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  background:transparent;
+}
+.nav__hamburger{display:none;background:none;border:none;color:#F5F0E8;font-size:1.5rem;padding:4px}
+
+/* ── Announcement ──────────────────────────────── */
+.announce{
+  background:#C8A96E;color:#0D0D0D;text-align:center;
+  font-size:0.78rem;font-weight:500;padding:8px 20px;letter-spacing:0.02em;
+  margin-top:60px;
+}
+
+/* ── Hero ──────────────────────────────────────── */
+.hero{
+  position:relative;height:80vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+.hero__img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.hero__overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55)}
+.hero__content{position:relative;z-index:1;padding:0 24px}
+.hero__title{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,6rem);
+  letter-spacing:0.05em;line-height:1;margin-bottom:16px;color:#F5F0E8;
+}
+.hero__sub{font-size:1.05rem;color:rgba(245,240,232,0.5);margin-bottom:32px}
+.hero__btn{
+  display:inline-block;padding:14px 36px;border:2px solid #C8A96E;color:#C8A96E;
+  font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;
+  background:transparent;
+}
+
+/* ── Sections shared ──────────────────────────── */
+.section{padding:80px 24px}
+.section__title{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,4vw,2.5rem);
+  letter-spacing:0.08em;margin-bottom:40px;text-align:center;color:#F5F0E8;
+}
+.container{max-width:1060px;margin:0 auto}
+
+/* ── Services ─────────────────────────────────── */
+.services{border-top:1px solid rgba(245,240,232,0.06)}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.svc-card{
+  background:#1A1A1A;padding:28px 24px;display:flex;flex-direction:column;gap:12px;
+  border-top:2px solid #C8A96E;
+}
+.svc-name{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:0.06em;color:#F5F0E8}
+.svc-desc{font-size:0.82rem;color:rgba(245,240,232,0.4);line-height:1.5;flex:1}
+.svc-price{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#C8A96E;letter-spacing:0.04em}
+.svc-btn{
+  padding:10px;border:1px solid rgba(245,240,232,0.15);color:rgba(245,240,232,0.6);
+  font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  background:transparent;text-align:center;margin-top:auto;
+}
+
+/* ── Gallery ──────────────────────────────────── */
+.gallery{border-top:1px solid rgba(245,240,232,0.06)}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gal-grid img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+
+/* ── Booking CTA ─────────────────────────────── */
+.booking{border-top:1px solid rgba(245,240,232,0.06);text-align:center}
+.booking__heading{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);
+  letter-spacing:0.06em;margin-bottom:28px;color:#F5F0E8;
+}
+.booking__wa{
+  display:inline-block;padding:16px 40px;background:#25D366;color:#fff;
+  font-weight:600;font-size:0.9rem;letter-spacing:0.04em;border:none;
+  border-radius:0;
+}
+.booking__info{
+  margin-top:32px;font-size:0.85rem;color:rgba(245,240,232,0.35);line-height:1.8;
+}
+
+/* ── Footer ───────────────────────────────────── */
+.footer{
+  padding:32px 24px;border-top:1px solid rgba(245,240,232,0.06);
+  text-align:center;font-size:0.75rem;color:rgba(245,240,232,0.25);letter-spacing:0.04em;
+}
+.footer__logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;
+  color:rgba(245,240,232,0.4);margin-bottom:8px;
+}
+
+/* ── Responsive ───────────────────────────────── */
+@media(max-width:900px){
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .gal-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .nav__links a:not(.nav__cta){display:none}
+  .nav__hamburger{display:block}
+  .svc-grid{grid-template-columns:1fr}
+  .gal-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .hero{height:70vh}
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="nav">
+  <div class="nav__inner">
+    <span class="nav__logo">FADE & BLADE</span>
+    <div class="nav__links">
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#booking">Book</a>
+      <a href="#booking" class="nav__cta">Book Now</a>
+    </div>
+    <button class="nav__hamburger" aria-label="Menu">&#9776;</button>
+  </div>
+</nav>
+
+<!-- Announcement Banner -->
+<div class="announce">&#9986; Open today until 8:00 PM &middot; Last walk-in at 7:30 PM</div>
+
+<!-- Hero -->
+<section class="hero">
+  <img class="hero__img" src="https://images.unsplash.com/photo-1585747860019-8e8ef238b67a?w=1920&q=80" alt="Barbershop interior" loading="eager">
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <h1 class="hero__title">SHARP CUTS.<br>SHARPER STYLE.</h1>
+    <p class="hero__sub">Walk-ins welcome. Appointments preferred.</p>
+    <a href="#booking" class="hero__btn">BOOK NOW</a>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="section services">
+  <div class="container">
+    <h2 class="section__title">OUR SERVICES</h2>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <h3 class="svc-name">Classic Cut</h3>
+        <p class="svc-desc">Scissor or clipper cut, styled to finish. Includes wash and consultation.</p>
+        <span class="svc-price">&euro;25</span>
+        <a href="#booking" class="svc-btn">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Fade + Beard</h3>
+        <p class="svc-desc">Skin fade with full beard sculpt, hot towel finish and balm.</p>
+        <span class="svc-price">&euro;40</span>
+        <a href="#booking" class="svc-btn">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Hot Towel Shave</h3>
+        <p class="svc-desc">Traditional straight-razor shave with hot towels and premium lather.</p>
+        <span class="svc-price">&euro;30</span>
+        <a href="#booking" class="svc-btn">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Kids Cut</h3>
+        <p class="svc-desc">Under 12s. Patient, friendly, and always a fresh look.</p>
+        <span class="svc-price">&euro;18</span>
+        <a href="#booking" class="svc-btn">BOOK</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="section gallery">
+  <div class="container">
+    <h2 class="section__title">THE WORK</h2>
+    <div class="gal-grid">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Barbershop cut" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80" alt="Fade haircut" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&q=80" alt="Barber at work" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80" alt="Beard trim" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80" alt="Classic haircut" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&q=80" alt="Barbershop detail" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1634480090609-0e2068a0e2c7?w=600&q=80" alt="Fresh fade" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?w=600&q=80" alt="Barbershop tools" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- Booking CTA -->
+<section id="booking" class="section booking">
+  <div class="container">
+    <h2 class="booking__heading">Ready for a fresh cut?</h2>
+    <a href="https://wa.me/353000000000?text=Hi%2C%20I%27d%20like%20to%20book%20an%20appointment" class="booking__wa" target="_blank" rel="noopener">Message us on WhatsApp</a>
+    <div class="booking__info">
+      <p>14 Camden Street, Dublin 2</p>
+      <p>Mon&ndash;Fri 9:00&ndash;20:00 &middot; Sat 9:00&ndash;18:00 &middot; Sun Closed</p>
+      <p>+353 1 234 5678</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer__logo">FADE & BLADE</div>
+  <p>&copy; 2025 Fade & Blade. Dublin, Ireland.</p>
+</footer>
+
+</body>
+</html>

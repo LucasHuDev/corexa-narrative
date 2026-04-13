@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useI18n } from "../i18n/I18nProvider";
+import { useI18n, useT } from "../i18n/I18nProvider";
+import { t as Trans } from "../i18n/translations";
 import ServiceModals from "./ServiceModals";
 import ExtensionModals from "./ExtensionModals";
 
@@ -729,6 +730,7 @@ function useGlassMagnetic(rootRef) {
 
 export default function Builds() {
   const { t, lang } = useI18n();
+  const T = useT();
   const rootRef = useRef(null);
   const modalRef = useRef(null);
   const modalMediaRef = useRef(null);
@@ -769,8 +771,8 @@ export default function Builds() {
       {
         id: "audit",
         group: "ext",
-        eyebrow: t("ext_item_1_eyebrow"),
-        title: t("ext_item_1_title"),
+        eyebrow: T(Trans.extensions.extensionLabel),
+        title: T(Trans.extensions.ext1Title),
         meta: t("ext_item_1_meta"),
         note: t("ext_item_1_note"),
         Visual: VisualAudit,
@@ -778,8 +780,8 @@ export default function Builds() {
       {
         id: "maintenance",
         group: "ext",
-        eyebrow: t("ext_item_2_eyebrow"),
-        title: t("ext_item_2_title"),
+        eyebrow: T(Trans.extensions.extensionLabel),
+        title: T(Trans.extensions.ext2Title),
         meta: t("ext_item_2_meta"),
         note: t("ext_item_2_note"),
         Visual: VisualMaintenance,
@@ -787,14 +789,14 @@ export default function Builds() {
       {
         id: "tools",
         group: "ext",
-        eyebrow: t("ext_item_3_eyebrow"),
-        title: t("ext_item_3_title"),
+        eyebrow: T(Trans.extensions.extensionLabel),
+        title: T(Trans.extensions.ext3Title),
         meta: t("ext_item_3_meta"),
         note: t("ext_item_3_note"),
         Visual: VisualTools,
       },
     ],
-    [t],
+    [t, T],
   );
 
   const activeItem = useMemo(
@@ -1075,12 +1077,6 @@ export default function Builds() {
       ref={rootRef}
     >
       <div className="container builds__inner">
-        <header className="builds__head">
-          <p className="eyebrow">{lang === "es" ? "SERVICIOS" : "SERVICES"}</p>
-          <h2 className="title">
-            {lang === "es" ? "Core services." : "Core services."}
-          </h2>
-        </header>
         <div className="builds__grid">
           {core.map((it) => (
             <Card key={it.id} {...it} />
@@ -1088,12 +1084,8 @@ export default function Builds() {
         </div>
         <div className="builds__divider" aria-hidden="true" />
         <header className="builds__head builds__head--sub">
-          <p className="eyebrow">
-            {lang === "es" ? "EXTENSIONES" : "EXTENSIONS"}
-          </p>
-          <h2 className="title">
-            {lang === "es" ? "System extensions." : "System extensions."}
-          </h2>
+          <p className="eyebrow">{T(Trans.extensions.label)}</p>
+          <h2 className="title">{T(Trans.extensions.title)}</h2>
         </header>
         <div className="builds__grid">
           {ext.map((it) => (

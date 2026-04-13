@@ -32,26 +32,39 @@ export default function Metrics() {
     ).matches;
     if (reduce) return;
 
-    const items = root.querySelectorAll("[data-metric]");
-    if (!items.length) return;
-
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 12 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.75,
-          ease: "power3.out",
-          stagger: 0.08,
-          scrollTrigger: {
-            trigger: root,
-            start: "top 70%",
-            once: true,
+      // Title reveal is handled globally by useH2Reveal.
+      const eyebrow = root.querySelector(".metrics__eyebrow");
+      const rows = root.querySelectorAll(".metrics__row");
+
+      if (eyebrow) {
+        gsap.fromTo(
+          eyebrow,
+          { opacity: 0, y: 10 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: { trigger: root, start: "top 75%", once: true },
           },
-        },
-      );
+        );
+      }
+
+      if (rows.length) {
+        gsap.fromTo(
+          rows,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.09,
+            scrollTrigger: { trigger: root, start: "top 65%", once: true },
+          },
+        );
+      }
     }, root);
 
     return () => ctx.revert();
@@ -65,16 +78,24 @@ export default function Metrics() {
       aria-label={t("metrics_aria")}
     >
       <GridOverlay variant="default" />
+      <span className="section-label" aria-hidden="true">04 — Specs</span>
 
       <div className="container metrics__inner">
-        <p className="eyebrow">{t("metrics_eyebrow")}</p>
-        <h2 className="title">{t("metrics_title")}</h2>
+        <header className="metrics__head">
+          <p className="metrics__eyebrow">{t("metrics_eyebrow")}</p>
+          <h2 className="metrics__title" data-metric>
+            {t("metrics_title")}
+          </h2>
+        </header>
 
         <div className="metrics__list" role="list">
           {METRICS.map((m, i) => (
             <div className="metrics__row" role="listitem" data-metric key={i}>
-              <div className="metrics__left">{m.label}</div>
-              <div className="metrics__right">{m.value}</div>
+              <span className="metrics__idx">{String(i + 1).padStart(2, "0")}</span>
+              <div className="metrics__body">
+                <div className="metrics__value">{m.value}</div>
+                <div className="metrics__label">{m.label}</div>
+              </div>
             </div>
           ))}
         </div>

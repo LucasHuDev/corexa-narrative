@@ -2,13 +2,15 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GridOverlay from "./GridOverlay";
-import { useI18n } from "../i18n/I18nProvider";
+import { useI18n, useT } from "../i18n/I18nProvider";
+import { t as Trans } from "../i18n/translations";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Philosophy() {
   const rootRef = useRef(null);
   const { t } = useI18n();
+  const T = useT();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -19,18 +21,17 @@ export default function Philosophy() {
     ).matches;
 
     const q = gsap.utils.selector(root);
-    const title = q("[data-ph-title]");
     const copy = q("[data-ph-copy]");
     const items = q("[data-ph-item]");
     const scan = q("[data-ph-scan]");
 
-    // estado inicial
-    gsap.set([title, copy], { opacity: 0, y: 14 });
+    // Title reveal is handled globally by useH2Reveal.
+    gsap.set(copy, { opacity: 0, y: 14 });
     gsap.set(items, { opacity: 0, y: 14 });
     gsap.set(scan, { clipPath: "inset(0 100% 0 0)" });
 
     if (reduce) {
-      gsap.set([title, copy, items], { opacity: 1, y: 0 });
+      gsap.set([copy, items], { opacity: 1, y: 0 });
       gsap.set(scan, { clipPath: "inset(0 0% 0 0)" });
       return;
     }
@@ -45,7 +46,6 @@ export default function Philosophy() {
         },
       });
 
-      tl.to(title, { opacity: 1, y: 0, duration: 0.75 }, 0);
       tl.to(copy, { opacity: 1, y: 0, duration: 0.75 }, 0.08);
       tl.to(items, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 }, 0.16);
       tl.to(
@@ -67,7 +67,7 @@ export default function Philosophy() {
     >
       <GridOverlay variant="philosophy" />
 
-      <div className="philoBG" aria-hidden="true" />
+      <span className="section-label" aria-hidden="true">{T(Trans.studio.philosophy)}</span>
 
       <div className="container philo">
         <div className="philo__left">

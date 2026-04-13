@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx vite:*)",
+      "Bash(npm run:*)",
+      "Bash(cp -r \"/Users/Lucas.Work-Dev/Documents/Documents - MacBook Pro de Lucas/corexa-narrative/src/demos/barber\" \"/Users/Lucas.Work-Dev/Documents/Documents - MacBook Pro de Lucas/corexa-narrative/public/demos/barber\")",
+      "Bash(cp -r \"/Users/Lucas.Work-Dev/Documents/Documents - MacBook Pro de Lucas/corexa-narrative/src/demos/cafe\" \"/Users/Lucas.Work-Dev/Documents/Documents - MacBook Pro de Lucas/corexa-narrative/public/demos/cafe\")",
+      "Bash(cp -r \"/Users/Lucas.Work-Dev/Documents/Documents - MacBook Pro de Lucas/corexa-narrative/src/demos/arch\" \"/Users/Lucas.Work-Dev/Documents/Documents - MacBook Pro de Lucas/corexa-narrative/public/demos/arch\")",
+      "Bash(npx serve:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/barber/)",
+      "Bash(lsof -ti:3001)",
+      "Bash(xargs kill:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/demos/barber/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/demos/cafe/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/demos/arch/)",
+      "Bash(node scripts/generateGlobe.js)",
+      "Bash(ls \"/Users/Lucas.Work-Dev/Documents/Documents - MacBook Pro de Lucas/corexa-narrative/\"*.env*)",
+      "Bash(node -e \"require\\('@babel/parser'\\).parse\\(require\\('fs'\\).readFileSync\\('src/components/IndustryDemo.jsx','utf8'\\), { sourceType: 'module', plugins: ['jsx'] }\\); console.log\\('OK'\\);\")",
+      "Bash(npx -y acorn-jsx --ecma2020 src/components/IndustryDemo.jsx)",
+      "Bash(node -e \"try { require\\('fs'\\).readFileSync\\('src/components/IndustryDemo.jsx','utf8'\\); console.log\\('Read OK'\\); } catch\\(e\\) { console.log\\(e.message\\); }\")",
+      "Bash(npx -y esbuild --bundle --jsx=automatic --loader:.jsx=jsx src/components/IndustryDemo.jsx --outfile=/dev/null)",
+      "Bash(node -e ':*)",
+      "Bash(node -e)"
+    ]
+  }
+}

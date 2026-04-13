@@ -1,0 +1,303 @@
+/* ═══════════════════════════════════════════════════
+   CAFÉ DEMO — React tier (€1,200)
+   Warm palette, scroll reveals, hover micro-interactions,
+   animated menu, slide-in cart, stats section.
+   Noticeably more polished than WordPress.
+   ═══════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
+
+.cafe {
+  background: #0f0a00;
+  color: #fff;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.cafe__container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+
+/* ── Scroll reveal system ────────────────────────── */
+.cafe__reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cafe__reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children in grids */
+.cafe__events-grid .cafe__reveal:nth-child(2) { transition-delay: 0.1s; }
+.cafe__events-grid .cafe__reveal:nth-child(3) { transition-delay: 0.2s; }
+.cafe__stats-grid .cafe__reveal:nth-child(2) { transition-delay: 0.08s; }
+.cafe__stats-grid .cafe__reveal:nth-child(3) { transition-delay: 0.16s; }
+.cafe__stats-grid .cafe__reveal:nth-child(4) { transition-delay: 0.24s; }
+
+/* ── Navbar ── */
+.cafe__nav {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  background: rgba(15,10,0,0.88); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(200,134,10,0.1);
+}
+.cafe__nav-inner {
+  max-width: 1120px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between; height: 64px;
+}
+.cafe__logo {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: 1.1rem; letter-spacing: 0.06em; color: #c8860a;
+}
+.cafe__links { display: flex; align-items: center; gap: 28px; }
+.cafe__links a {
+  color: rgba(255,255,255,0.45); font-size: 0.8rem; text-decoration: none;
+  transition: color 0.3s ease;
+}
+.cafe__links a:hover { color: #c8860a; }
+.cafe__nav-btn {
+  all: unset; cursor: pointer;
+  background: #c8860a; color: #000; padding: 10px 22px;
+  font-family: inherit; font-weight: 600; font-size: 0.75rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  transition: background 0.3s ease;
+}
+.cafe__nav-btn:hover { background: #d99a1e; }
+.cafe__cart-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; background: #000; color: #c8860a;
+  font-size: 0.65rem; border-radius: 50%; margin-left: 6px;
+}
+
+/* ── Shared button ── */
+.cafe__btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; font-family: inherit; font-weight: 600;
+  font-size: 0.82rem; letter-spacing: 0.04em; text-transform: uppercase;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+.cafe__btn:hover { transform: translateY(-1px); }
+.cafe__btn:active { transform: translateY(0); }
+.cafe__btn--primary { background: #c8860a; color: #000; }
+.cafe__btn--primary:hover { background: #d99a1e; }
+.cafe__btn--ghost {
+  background: transparent; color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(200,134,10,0.2);
+}
+.cafe__btn--ghost:hover { color: #c8860a; border-color: rgba(200,134,10,0.4); }
+.cafe__btn--sm { padding: 10px 18px; font-size: 0.72rem; }
+.cafe__btn--full { width: 100%; }
+
+/* ── Hero — split screen ── */
+.cafe__hero {
+  display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+}
+.cafe__hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 clamp(40px,6vw,90px); gap: 20px;
+}
+.cafe__hero-tag {
+  font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: #c8860a;
+}
+.cafe__hero-title {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: clamp(3rem, 5.5vw, 5rem); line-height: 1.08;
+  letter-spacing: -0.01em; margin: 0;
+}
+.cafe__hero-sub {
+  margin: 0; font-size: 0.95rem; color: rgba(255,255,255,0.45);
+  line-height: 1.65; max-width: 420px;
+}
+.cafe__hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.cafe__hero-right {
+  background-size: cover; background-position: center;
+  background-color: #1a0f00;
+}
+
+/* ── Stats bar ── */
+.cafe__stats {
+  padding: 56px 0;
+  border-top: 1px solid rgba(200,134,10,0.1);
+  border-bottom: 1px solid rgba(200,134,10,0.1);
+}
+
+.cafe__stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  text-align: center;
+}
+
+.cafe__stat {
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.cafe__stat-num {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: 2rem; color: #c8860a; letter-spacing: -0.02em;
+}
+
+.cafe__stat-label {
+  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ── Section title ── */
+.cafe__section-title {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: clamp(2rem, 4.5vw, 3rem); margin: 0 0 40px;
+}
+
+/* ── Menu ── */
+.cafe__menu { padding: 120px 0; }
+.cafe__tabs { display: flex; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; }
+.cafe__tab {
+  all: unset; cursor: pointer; box-sizing: border-box;
+  padding: 12px 22px; border: 1px solid rgba(200,134,10,0.15);
+  color: rgba(255,255,255,0.5); font-family: inherit; font-size: 0.82rem;
+  font-weight: 500; transition: all 0.35s ease;
+}
+.cafe__tab:hover { color: #c8860a; border-color: rgba(200,134,10,0.35); background: rgba(200,134,10,0.04); }
+.cafe__tab.is-active { background: #c8860a; color: #000; border-color: #c8860a; }
+
+.cafe__items {
+  display: flex; flex-direction: column; gap: 12px;
+  animation: cafeItemIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes cafeItemIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+.cafe__item {
+  display: grid; grid-template-columns: 1fr auto auto;
+  align-items: center; gap: 20px;
+  padding: 24px 24px; background: rgba(200,134,10,0.03);
+  border: 1px solid rgba(200,134,10,0.06);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.cafe__item:hover {
+  background: rgba(200,134,10,0.07);
+  border-color: rgba(200,134,10,0.15);
+  transform: translateX(6px);
+}
+.cafe__item-name { margin: 0; font-weight: 600; font-size: 1rem; }
+.cafe__item-desc { margin: 4px 0 0; font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+.cafe__item-price {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: 1.15rem; color: #c8860a; white-space: nowrap;
+}
+
+/* ── Cart ── */
+.cafe__cart-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.6); opacity: 0; pointer-events: none;
+  transition: opacity 0.35s;
+}
+.cafe__cart-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+.cafe__cart {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 201;
+  width: 360px; max-width: 90vw; background: #110d00;
+  border-left: 1px solid rgba(200,134,10,0.12);
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cafe__cart.is-open { transform: translateX(0); }
+
+.cafe__cart-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px; border-bottom: 1px solid rgba(200,134,10,0.1);
+}
+.cafe__cart-title { margin: 0; font-family: 'Playfair Display', serif; font-size: 1.2rem; }
+.cafe__cart-close {
+  all: unset; cursor: pointer; color: rgba(255,255,255,0.4); font-size: 1.1rem;
+  transition: color 0.2s;
+}
+.cafe__cart-close:hover { color: #fff; }
+.cafe__cart-empty { padding: 24px; color: rgba(255,255,255,0.3); font-size: 0.85rem; }
+
+.cafe__cart-list { flex: 1; overflow-y: auto; padding: 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+.cafe__cart-item {
+  display: grid; grid-template-columns: 1fr auto auto;
+  align-items: center; gap: 12px; font-size: 0.85rem;
+  padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.cafe__cart-rm {
+  all: unset; cursor: pointer; color: rgba(255,255,255,0.3); font-size: 0.8rem;
+  transition: color 0.2s;
+}
+.cafe__cart-rm:hover { color: rgba(255,100,100,0.8); }
+
+.cafe__cart-footer {
+  padding: 24px; border-top: 1px solid rgba(200,134,10,0.1);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.cafe__cart-total {
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem;
+}
+
+/* ── Story ── */
+.cafe__story { padding: 120px 0; border-top: 1px solid rgba(200,134,10,0.08); }
+.cafe__story-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.cafe__story-text p {
+  margin: 0 0 18px; color: rgba(255,255,255,0.55); font-size: 0.92rem; line-height: 1.75;
+}
+.cafe__story-visual {
+  aspect-ratio: 4/3; background-size: cover; background-position: center;
+  background-color: #1a0f00;
+  border: 1px solid rgba(200,134,10,0.08);
+  transition: transform 0.6s ease;
+}
+.cafe__story-visual:hover { transform: scale(1.02); }
+
+/* ── Events ── */
+.cafe__events { padding: 120px 0; border-top: 1px solid rgba(200,134,10,0.08); }
+.cafe__events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.cafe__event-card {
+  background: #1a1200;
+  border: 1px solid rgba(200,134,10,0.08);
+  display: flex; flex-direction: column; overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+}
+.cafe__event-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200,134,10,0.2);
+  box-shadow: 0 16px 48px -12px rgba(200,134,10,0.08);
+}
+.cafe__event-img-wrap {
+  overflow: hidden; height: 200px;
+}
+.cafe__event-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.6s ease;
+}
+.cafe__event-card:hover .cafe__event-img { transform: scale(1.06); }
+.cafe__event-content {
+  padding: 28px; display: flex; flex-direction: column; gap: 10px;
+}
+.cafe__event-date {
+  font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #c8860a;
+}
+.cafe__event-name { margin: 0; font-family: 'Playfair Display', serif; font-size: 1.2rem; }
+.cafe__event-desc { margin: 0; font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.55; }
+
+/* ── Footer ── */
+.cafe__footer {
+  padding: 72px 0; border-top: 1px solid rgba(200,134,10,0.08);
+  background: #0a0700; font-size: 0.82rem; color: rgba(255,255,255,0.35);
+}
+.cafe__footer-inner { display: flex; justify-content: space-between; align-items: flex-end; }
+.cafe__footer-text { margin: 8px 0 0; }
+.cafe__footer-credit { font-size: 0.7rem; color: rgba(255,255,255,0.15); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .cafe__hero { grid-template-columns: 1fr; }
+  .cafe__hero-right { display: none; }
+  .cafe__hero-left { min-height: 100vh; padding: 0 28px; }
+  .cafe__item { grid-template-columns: 1fr; gap: 12px; }
+  .cafe__story-inner, .cafe__events-grid { grid-template-columns: 1fr; }
+  .cafe__stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .cafe__footer-inner { flex-direction: column; align-items: flex-start; gap: 24px; }
+}

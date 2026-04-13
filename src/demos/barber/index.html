@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fade & Blade — Dublin's Premier Barbershop</title>
+<meta name="description" content="The art of the perfect cut. Dublin's premier barbershop since 2018. Walk-ins welcome.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#0D0D0D;color:#F5F0E8;
+  font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  cursor:auto;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+
+/* ── Navbar ── */
+.nav{
+  position:fixed;top:0;left:0;width:100%;z-index:100;
+  background:#0D0D0D;border-bottom:1px solid rgba(245,240,232,0.06);
+}
+.nav__inner{
+  max-width:1060px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:62px;
+}
+.nav__logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;
+  letter-spacing:0.12em;color:#F5F0E8;
+}
+.nav__links{display:flex;align-items:center;gap:28px}
+.nav__links a{
+  font-size:0.82rem;color:rgba(245,240,232,0.45);
+  letter-spacing:0.04em;text-transform:uppercase;font-weight:500;
+}
+.nav__cta{
+  padding:9px 22px;border:1px solid #C9A84C;color:#C9A84C;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  background:transparent;display:inline-block;
+}
+.nav__hamburger{
+  display:none;background:none;border:none;color:#F5F0E8;font-size:1.6rem;padding:4px;
+}
+
+/* ── Hero ── */
+.hero{
+  position:relative;height:100vh;display:flex;align-items:center;
+  justify-content:center;text-align:center;overflow:hidden;
+}
+.hero__img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+}
+.hero__overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,0.6);
+}
+.hero__content{position:relative;z-index:1;padding:0 24px;max-width:700px}
+.hero__title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,10vw,5.5rem);
+  letter-spacing:0.06em;line-height:1.05;margin-bottom:16px;color:#F5F0E8;
+}
+.hero__sub{
+  font-size:1rem;color:rgba(245,240,232,0.45);margin-bottom:36px;
+  letter-spacing:0.02em;
+}
+.hero__btn{
+  display:inline-block;padding:16px 44px;
+  background:#C9A84C;color:#0D0D0D;
+  font-family:'Bebas Neue',sans-serif;font-size:1.1rem;
+  letter-spacing:0.12em;border:none;
+}
+
+/* ── Banner ── */
+.banner{
+  background:#C9A84C;color:#0D0D0D;text-align:center;
+  font-size:0.8rem;font-weight:600;padding:10px 20px;letter-spacing:0.02em;
+}
+
+/* ── Shared section ── */
+.section{padding:80px 24px}
+.section__title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.5rem);
+  letter-spacing:0.08em;margin-bottom:48px;text-align:center;color:#F5F0E8;
+}
+.container{max-width:1060px;margin:0 auto}
+
+/* ── Services ── */
+.services{border-top:1px solid rgba(245,240,232,0.06)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.svc-card{
+  background:#151515;padding:32px 24px;
+  display:flex;flex-direction:column;gap:10px;
+  border-top:2px solid #C9A84C;
+}
+.svc-name{
+  font-family:'Bebas Neue',sans-serif;font-size:1.35rem;
+  letter-spacing:0.06em;color:#F5F0E8;
+}
+.svc-desc{
+  font-size:0.82rem;color:rgba(245,240,232,0.35);line-height:1.5;flex:1;
+}
+.svc-price{
+  font-family:'Bebas Neue',sans-serif;font-size:1.25rem;
+  color:#C9A84C;letter-spacing:0.04em;
+}
+.svc-btn{
+  padding:10px;border:1px solid rgba(245,240,232,0.12);
+  color:rgba(245,240,232,0.5);font-size:0.72rem;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;
+  background:transparent;text-align:center;margin-top:auto;
+}
+
+/* ── Gallery ── */
+.gallery{border-top:1px solid rgba(245,240,232,0.06)}
+.gal-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.gal-grid img{
+  width:100%;aspect-ratio:1;object-fit:cover;display:block;
+}
+
+/* ── About ── */
+.about{border-top:1px solid rgba(245,240,232,0.06)}
+.about__inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+}
+.about__photo{
+  width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
+}
+.about__text h3{
+  font-family:'Bebas Neue',sans-serif;font-size:2rem;
+  letter-spacing:0.06em;margin-bottom:16px;color:#F5F0E8;
+}
+.about__text p{
+  font-size:0.92rem;color:rgba(245,240,232,0.45);line-height:1.8;margin-bottom:20px;
+}
+.about__signature{
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;
+  color:#C9A84C;letter-spacing:0.08em;
+}
+
+/* ── Footer ── */
+.footer{
+  padding:48px 24px;border-top:1px solid rgba(245,240,232,0.06);
+  background:#0a0a0a;
+}
+.footer__inner{
+  max-width:1060px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+  font-size:0.82rem;color:rgba(245,240,232,0.35);
+}
+.footer__col h4{
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;
+  letter-spacing:0.1em;color:rgba(245,240,232,0.6);margin-bottom:12px;
+}
+.footer__col p{margin-bottom:4px;line-height:1.7}
+.footer__bottom{
+  max-width:1060px;margin:32px auto 0;padding-top:24px;
+  border-top:1px solid rgba(245,240,232,0.04);
+  text-align:center;font-size:0.7rem;color:rgba(245,240,232,0.15);
+}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .nav__links a:not(.nav__cta){display:none}
+  .nav__hamburger{display:block}
+  .nav__cta{padding:7px 16px;font-size:0.68rem}
+  .hero{height:100svh}
+  .hero__title{font-size:clamp(2.2rem,8vw,3rem)}
+  .hero__sub{font-size:0.9rem}
+  .hero__btn{width:100%;text-align:center;padding:18px 20px}
+  .section{padding:48px 20px}
+  .container{padding:0 16px}
+  .svc-grid{grid-template-columns:1fr}
+  .gal-grid{grid-template-columns:repeat(2,1fr);gap:6px}
+  .footer__inner{grid-template-columns:1fr;text-align:center}
+}
+@media(max-width:768px){
+  .about .container{grid-template-columns:1fr !important;gap:32px !important;text-align:center}
+  .about .container img{aspect-ratio:4/3 !important}
+  .about .section__title{text-align:center !important}
+}
+@media(max-width:480px){
+  .section__title{font-size:1.6rem;margin-bottom:32px}
+  .svc-card{padding:24px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="nav">
+  <div class="nav__inner">
+    <span class="nav__logo">FADE & BLADE</span>
+    <div class="nav__links">
+      <a href="#services">Services</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#booking" class="nav__cta">Book Now</a>
+    </div>
+    <button class="nav__hamburger" aria-label="Menu">&#9776;</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <img class="hero__img" src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=1920&q=80" alt="Barbershop interior" loading="eager">
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <h1 class="hero__title">THE ART OF THE<br>PERFECT CUT</h1>
+    <p class="hero__sub">Dublin's premier barbershop since 2018</p>
+    <a href="https://wa.me/353000000000" class="hero__btn" target="_blank" rel="noopener">BOOK NOW</a>
+  </div>
+</section>
+
+<!-- Banner -->
+<div class="banner">&#9986; Open today until 8pm &mdash; Walk-ins welcome after 2pm</div>
+
+<!-- Services -->
+<section id="services" class="section services">
+  <div class="container">
+    <h2 class="section__title">OUR SERVICES</h2>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <h3 class="svc-name">Classic Cut</h3>
+        <p class="svc-desc">Scissor or clipper cut, wash, consultation. Clean, precise, always on point.</p>
+        <span class="svc-price">&euro;25</span>
+        <a href="https://wa.me/353000000000?text=Hi%2C%20I%27d%20like%20to%20book%20a%20Classic%20Cut" class="svc-btn" target="_blank" rel="noopener">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Beard Trim</h3>
+        <p class="svc-desc">Shape, line-up, and condition. Hot towel finish included.</p>
+        <span class="svc-price">&euro;15</span>
+        <a href="https://wa.me/353000000000?text=Hi%2C%20I%27d%20like%20to%20book%20a%20Beard%20Trim" class="svc-btn" target="_blank" rel="noopener">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Cut + Beard</h3>
+        <p class="svc-desc">The full experience. Haircut plus full beard sculpt and hot towel.</p>
+        <span class="svc-price">&euro;35</span>
+        <a href="https://wa.me/353000000000?text=Hi%2C%20I%27d%20like%20to%20book%20Cut%20%2B%20Beard" class="svc-btn" target="_blank" rel="noopener">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Hot Towel Shave</h3>
+        <p class="svc-desc">Traditional straight-razor shave with hot towels and premium lather.</p>
+        <span class="svc-price">&euro;30</span>
+        <a href="https://wa.me/353000000000?text=Hi%2C%20I%27d%20like%20to%20book%20a%20Hot%20Towel%20Shave" class="svc-btn" target="_blank" rel="noopener">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Kids Cut</h3>
+        <p class="svc-desc">Under 12s. Patient, friendly, and always a fresh look.</p>
+        <span class="svc-price">&euro;18</span>
+        <a href="https://wa.me/353000000000?text=Hi%2C%20I%27d%20like%20to%20book%20a%20Kids%20Cut" class="svc-btn" target="_blank" rel="noopener">BOOK</a>
+      </div>
+      <div class="svc-card">
+        <h3 class="svc-name">Hair + Style</h3>
+        <p class="svc-desc">Cut, wash, blow-dry, and product styling. Walk out runway-ready.</p>
+        <span class="svc-price">&euro;40</span>
+        <a href="https://wa.me/353000000000?text=Hi%2C%20I%27d%20like%20to%20book%20Hair%20%2B%20Style" class="svc-btn" target="_blank" rel="noopener">BOOK</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="section gallery">
+  <div class="container">
+    <h2 class="section__title">THE WORK</h2>
+    <div class="gal-grid">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Classic fade haircut" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80" alt="Beard sculpting" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80" alt="Fresh cut detail" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80" alt="Skin fade" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1583607793882-8ee8c9f46a35?w=600&q=80" alt="Barber at work" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1590285585497-f86b6a1f1a7e?w=600&q=80" alt="Clipper detail" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=600&q=80" alt="Barbershop atmosphere" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1596728325488-58c87691e9af?w=600&q=80" alt="Hot towel shave" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="section about" style="border-top:1px solid rgba(245,240,232,0.06)">
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center">
+    <img src="https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?w=800&q=80" alt="Master barber" style="width:100%;aspect-ratio:3/4;object-fit:cover">
+    <div>
+      <h2 class="section__title" style="text-align:left;margin-bottom:24px">THE MAN BEHIND THE CHAIR</h2>
+      <p style="color:rgba(245,240,232,0.5);font-size:0.92rem;line-height:1.8;margin-bottom:16px">
+        Marco has been cutting hair in Dublin for over 12 years. Trained in London and Barcelona,
+        he brought a European precision to Camden Street that the city hadn't seen before.
+      </p>
+      <p style="color:rgba(245,240,232,0.5);font-size:0.92rem;line-height:1.8;margin-bottom:28px">
+        At Fade &amp; Blade, every cut is a conversation. We don't rush. We listen, we advise, and we deliver.
+      </p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:#C9A84C">
+        &mdash; Marco Reyes, Head Barber
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="booking" class="footer">
+  <div class="footer__inner">
+    <div class="footer__col">
+      <h4>HOURS</h4>
+      <p>Mon&ndash;Fri: 9:00 &ndash; 20:00</p>
+      <p>Saturday: 9:00 &ndash; 18:00</p>
+      <p>Sunday: Closed</p>
+    </div>
+    <div class="footer__col">
+      <h4>LOCATION</h4>
+      <p>14 Camden Street Lower</p>
+      <p>Dublin 2</p>
+      <p>D02 HD32</p>
+    </div>
+    <div class="footer__col">
+      <h4>CONTACT</h4>
+      <p>+353 1 496 2241</p>
+      <p><a href="https://wa.me/353000000000" target="_blank" rel="noopener" style="color:#C9A84C">WhatsApp Us</a></p>
+      <p>hello@fadeandblade.ie</p>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p>&copy; 2025 Fade &amp; Blade. Dublin, Ireland.</p>
+    <p style="margin-top:6px;color:rgba(245,240,232,0.15);font-size:0.7rem">Built by CorexaStudio &mdash; corexastudio.com</p>
+  </div>
+</footer>
+
+</body>
+</html>

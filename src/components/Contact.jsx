@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useI18n } from "../i18n/I18nProvider";
+import { useI18n, useT } from "../i18n/I18nProvider";
+import { t as Trans } from "../i18n/translations";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,6 +55,7 @@ function normalizeService(raw) {
 export default function Contact() {
   const rootRef = useRef(null);
   const { t, lang } = useI18n();
+  const T = useT();
 
   const [values, setValues] = useState({
     name: "",
@@ -134,29 +136,36 @@ export default function Contact() {
     if (reduce) return;
 
     const ctx = gsap.context(() => {
-      const left = root.querySelector(".contact__left");
-      const right = root.querySelector(".contact__right");
-      const panel = root.querySelector(".contact__panel");
-      const itemLines = gsap.utils.toArray(
-        root.querySelectorAll(".next__item"),
+      // Title reveal is handled globally by useH2Reveal (clip-path wipe).
+      const sub = root.querySelector(".contact-v2__sub");
+      const details = gsap.utils.toArray(
+        root.querySelectorAll(".contact-v2__detail"),
       );
+      const fields = gsap.utils.toArray(root.querySelectorAll(".field"));
+      const submit = root.querySelector(".contact-v2__submit");
 
-      gsap.set([left, right], { opacity: 0, y: 16 });
-      gsap.set(panel, { opacity: 0, y: 12, scale: 1.01 });
-      gsap.set(itemLines, { opacity: 0, y: 10 });
+      gsap.set([sub, ...details, ...fields, submit].filter(Boolean), {
+        opacity: 0,
+        y: 16,
+      });
 
       const tl = gsap.timeline({
         defaults: { ease: "power3.out" },
         scrollTrigger: { trigger: root, start: "top 70%", once: true },
       });
 
-      tl.to([left, right], { opacity: 1, y: 0, duration: 0.8, stagger: 0.08 })
-        .to(panel, { opacity: 1, y: 0, scale: 1, duration: 0.85 }, "-=0.45")
+      tl.to(sub, { opacity: 1, y: 0, duration: 0.7 }, 0.25)
         .to(
-          itemLines,
-          { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 },
-          "-=0.55",
-        );
+          details,
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.07 },
+          0.35,
+        )
+        .to(
+          fields,
+          { opacity: 1, y: 0, duration: 0.65, stagger: 0.08 },
+          0.4,
+        )
+        .to(submit, { opacity: 1, y: 0, duration: 0.6 }, 0.75);
     }, root);
 
     return () => ctx.revert();
@@ -225,152 +234,151 @@ export default function Contact() {
     <section
       id="contact"
       ref={rootRef}
-      className="section contact"
+      className="contact-v2"
       aria-label={t("nav_request")}
     >
-      <div className="gridOverlay" aria-hidden="true" />
-      <div className="gridVignette" aria-hidden="true" />
+      <span className="section-label" aria-hidden="true">{T(Trans.contact.sectionLabel)}</span>
 
-      <div className="container contact__inner sectionContent">
-        <div className="contact__left contact__left--pad">
-          <p className="eyebrow">{t("contact_eyebrow")}</p>
-
-          <h2 className="contact__title">
-            {t("contact_title_line1")}
-            <br />
-            {t("contact_title_line2")}
+      <div className="container contact-v2__inner">
+        {/* ── Left column: headline + subtext + details ── */}
+        <div className="contact-v2__left">
+          <h2 className="contact-v2__title">
+            {T(Trans.contact.title)}
           </h2>
 
-          <p className="contact__lead">{t("contact_lead")}</p>
+          <p className="contact-v2__sub">{T(Trans.contact.subtitle)}</p>
+
+          <ul className="contact-v2__details" aria-label="Contact details">
+            <li className="contact-v2__detail">
+              <span className="contact-v2__detail-label">{T(Trans.contact.basedIn)}</span>
+              <span className="contact-v2__detail-value">{T(Trans.contact.location)}</span>
+            </li>
+            <li className="contact-v2__detail">
+              <span className="contact-v2__detail-label">{T(Trans.contact.emailLabel)}</span>
+              <a
+                className="contact-v2__detail-value contact-v2__detail-link"
+                href="mailto:corexastudio@gmail.com"
+              >
+                corexastudio@gmail.com
+              </a>
+            </li>
+          </ul>
         </div>
 
-        <div className="contact__right">
-          <div
-            className="contact__panel"
-            role="region"
+        {/* ── Right column: form ── */}
+        <div className="contact-v2__right">
+          <form
+            className="contact-v2__form"
+            onSubmit={onSubmit}
+            noValidate
             aria-label="Contact form"
           >
-            <form className="form" onSubmit={onSubmit} noValidate>
-              <div className="form__row">
-                <label className="label" htmlFor="name">
-                  {t("form_name")}
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  className={`input ${showNameErr ? "is-error" : ""}`}
-                  value={values.name}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  autoComplete="name"
-                  placeholder={t("form_name_ph")}
-                  aria-invalid={showNameErr ? "true" : "false"}
-                  aria-describedby={showNameErr ? "name-err" : undefined}
-                />
-                {showNameErr ? (
-                  <p className="fielderr" id="name-err">
-                    {errors.name}
-                  </p>
-                ) : null}
-              </div>
+            <div className="field">
+              <label className="field__label" htmlFor="type">
+                {T(Trans.contact.projectType)}
+              </label>
+              <select
+                id="type"
+                name="type"
+                className="field__input field__input--select"
+                value={values.type}
+                onChange={onChange}
+              >
+                {SERVICE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              <div className="form__row">
-                <label className="label" htmlFor="email">
-                  {t("form_email")}
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  className={`input ${showEmailErr ? "is-error" : ""}`}
-                  value={values.email}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  autoComplete="email"
-                  placeholder={t("form_email_ph")}
-                  aria-invalid={showEmailErr ? "true" : "false"}
-                  aria-describedby={showEmailErr ? "email-err" : undefined}
-                />
-                {showEmailErr ? (
-                  <p className="fielderr" id="email-err">
-                    {errors.email}
-                  </p>
-                ) : null}
-              </div>
+            <div className="field">
+              <label className="field__label" htmlFor="name">
+                {T(Trans.contact.nameLabel)}
+              </label>
+              <input
+                id="name"
+                name="name"
+                className={`field__input ${showNameErr ? "is-error" : ""}`}
+                value={values.name}
+                onChange={onChange}
+                onBlur={onBlur}
+                autoComplete="name"
+                placeholder={T(Trans.contact.namePlaceholder)}
+                aria-invalid={showNameErr ? "true" : "false"}
+                aria-describedby={showNameErr ? "name-err" : undefined}
+              />
+              {showNameErr ? (
+                <p className="field__err" id="name-err">
+                  {errors.name}
+                </p>
+              ) : null}
+            </div>
 
-              <div className="form__row">
-                <label className="label" htmlFor="type">
-                  {t("form_project")}
-                </label>
-                <select
-                  id="type"
-                  name="type"
-                  className="input select"
-                  value={values.type}
-                  onChange={onChange}
-                >
-                  {SERVICE_OPTIONS.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="field">
+              <label className="field__label" htmlFor="email">
+                {T(Trans.contact.emailLabel).toUpperCase()}
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                className={`field__input ${showEmailErr ? "is-error" : ""}`}
+                value={values.email}
+                onChange={onChange}
+                onBlur={onBlur}
+                autoComplete="email"
+                placeholder={T(Trans.contact.emailPlaceholder)}
+                aria-invalid={showEmailErr ? "true" : "false"}
+                aria-describedby={showEmailErr ? "email-err" : undefined}
+              />
+              {showEmailErr ? (
+                <p className="field__err" id="email-err">
+                  {errors.email}
+                </p>
+              ) : null}
+            </div>
 
-              <div className="form__row">
-                <label className="label" htmlFor="message">
-                  {t("form_brief")}
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  className={`input textarea ${showMsgErr ? "is-error" : ""}`}
-                  value={values.message}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  placeholder={t("form_brief_ph")}
-                  aria-invalid={showMsgErr ? "true" : "false"}
-                  aria-describedby={showMsgErr ? "msg-err" : undefined}
-                />
-                {showMsgErr ? (
-                  <p className="fielderr" id="msg-err">
-                    {errors.message}
-                  </p>
-                ) : null}
-              </div>
+            <div className="field">
+              <label className="field__label" htmlFor="message">
+                {T(Trans.contact.briefLabel)}
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                className={`field__input field__input--area ${showMsgErr ? "is-error" : ""}`}
+                value={values.message}
+                onChange={onChange}
+                onBlur={onBlur}
+                placeholder={T(Trans.contact.briefPlaceholder)}
+                aria-invalid={showMsgErr ? "true" : "false"}
+                aria-describedby={showMsgErr ? "msg-err" : undefined}
+              />
+              {showMsgErr ? (
+                <p className="field__err" id="msg-err">
+                  {errors.message}
+                </p>
+              ) : null}
+            </div>
 
-              <div className="form__actions">
-                <button
-                  className="btn btn--primary"
-                  type="submit"
-                  disabled={status.kind === "loading"}
-                  data-magnetic
-                  data-cursor="cta"
-                  data-hover-intent="cta"
-                >
-                  {status.kind === "loading"
-                    ? t("form_sending")
-                    : t("form_send")}
-                </button>
+            <button
+              className="btn-primary contact-v2__submit"
+              type="submit"
+              disabled={status.kind === "loading"}
+              data-magnetic
+              data-cursor="cta"
+            >
+              {status.kind === "loading" ? T(Trans.contact.sending) : T(Trans.contact.send)}
+            </button>
 
-                <div
-                  className={`form__status is-${status.kind}`}
-                  aria-live="polite"
-                >
-                  {status.msg}
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <aside className="next" aria-label={t("next_title")}>
-            <p className="next__label">{t("next_title")}</p>
-            <ul className="next__list">
-              <li className="next__item">{t("next_1")}</li>
-              <li className="next__item">{t("next_2")}</li>
-              <li className="next__item">{t("next_3")}</li>
-              <li className="next__item">{t("next_4")}</li>
-            </ul>
-          </aside>
+            <div
+              className={`contact-v2__status is-${status.kind}`}
+              aria-live="polite"
+            >
+              {status.msg}
+            </div>
+          </form>
         </div>
       </div>
     </section>

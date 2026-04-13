@@ -56,3 +56,17 @@ export function useI18n() {
   if (!ctx) throw new Error("useI18n must be used inside <I18nProvider>");
   return ctx;
 }
+
+export function useLang() {
+  const { lang, setLang } = useI18n();
+  const toggleLang = () => setLang(lang === "en" ? "es" : "en");
+  return { lang, setLang, toggleLang };
+}
+
+export function useT() {
+  const { lang } = useI18n();
+  return (node) => {
+    if (!node || typeof node !== "object") return node;
+    return node[lang] ?? node.en ?? "";
+  };
+}

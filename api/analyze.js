@@ -1,131 +1,95 @@
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+// Simple daily rate limit (resets on cold start — fine for beta)
+const dailyCount = { date: "", count: 0 };
+const DAILY_LIMIT = 20;
+
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST")
+    return res.status(405).json({ error: "Method not allowed" });
+
+  // Rate limit
+  const today = new Date().toISOString().split("T")[0];
+  if (dailyCount.date !== today) {
+    dailyCount.date = today;
+    dailyCount.count = 0;
   }
 
-  const rawUrl = req.query.url;
-
-  if (!rawUrl || typeof rawUrl !== "string") {
-    return res.status(400).json({ ok: false, error: "Missing url parameter" });
-  }
-
-  let targetUrl = rawUrl.trim();
-
-  if (!/^https?:\/\//i.test(targetUrl)) {
-    targetUrl = `https://${targetUrl}`;
-  }
-
-  let parsed;
-  try {
-    parsed = new URL(targetUrl);
-  } catch {
-    return res.status(400).json({ ok: false, error: "Invalid URL" });
-  }
-
-  const startedAt = Date.now();
-
-  try {
-    const response = await fetch(parsed.toString(), {
-      redirect: "follow",
-      headers: {
-        Accept: "text/html,application/xhtml+xml",
-      },
+  if (dailyCount.count >= DAILY_LIMIT) {
+    return res.status(429).json({
+      error: "daily_limit",
+      message: "Beta limit reached for today. Back tomorrow!",
     });
+  }
 
-    const responseTime = Date.now() - startedAt;
-    const contentType = response.headers.get("content-type") || "";
-    const isHtml = contentType.includes("text/html");
+  const { url } = req.body || {};
+  if (!url) return res.status(400).json({ error: "URL required" });
 
-    const html = isHtml ? await response.text() : "";
+  try {
+    dailyCount.count++;
 
-    const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-    const metaDescriptionMatch = html.match(
-      /<meta[^>]+name=["']description["'][^>]+content=["']([\s\S]*?)["'][^>]*>/i,
-    );
+    const response = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 2500,
+      messages: [
+        {
+          role: "user",
+          content: `Analyze this website and provide a comprehensive audit: ${url}
 
-    const title = titleMatch?.[1]?.replace(/\s+/g, " ").trim() || "";
-    const metaDescription =
-      metaDescriptionMatch?.[1]?.replace(/\s+/g, " ").trim() || "";
-
-    const checks = {
-      reachable: response.ok,
-      https: parsed.protocol === "https:",
-      html: isHtml,
-      hasTitle: Boolean(title),
-      hasMetaDescription: Boolean(metaDescription),
-      fastResponse: responseTime < 1800,
-    };
-
-    let performance = 55;
-    if (checks.fastResponse) performance += 28;
-    else if (responseTime < 3000) performance += 12;
-
-    let seo = 45;
-    if (checks.hasTitle) seo += 25;
-    if (checks.hasMetaDescription) seo += 22;
-    if (checks.https) seo += 8;
-
-    let structure = 52;
-    if (checks.html) structure += 18;
-    if (checks.hasTitle) structure += 12;
-    if (html.length > 5000) structure += 10;
-
-    let security = 38;
-    if (checks.https) security += 42;
-    if (checks.reachable) security += 12;
-
-    let mobile = 58;
-    if (checks.hasMetaDescription) mobile += 8;
-    if (checks.fastResponse) mobile += 12;
-    if (html.toLowerCase().includes("viewport")) mobile += 10;
-
-    performance = clamp(performance);
-    seo = clamp(seo);
-    structure = clamp(structure);
-    security = clamp(security);
-    mobile = clamp(mobile);
-
-    const total = Math.round(
-      (performance + seo + structure + security + mobile) / 5,
-    );
-
-    const issues = [];
-
-    if (!checks.reachable) issues.push("Website is not responding correctly");
-    if (!checks.https) issues.push("Website is not using HTTPS");
-    if (!checks.html) issues.push("Page is not returning clean HTML content");
-    if (!checks.hasTitle) issues.push("Missing SEO title tag");
-    if (!checks.hasMetaDescription) issues.push("Missing meta description");
-    if (!checks.fastResponse) issues.push("Slow response time detected");
-
-    if (!issues.length) {
-      issues.push("Strong technical base, with room to improve conversion.");
-    }
-
-    return res.status(200).json({
-      ok: true,
-      url: parsed.toString(),
-      total,
-      title,
-      metaDescription,
-      responseTime,
-      categories: [
-        { label: "Performance", value: performance },
-        { label: "SEO", value: seo },
-        { label: "Structure", value: structure },
-        { label: "Security", value: security },
-        { label: "Mobile", value: mobile },
+Return ONLY a valid JSON object, no markdown, no explanation, no backticks. Exact structure:
+{
+  "overallScore": <number 0-100>,
+  "url": "${url}",
+  "categories": [
+    {
+      "name": "Performance",
+      "score": <number 0-100>,
+      "findings": [
+        { "type": "good", "text": "<positive finding>" },
+        { "type": "issue", "text": "<problem found>" }
       ],
-      issues,
-    });
-  } catch {
-    return res.status(500).json({
-      ok: false,
-      error: "Could not analyze this website",
-    });
-  }
+      "recommendations": ["<specific actionable recommendation>", "<another one>"]
+    },
+    { "name": "SEO", "score": <number>, "findings": [...], "recommendations": [...] },
+    { "name": "Mobile", "score": <number>, "findings": [...], "recommendations": [...] },
+    { "name": "Design & UX", "score": <number>, "findings": [...], "recommendations": [...] },
+    { "name": "Copywriting", "score": <number>, "findings": [...], "recommendations": [...] },
+    { "name": "Conversion", "score": <number>, "findings": [...], "recommendations": [...] }
+  ]
 }
 
-function clamp(value) {
-  return Math.max(0, Math.min(100, Math.round(value)));
+Each category must have 2-4 findings and 1-3 recommendations. Be specific, honest, and actionable. Base analysis on what you know about this URL and business type.`,
+        },
+      ],
+    });
+
+    const text = response.content[0].text.trim();
+    // Extract JSON in case of stray text
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      return res
+        .status(502)
+        .json({ error: "Invalid response from analysis engine" });
+    }
+
+    const report = JSON.parse(jsonMatch[0]);
+
+    return res.status(200).json({
+      report,
+      remaining: DAILY_LIMIT - dailyCount.count,
+    });
+  } catch (err) {
+    console.error("ANALYZE ERROR:", err);
+    dailyCount.count = Math.max(0, dailyCount.count - 1);
+    return res
+      .status(500)
+      .json({ error: "Analysis failed", details: err.message });
+  }
 }

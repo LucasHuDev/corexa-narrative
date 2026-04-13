@@ -1,0 +1,1254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mila Coffee — Specialty Coffee Dublin</title>
+    <meta
+      name="description"
+      content="Single-origin coffee, baked-fresh pastries, and a space designed for slow mornings. Dublin's specialty café."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #0f0a00;
+        color: #fff;
+        font-family: "Lato", sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      /* ── Scroll reveal ────────────────────────────────── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-d1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-d2 {
+        transition-delay: 0.2s;
+      }
+      .reveal-d3 {
+        transition-delay: 0.3s;
+      }
+
+      /* ── Navbar ───────────────────────────────────────── */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        background: rgba(15, 10, 0, 0.88);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(200, 134, 10, 0.1);
+      }
+      .nav__inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+      }
+      .nav__logo {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.06em;
+        color: #c8860a;
+      }
+      .nav__links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+      .nav__links a {
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 0.82rem;
+        transition: color 0.3s;
+      }
+      .nav__links a:hover {
+        color: #c8860a;
+      }
+      .nav__cart-btn {
+        all: unset;
+        cursor: pointer;
+        background: #c8860a;
+        color: #000;
+        padding: 10px 22px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        transition: background 0.3s;
+      }
+      .nav__cart-btn:hover {
+        background: #d99a1e;
+      }
+      .nav__badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 18px;
+        height: 18px;
+        background: #000;
+        color: #c8860a;
+        font-size: 0.65rem;
+        border-radius: 50%;
+        margin-left: 6px;
+      }
+
+      /* ── Container ────────────────────────────────────── */
+      .container {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+
+      /* ── Hero ─────────────────────────────────────────── */
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+      }
+      .hero__left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 clamp(40px, 6vw, 90px);
+        gap: 20px;
+      }
+      .hero__tag {
+        font-size: 0.72rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #c8860a;
+      }
+      .hero__title {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: clamp(3rem, 5.5vw, 5rem);
+        line-height: 1.08;
+        letter-spacing: -0.01em;
+      }
+      .hero__sub {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.45);
+        line-height: 1.65;
+        max-width: 420px;
+      }
+      .hero__actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .hero__right {
+        background-size: cover;
+        background-position: center;
+        background-color: #1a0f00;
+      }
+
+      /* ── Buttons ──────────────────────────────────────── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        font-weight: 600;
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.3s,
+          color 0.3s,
+          transform 0.2s,
+          border-color 0.3s;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn--primary {
+        background: #c8860a;
+        color: #000;
+      }
+      .btn--primary:hover {
+        background: #d99a1e;
+      }
+      .btn--ghost {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(200, 134, 10, 0.2);
+      }
+      .btn--ghost:hover {
+        color: #c8860a;
+        border-color: rgba(200, 134, 10, 0.4);
+      }
+      .btn--sm {
+        padding: 10px 18px;
+        font-size: 0.72rem;
+      }
+      .btn--full {
+        width: 100%;
+      }
+
+      /* ── Stats ────────────────────────────────────────── */
+      .stats {
+        padding: 56px 0;
+        border-top: 1px solid rgba(200, 134, 10, 0.1);
+        border-bottom: 1px solid rgba(200, 134, 10, 0.1);
+      }
+      .stats__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        text-align: center;
+      }
+      .stat__num {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 2rem;
+        color: #c8860a;
+        letter-spacing: -0.02em;
+      }
+      .stat__label {
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 6px;
+      }
+
+      /* ── Menu ─────────────────────────────────────────── */
+      .menu {
+        padding: 120px 0;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: clamp(2rem, 4.5vw, 3rem);
+        margin: 0 0 40px;
+      }
+      .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 44px;
+        flex-wrap: wrap;
+      }
+      .tab {
+        all: unset;
+        cursor: pointer;
+        box-sizing: border-box;
+        padding: 12px 22px;
+        border: 1px solid rgba(200, 134, 10, 0.15);
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.82rem;
+        font-weight: 500;
+        transition: all 0.35s;
+      }
+      .tab:hover {
+        color: #c8860a;
+        border-color: rgba(200, 134, 10, 0.35);
+        background: rgba(200, 134, 10, 0.04);
+      }
+      .tab.is-active {
+        background: #c8860a;
+        color: #000;
+        border-color: #c8860a;
+      }
+
+      .menu-items {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .menu-item {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 20px;
+        padding: 24px;
+        background: rgba(200, 134, 10, 0.03);
+        border: 1px solid rgba(200, 134, 10, 0.06);
+        transition:
+          background 0.3s,
+          border-color 0.3s,
+          transform 0.3s;
+        animation: itemIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .menu-item:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+      .menu-item:nth-child(3) {
+        animation-delay: 0.1s;
+      }
+      .menu-item:nth-child(4) {
+        animation-delay: 0.15s;
+      }
+      @keyframes itemIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .menu-item:hover {
+        background: rgba(200, 134, 10, 0.07);
+        border-color: rgba(200, 134, 10, 0.15);
+        transform: translateX(6px);
+      }
+      .menu-item__name {
+        font-weight: 600;
+        font-size: 1rem;
+        margin: 0;
+      }
+      .menu-item__desc {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 4px 0 0;
+      }
+      .menu-item__price {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: #c8860a;
+        white-space: nowrap;
+      }
+
+      /* ── Cart slide-in ────────────────────────────────── */
+      .cart-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s;
+      }
+      .cart-overlay.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .cart {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 201;
+        width: 360px;
+        max-width: 90vw;
+        background: #110d00;
+        border-left: 1px solid rgba(200, 134, 10, 0.12);
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .cart.is-open {
+        transform: translateX(0);
+      }
+      .cart__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px;
+        border-bottom: 1px solid rgba(200, 134, 10, 0.1);
+      }
+      .cart__title {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+      }
+      .cart__close {
+        all: unset;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 1.1rem;
+        transition: color 0.2s;
+      }
+      .cart__close:hover {
+        color: #fff;
+      }
+      .cart__empty {
+        padding: 24px;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.85rem;
+      }
+      .cart__list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .cart__item {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.85rem;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .cart__rm {
+        all: unset;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.8rem;
+        transition: color 0.2s;
+      }
+      .cart__rm:hover {
+        color: rgba(255, 100, 100, 0.8);
+      }
+      .cart__footer {
+        padding: 24px;
+        border-top: 1px solid rgba(200, 134, 10, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .cart__total {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      /* ── Story ────────────────────────────────────────── */
+      .story {
+        padding: 120px 0;
+        border-top: 1px solid rgba(200, 134, 10, 0.08);
+      }
+      .story__inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+      .story__text p {
+        margin: 0 0 18px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 0.92rem;
+        line-height: 1.75;
+      }
+      .story__visual {
+        aspect-ratio: 4/3;
+        background-size: cover;
+        background-position: center;
+        background-color: #1a0f00;
+        border: 1px solid rgba(200, 134, 10, 0.08);
+        transition: transform 0.6s;
+      }
+      .story__visual:hover {
+        transform: scale(1.02);
+      }
+
+      /* ── Events (horizontal scroll) ───────────────────── */
+      .events {
+        padding: 120px 0;
+        border-top: 1px solid rgba(200, 134, 10, 0.08);
+      }
+      .events__scroll {
+        display: flex;
+        gap: 24px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(200, 134, 10, 0.3) transparent;
+      }
+      .events__scroll::-webkit-scrollbar {
+        height: 4px;
+      }
+      .events__scroll::-webkit-scrollbar-thumb {
+        background: rgba(200, 134, 10, 0.3);
+        border-radius: 2px;
+      }
+      .event-card {
+        min-width: 320px;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        background: #1a1200;
+        border: 1px solid rgba(200, 134, 10, 0.08);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition:
+          transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.4s,
+          box-shadow 0.4s;
+      }
+      .event-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(200, 134, 10, 0.2);
+        box-shadow: 0 16px 48px -12px rgba(200, 134, 10, 0.08);
+      }
+      .event-card__img-wrap {
+        overflow: hidden;
+        height: 200px;
+      }
+      .event-card__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.6s;
+      }
+      .event-card:hover .event-card__img {
+        transform: scale(1.06);
+      }
+      .event-card__body {
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .event-card__date {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #c8860a;
+      }
+      .event-card__name {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+      }
+      .event-card__desc {
+        margin: 0;
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.4);
+        line-height: 1.55;
+      }
+
+      /* ── Reservation ──────────────────────────────────── */
+      .reservation {
+        padding: 120px 0;
+        border-top: 1px solid rgba(200, 134, 10, 0.08);
+      }
+      .reservation__inner {
+        max-width: 560px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .reservation__form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 40px;
+        text-align: left;
+      }
+      .reservation__row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .reservation__label {
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 6px;
+        display: block;
+      }
+      .reservation__input {
+        width: 100%;
+        padding: 14px 16px;
+        background: rgba(200, 134, 10, 0.04);
+        border: 1px solid rgba(200, 134, 10, 0.12);
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.9rem;
+        transition: border-color 0.3s;
+        outline: none;
+      }
+      .reservation__input:focus {
+        border-color: #c8860a;
+      }
+      .reservation__input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .reservation__confirm {
+        display: none;
+        margin-top: 24px;
+        padding: 20px;
+        background: rgba(200, 134, 10, 0.08);
+        border: 1px solid rgba(200, 134, 10, 0.2);
+        text-align: center;
+      }
+      .reservation__confirm.is-visible {
+        display: block;
+        animation: itemIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reservation__confirm p {
+        margin: 0;
+        color: #c8860a;
+        font-weight: 600;
+      }
+
+      /* ── Newsletter footer ────────────────────────────── */
+      .footer {
+        padding: 72px 0;
+        border-top: 1px solid rgba(200, 134, 10, 0.08);
+        background: #0a0700;
+      }
+      .footer__inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .footer__text {
+        margin: 8px 0 0;
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .footer__credit {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.15);
+      }
+      .footer__newsletter {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-end;
+      }
+      .footer__nl-label {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .footer__nl-row {
+        display: flex;
+        gap: 8px;
+      }
+      .footer__nl-input {
+        padding: 10px 16px;
+        background: rgba(200, 134, 10, 0.04);
+        border: 1px solid rgba(200, 134, 10, 0.12);
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.82rem;
+        width: 220px;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+      .footer__nl-input:focus {
+        border-color: #c8860a;
+      }
+      .footer__nl-input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .footer__nl-btn {
+        padding: 10px 20px;
+        background: #c8860a;
+        color: #000;
+        border: none;
+        font-weight: 600;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .footer__nl-btn:hover {
+        background: #d99a1e;
+      }
+      .footer__nl-ok {
+        display: none;
+        font-size: 0.78rem;
+        color: #c8860a;
+      }
+      .footer__nl-ok.is-visible {
+        display: block;
+      }
+
+      /* ── Responsive ───────────────────────────────────── */
+      @media (max-width: 768px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        .hero__right {
+          display: none;
+        }
+        .hero__left {
+          min-height: 100vh;
+          padding: 0 28px;
+        }
+        .menu-item {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .story__inner {
+          grid-template-columns: 1fr;
+        }
+        .stats__grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 32px;
+        }
+        .reservation__row {
+          grid-template-columns: 1fr;
+        }
+        .footer__inner {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 24px;
+        }
+        .footer__newsletter {
+          align-items: flex-start;
+        }
+        .nav__links a:not(.nav__cart-btn) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav">
+      <div class="nav__inner">
+        <span class="nav__logo">MILA COFFEE</span>
+        <div class="nav__links">
+          <a href="#menu">Menu</a>
+          <a href="#story">Story</a>
+          <a href="#events">Events</a>
+          <a href="#reserve">Reserve</a>
+          <button class="nav__cart-btn" onclick="toggleCart(true)">
+            Order
+            <span class="nav__badge" id="cartBadge" style="display: none"
+              >0</span
+            >
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__left">
+        <span class="hero__tag reveal">Specialty Coffee &middot; Dublin</span>
+        <h1 class="hero__title reveal reveal-d1">
+          Coffee, crafted<br />with intention.
+        </h1>
+        <p class="hero__sub reveal reveal-d2">
+          Single-origin beans, baked-fresh pastries, and a space designed for
+          slow mornings.
+        </p>
+        <div class="hero__actions reveal reveal-d3">
+          <a href="#menu" class="btn btn--primary">Explore Menu &rarr;</a>
+          <a href="#story" class="btn btn--ghost">Our Story</a>
+        </div>
+      </div>
+      <div
+        class="hero__right"
+        style="
+          background-image: url(https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80);
+        "
+      ></div>
+    </section>
+
+    <!-- Stats bar -->
+    <section class="stats">
+      <div class="container">
+        <div class="stats__grid">
+          <div class="reveal">
+            <div class="stat__num" data-count="2019">0</div>
+            <div class="stat__label">Serving since</div>
+          </div>
+          <div class="reveal reveal-d1">
+            <div class="stat__num" data-count="14">0</div>
+            <div class="stat__label">Single-origin beans</div>
+          </div>
+          <div class="reveal reveal-d2">
+            <div class="stat__num" data-count="120">0</div>
+            <div class="stat__label">Thousand cups served</div>
+          </div>
+          <div class="reveal reveal-d3">
+            <div class="stat__num" data-count="4.9" data-decimal>0</div>
+            <div class="stat__label">Google rating</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="menu">
+      <div class="container">
+        <h2 class="section-title reveal">Our Menu</h2>
+        <div class="tabs reveal" id="menuTabs"></div>
+        <div class="menu-items" id="menuItems"></div>
+      </div>
+    </section>
+
+    <!-- Cart overlay + panel -->
+    <div
+      class="cart-overlay"
+      id="cartOverlay"
+      onclick="toggleCart(false)"
+    ></div>
+    <aside class="cart" id="cartPanel">
+      <div class="cart__head">
+        <h3 class="cart__title">Your Order</h3>
+        <button class="cart__close" onclick="toggleCart(false)">&times;</button>
+      </div>
+      <div class="cart__list" id="cartList">
+        <p class="cart__empty" id="cartEmpty">Nothing here yet.</p>
+      </div>
+      <div class="cart__footer">
+        <span class="cart__total" id="cartTotal">Total: &euro;0.00</span>
+        <button class="btn btn--primary btn--full">Checkout</button>
+      </div>
+    </aside>
+
+    <!-- Story -->
+    <section id="story" class="story">
+      <div class="container story__inner">
+        <div class="story__text reveal">
+          <h2 class="section-title">Our Story</h2>
+          <p>
+            We've been serving Dublin since 2019. Every cup is a conversation.
+            We source single-origin beans directly from farms in Colombia,
+            Ethiopia, and Guatemala — roasted weekly in small batches.
+          </p>
+          <p>
+            Our pastries are baked fresh every morning, and our space is
+            designed for the kind of slow mornings that make cities worth living
+            in.
+          </p>
+        </div>
+        <div
+          class="story__visual reveal reveal-d1"
+          style="
+            background-image: url(https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80);
+          "
+        ></div>
+      </div>
+    </section>
+
+    <!-- Events (horizontal scroll) -->
+    <section id="events" class="events">
+      <div class="container">
+        <h2 class="section-title reveal">Upcoming Events</h2>
+        <div class="events__scroll">
+          <div class="event-card reveal">
+            <div class="event-card__img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80"
+                alt="Coffee Tasting"
+                class="event-card__img"
+                loading="lazy"
+              />
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__date">Sat, Apr 12</span>
+              <h3 class="event-card__name">Coffee Tasting</h3>
+              <p class="event-card__desc">
+                Explore single-origin beans from Ethiopia and Colombia.
+              </p>
+            </div>
+          </div>
+          <div class="event-card reveal reveal-d1">
+            <div class="event-card__img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&q=80"
+                alt="Live Jazz Night"
+                class="event-card__img"
+                loading="lazy"
+              />
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__date">Fri, Apr 18</span>
+              <h3 class="event-card__name">Live Jazz Night</h3>
+              <p class="event-card__desc">
+                Acoustic session with local Dublin musicians.
+              </p>
+            </div>
+          </div>
+          <div class="event-card reveal reveal-d2">
+            <div class="event-card__img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80"
+                alt="Barista Workshop"
+                class="event-card__img"
+                loading="lazy"
+              />
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__date">Sun, Apr 26</span>
+              <h3 class="event-card__name">Barista Workshop</h3>
+              <p class="event-card__desc">
+                Learn latte art and extraction basics.
+              </p>
+            </div>
+          </div>
+          <div class="event-card reveal reveal-d3">
+            <div class="event-card__img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1511081692775-05d0f180a065?w=600&q=80"
+                alt="Open Mic"
+                class="event-card__img"
+                loading="lazy"
+              />
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__date">Fri, May 2</span>
+              <h3 class="event-card__name">Open Mic Night</h3>
+              <p class="event-card__desc">
+                Poetry, music, and spoken word. Sign-ups from 7 PM.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reservation -->
+    <section id="reserve" class="reservation">
+      <div class="container">
+        <div class="reservation__inner reveal">
+          <h2 class="section-title">Reserve a Table</h2>
+          <p style="color: rgba(255, 255, 255, 0.45); font-size: 0.92rem">
+            Walk-ins always welcome, but save your spot for brunch weekends.
+          </p>
+          <form
+            class="reservation__form"
+            id="reserveForm"
+            onsubmit="return handleReserve(event);"
+          >
+            <div class="reservation__row">
+              <div>
+                <label class="reservation__label">Name</label>
+                <input
+                  class="reservation__input"
+                  type="text"
+                  placeholder="Your name"
+                  required
+                />
+              </div>
+              <div>
+                <label class="reservation__label">Email</label>
+                <input
+                  class="reservation__input"
+                  type="email"
+                  placeholder="you@email.com"
+                  required
+                />
+              </div>
+            </div>
+            <div class="reservation__row">
+              <div>
+                <label class="reservation__label">Date</label>
+                <input class="reservation__input" type="date" required />
+              </div>
+              <div>
+                <label class="reservation__label">Guests</label>
+                <select class="reservation__input" required>
+                  <option value="">Select</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5-6</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn--primary btn--full" type="submit">
+              Reserve
+            </button>
+          </form>
+          <div class="reservation__confirm" id="reserveConfirm">
+            <p>
+              &#10003; Table reserved! We&rsquo;ll send a confirmation to your
+              email.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div>
+          <span class="nav__logo" style="font-size: 1rem">MILA COFFEE</span>
+          <p class="footer__text">22 Capel Street, Dublin 1</p>
+          <p class="footer__text">hello@milacoffee.ie</p>
+        </div>
+        <div class="footer__newsletter">
+          <span class="footer__nl-label">Get updates &amp; offers</span>
+          <div class="footer__nl-row">
+            <input
+              class="footer__nl-input"
+              type="email"
+              placeholder="your@email.com"
+              id="nlInput"
+            />
+            <button class="footer__nl-btn" onclick="handleNewsletter()">
+              Subscribe
+            </button>
+          </div>
+          <span class="footer__nl-ok" id="nlOk">&#10003; Subscribed!</span>
+          <p class="footer__credit">Powered by CorexaStudio</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      /* ── Menu Data ── */
+      const MENU = {
+        coffee: [
+          { name: "Espresso", desc: "Bold, short, essential.", price: 2.5 },
+          {
+            name: "Flat White",
+            desc: "Velvety microfoam, double shot.",
+            price: 3.5,
+          },
+          { name: "Cold Brew", desc: "18-hour slow extraction.", price: 4.0 },
+          {
+            name: "Oat Latte",
+            desc: "Creamy oat milk, house blend.",
+            price: 4.5,
+          },
+        ],
+        tea: [
+          {
+            name: "Matcha Latte",
+            desc: "Ceremonial grade, oat milk.",
+            price: 4.0,
+          },
+          { name: "Chai", desc: "Spiced masala, steamed milk.", price: 3.5 },
+          { name: "Green Tea", desc: "Sencha, clean and bright.", price: 3.0 },
+          { name: "Herbal", desc: "Chamomile, mint, or rooibos.", price: 3.0 },
+        ],
+        food: [
+          {
+            name: "Avocado Toast",
+            desc: "Sourdough, chili flakes, lime.",
+            price: 8.0,
+          },
+          {
+            name: "Granola Bowl",
+            desc: "House granola, yogurt, berries.",
+            price: 7.0,
+          },
+          {
+            name: "Egg Sandwich",
+            desc: "Scrambled, cheddar, brioche.",
+            price: 6.5,
+          },
+        ],
+        pastries: [
+          {
+            name: "Croissant",
+            desc: "Butter, flaky, baked daily.",
+            price: 3.5,
+          },
+          {
+            name: "Banana Bread",
+            desc: "Walnut, brown butter, warm.",
+            price: 4.0,
+          },
+          { name: "Cookie", desc: "Chocolate chunk, sea salt.", price: 2.5 },
+        ],
+      };
+
+      const CATS = [
+        { id: "coffee", label: "\u2615 Coffee" },
+        { id: "tea", label: "\uD83C\uDF75 Tea" },
+        { id: "food", label: "\uD83E\uDD50 Food" },
+        { id: "pastries", label: "\uD83E\uDDC1 Pastries" },
+      ];
+
+      let activeCat = "coffee";
+      let cart = [];
+
+      /* ── Scroll Reveal ── */
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("is-visible");
+          });
+        },
+        { threshold: 0.15 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+
+      /* ── Count-up Stats ── */
+      const statObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            statObserver.unobserve(el);
+            const target = parseFloat(el.dataset.count);
+            const isDecimal = el.hasAttribute("data-decimal");
+            const duration = 1200;
+            const start = performance.now();
+            function tick(now) {
+              const t = Math.min((now - start) / duration, 1);
+              const ease = 1 - Math.pow(1 - t, 3);
+              const val = ease * target;
+              el.textContent = isDecimal
+                ? val.toFixed(1)
+                : Math.round(val).toLocaleString();
+              if (t < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+          });
+        },
+        { threshold: 0.5 },
+      );
+      document
+        .querySelectorAll("[data-count]")
+        .forEach((el) => statObserver.observe(el));
+
+      /* ── Menu Tabs ── */
+      function renderTabs() {
+        const container = document.getElementById("menuTabs");
+        container.innerHTML = CATS.map(
+          (c) =>
+            `<button class="tab ${c.id === activeCat ? "is-active" : ""}" onclick="switchTab('${c.id}')">${c.label}</button>`,
+        ).join("");
+      }
+
+      function renderMenu() {
+        const container = document.getElementById("menuItems");
+        const items = MENU[activeCat] || [];
+        container.innerHTML = items
+          .map(
+            (item) =>
+              `<div class="menu-item">
+      <div>
+        <h3 class="menu-item__name">${item.name}</h3>
+        <p class="menu-item__desc">${item.desc}</p>
+      </div>
+      <span class="menu-item__price">&euro;${item.price.toFixed(2)}</span>
+      <button class="btn btn--sm" onclick="addToCart('${item.name}',${item.price})">Add to Order</button>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function switchTab(id) {
+        activeCat = id;
+        renderTabs();
+        renderMenu();
+      }
+
+      renderTabs();
+      renderMenu();
+
+      /* ── Cart ── */
+      function addToCart(name, price) {
+        const existing = cart.find((c) => c.name === name);
+        if (existing) {
+          existing.qty++;
+        } else {
+          cart.push({ name, price, qty: 1 });
+        }
+        renderCart();
+        toggleCart(true);
+      }
+
+      function removeFromCart(name) {
+        cart = cart.filter((c) => c.name !== name);
+        renderCart();
+      }
+
+      function renderCart() {
+        const list = document.getElementById("cartList");
+        const empty = document.getElementById("cartEmpty");
+        const badge = document.getElementById("cartBadge");
+        const totalEl = document.getElementById("cartTotal");
+        const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+        const totalPrice = cart.reduce((s, c) => s + c.price * c.qty, 0);
+
+        badge.style.display = totalQty > 0 ? "inline-flex" : "none";
+        badge.textContent = totalQty;
+        totalEl.textContent = "Total: \u20AC" + totalPrice.toFixed(2);
+
+        if (cart.length === 0) {
+          list.innerHTML = '<p class="cart__empty">Nothing here yet.</p>';
+          return;
+        }
+        list.innerHTML = cart
+          .map(
+            (c) =>
+              `<div class="cart__item">
+      <span>${c.name} \u00D7 ${c.qty}</span>
+      <span>&euro;${(c.price * c.qty).toFixed(2)}</span>
+      <button class="cart__rm" onclick="removeFromCart('${c.name}')">&times;</button>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function toggleCart(open) {
+        document
+          .getElementById("cartOverlay")
+          .classList.toggle("is-open", open);
+        document.getElementById("cartPanel").classList.toggle("is-open", open);
+      }
+
+      /* ── Reservation ── */
+      function handleReserve(e) {
+        e.preventDefault();
+        document.getElementById("reserveForm").style.display = "none";
+        document.getElementById("reserveConfirm").classList.add("is-visible");
+        return false;
+      }
+
+      /* ── Newsletter ── */
+      function handleNewsletter() {
+        const input = document.getElementById("nlInput");
+        if (!input.value) return;
+        input.value = "";
+        document.getElementById("nlOk").classList.add("is-visible");
+      }
+    </script>
+  </body>
+</html>

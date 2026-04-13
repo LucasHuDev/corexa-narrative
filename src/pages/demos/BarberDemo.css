@@ -1,0 +1,157 @@
+/* ═══════════════════════════════════════════════════
+   BARBER DEMO — WordPress tier (€600)
+   Clean, fast, static. No animations, no hover FX.
+   Feels like a solid WordPress template.
+   ═══════════════════════════════════════════════════ */
+.barber {
+  background: #111;
+  color: #fff;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.barber__container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+/* ── Demo badge ── */
+.demo-badge {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.demo-badge:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+/* ── Navbar — basic fixed ── */
+.barber__nav {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  background: #111;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.barber__nav-inner {
+  max-width: 960px; margin: 0 auto; padding: 0 20px;
+  display: flex; align-items: center; justify-content: space-between; height: 56px;
+}
+
+.barber__logo {
+  font-weight: 700; font-size: 0.9rem; letter-spacing: 0.12em; color: #fff;
+}
+
+.barber__links { display: flex; align-items: center; gap: 20px; }
+.barber__links a { color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none; }
+.barber__links a:hover { color: #fff; }
+.barber__nav-btn {
+  background: #fff !important; color: #000 !important; padding: 8px 16px;
+  font-weight: 600; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* ── Shared button — flat, no transitions ── */
+.barber__btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 12px 24px; font-family: inherit; font-weight: 600;
+  font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer; border: none;
+}
+.barber__btn--primary { background: #fff; color: #000; }
+.barber__btn--ghost { background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); }
+.barber__btn--sm { padding: 10px 18px; font-size: 0.72rem; width: 100%; }
+.barber__btn--full { width: 100%; padding: 14px; }
+
+/* ── Hero — simple image + overlay, no grain, no fancy FX ── */
+.barber__hero {
+  position: relative;
+  min-height: 80vh; display: flex; align-items: center; justify-content: center;
+  background-size: cover; background-position: center; background-color: #111;
+  text-align: center; padding-top: 56px;
+}
+
+.barber__hero-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.barber__hero-inner { position: relative; z-index: 1; }
+.barber__hero-title {
+  font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 700;
+  letter-spacing: 0.1em; margin: 0; line-height: 0.95;
+}
+.barber__hero-sub {
+  margin: 12px 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.45); letter-spacing: 0.04em;
+}
+.barber__hero-actions { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+
+/* ── Section title — basic ── */
+.barber__section-title {
+  font-weight: 700; font-size: clamp(1.5rem, 3.5vw, 2.2rem); letter-spacing: -0.01em;
+  margin: 0 0 32px;
+}
+
+/* ── Services — flat text cards, no images ── */
+.barber__services { padding: 72px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+.barber__svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.barber__svc-card {
+  background: #1a1a1a; padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.barber__svc-name { margin: 0; font-size: 1.05rem; font-weight: 600; }
+.barber__svc-meta { display: flex; justify-content: space-between; color: rgba(255,255,255,0.4); font-size: 0.82rem; }
+.barber__svc-price { font-weight: 600; color: #fff; }
+
+/* ── Booking ── */
+.barber__booking { padding: 72px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+.barber__form { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
+.barber__form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.barber__input {
+  width: 100%; padding: 12px 0; background: transparent; border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.1); color: #fff; font-family: inherit;
+  font-size: 0.85rem; outline: none;
+  -webkit-appearance: none; appearance: none;
+}
+.barber__input:focus { border-bottom-color: #fff; }
+.barber__input option { background: #1a1a1a; color: #fff; }
+.barber__times { display: flex; gap: 6px; flex-wrap: wrap; }
+.barber__time-btn {
+  padding: 8px 14px; background: transparent; border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4); font-family: inherit; font-size: 0.78rem; cursor: pointer;
+}
+.barber__time-btn.is-active { background: #fff; color: #000; border-color: #fff; }
+
+/* ── Gallery — flat grid, NO hover effects ── */
+.barber__gallery { padding: 72px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+.barber__gal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.barber__gal-item {
+  aspect-ratio: 4/3; overflow: hidden;
+}
+.barber__gal-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
+/* ── Footer — minimal ── */
+.barber__footer {
+  padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.8rem; color: rgba(255,255,255,0.35);
+}
+.barber__footer-inner { display: flex; justify-content: space-between; align-items: flex-end; }
+.barber__footer-addr { margin: 6px 0 0; }
+.barber__footer-credit { font-size: 0.68rem; color: rgba(255,255,255,0.15); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .barber__svc-grid, .barber__gal-grid { grid-template-columns: 1fr; }
+  .barber__form-row { grid-template-columns: 1fr; }
+  .barber__hero-title { letter-spacing: 0.06em; }
+  .barber__footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .barber__links { gap: 14px; }
+}

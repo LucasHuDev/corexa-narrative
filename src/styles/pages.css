@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════════
+   Page shell utilities — intros, CTA strips, route stage
+   ═══════════════════════════════════════════════════ */
+
+/* The transition wrapper. No layout impact at rest. */
+.route-stage {
+  display: block;
+  width: 100%;
+  will-change: transform, opacity;
+}
+
+/* ── Page intro (Services, Studio) ────────────────── */
+.page-intro {
+  position: relative;
+  padding: clamp(140px, 16vw, 220px) 0 clamp(60px, 7vw, 100px);
+  background: #020202;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.page-intro__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+}
+
+.page-intro__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* ── CTA strip (Home) ─────────────────────────────── */
+.cta-strip {
+  position: relative;
+  padding: clamp(100px, 12vw, 160px) 0;
+  background: #010101;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: visible;
+}
+
+.cta-strip__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(32px, 4vw, 48px);
+  overflow: visible;
+}
+
+.cta-strip__title {
+  margin: 0;
+  padding-left: 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: #fff;
+  overflow: visible;
+}
+
+.cta-strip__title[data-no-reveal],
+.idemo__title[data-no-reveal] {
+  animation: fadeUp 0.8s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cta-strip__btn {
+  padding: 18px 36px;
+  min-height: 0;
+}
+
+@media (max-width: 768px) {
+  .page-intro {
+    padding: 112px 0 56px;
+  }
+  .cta-strip {
+    padding: 80px 0;
+  }
+}

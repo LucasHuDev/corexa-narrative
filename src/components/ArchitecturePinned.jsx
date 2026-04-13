@@ -1,217 +1,244 @@
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useI18n } from "../i18n/I18nProvider";
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useT } from '../i18n/I18nProvider';
+import { t } from '../i18n/translations';
+import './StickyStack.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ArchitecturePinned() {
-  const rootRef = useRef(null);
-  const wordOutRef = useRef(null);
-  const wordInRef = useRef(null);
-  const descRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const stageRef = useRef(null);
+  const cardsRef = useRef([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const T = useT();
 
-  const { t } = useI18n();
-
-  // Slides traducidos
-  const slides = useMemo(
+  const CARDS = useMemo(
     () => [
-      { word: t("arch_word_brand"), desc: t("arch_desc_brand") },
-      { word: t("arch_word_ux"), desc: t("arch_desc_ux") },
-      { word: t("arch_word_frontend"), desc: t("arch_desc_frontend") },
-      { word: t("arch_word_motion"), desc: t("arch_desc_motion") },
-      { word: t("arch_word_optimization"), desc: t("arch_desc_optimization") },
+      {
+        label: T(t.studio.cards.c1.label),
+        title: T(t.studio.cards.c1.title),
+        desc: T(t.studio.cards.c1.desc),
+        tags: ['Figma', 'UI Systems', 'Branding'],
+      },
+      {
+        label: T(t.studio.cards.c2.label),
+        title: T(t.studio.cards.c2.title),
+        desc: T(t.studio.cards.c2.desc),
+        tags: ['React', 'Next.js', 'WordPress'],
+      },
+      {
+        label: T(t.studio.cards.c3.label),
+        title: T(t.studio.cards.c3.title),
+        desc: T(t.studio.cards.c3.desc),
+        tags: ['APIs', 'Zapier', 'Custom Tools'],
+      },
+      {
+        label: T(t.studio.cards.c4.label),
+        title: T(t.studio.cards.c4.title),
+        desc: T(t.studio.cards.c4.desc),
+        tags: ['Updates', 'Security', 'Support'],
+      },
     ],
-    [t],
+    [T],
   );
 
-  const [index, setIndex] = useState(0);
-
   useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
+    const wrapper = wrapperRef.current;
+    const stage = stageRef.current;
+    if (!wrapper || !stage) return;
 
-    const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (reduce) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isDesktop = window.matchMedia('(min-width: 1025px)').matches;
+    const cards = cardsRef.current.filter(Boolean);
+    if (!cards.length) return;
 
-    const wordOut = wordOutRef.current;
-    const wordIn = wordInRef.current;
-    const desc = descRef.current;
-    if (!wordOut || !wordIn || !desc) return;
+    // Mobile / tablet: simple fade-up stagger, no pinning
+    if (!isDesktop) {
+      if (reduce) {
+        gsap.set(cards, { opacity: 1, y: 0, scale: 1 });
+        return;
+      }
+      const ctxM = gsap.context(() => {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: wrapper,
+              start: 'top 80%',
+              once: true,
+            },
+          },
+        );
+      }, wrapper);
+      return () => ctxM.revert();
+    }
 
-    const setNoSnap = (v) => {
-      document.documentElement.classList.toggle("no-snap", !!v);
-    };
+    if (reduce) {
+      cards.forEach((c, i) =>
+        gsap.set(c, { opacity: i === 0 ? 1 : 0, y: 0, scale: 1 }),
+      );
+      return;
+    }
 
-    ScrollTrigger.clearScrollMemory?.();
+    // Desktop: initial state — first card active, rest below
+    gsap.set(cards[0], { opacity: 1, y: 0, scale: 1 });
+    for (let i = 1; i < cards.length; i++) {
+      gsap.set(cards[i], { opacity: 0, y: 80, scale: 0.97 });
+    }
 
     const ctx = gsap.context(() => {
-      const state = { i: 0, tl: null, isAnimating: false };
-      const total = slides.length;
-      const step = 1 / Math.max(1, total - 1);
+      // Pin is handled by CSS (position: sticky on .arch-stage).
+      // GSAP only drives the scrubbed card transitions below.
 
-      gsap.set(wordOut, { yPercent: 0, opacity: 1 });
-      gsap.set(wordIn, { yPercent: 110, opacity: 0 });
-      gsap.set(desc, { opacity: 0.85 });
+      // Each card owns one "slot" of the wrapper (4 cards → 4 slots of 25% each).
+      // Transitions are tight windows centered on slot boundaries, leaving the
+      // bulk of each slot as a "settled" zone where the card is fully visible
+      // and readable. Snap targets align with those settled zones.
+      const slots = cards.length; // 4
+      const slotPct = 1 / slots;  // 0.25 of the wrapper = 125vh on a 500vh wrapper
 
-      const applyImmediate = (i) => {
-        wordOut.textContent = slides[i].word;
-        wordIn.textContent = slides[i].word;
-        desc.textContent = slides[i].desc;
+      // Transition window: 0.15 of wrapper progress = ~75vh of scroll (within 60–80vh).
+      const transitionWindow = 0.15;
+      const halfWindow = transitionWindow / 2;
 
-        gsap.set(wordOut, { yPercent: 0, opacity: 1 });
-        gsap.set(wordIn, { yPercent: 110, opacity: 0 });
-        gsap.set(desc, { opacity: 0.85 });
+      // Build scrubbed transitions for i -> i+1
+      for (let i = 0; i < cards.length - 1; i++) {
+        const boundary = (i + 1) * slotPct;      // 0.25, 0.50, 0.75
+        const startPct = boundary - halfWindow;  // transition begins
+        const endPct = boundary + halfWindow;    // transition ends
 
-        state.i = i;
-        setIndex(i);
-      };
-
-      const animateTo = (i) => {
-        if (i === state.i) return;
-
-        state.isAnimating = true;
-        state.tl?.kill?.();
-        gsap.killTweensOf([wordOut, wordIn, desc]);
-
-        wordIn.textContent = slides[i].word;
-
-        const tl = gsap.timeline({
-          defaults: { ease: "power3.out", overwrite: "auto" },
-          onStart: () => {
-            state.i = i;
-            setIndex(i);
-          },
-          onComplete: () => {
-            wordOut.textContent = slides[i].word;
-            gsap.set(wordOut, { yPercent: 0, opacity: 1 });
-            gsap.set(wordIn, { yPercent: 110, opacity: 0 });
-            state.isAnimating = false;
+        // Outgoing card (current): y 0 → -40, opacity 1 → 0, scale 1 → 0.97
+        gsap.to(cards[i], {
+          y: -40,
+          opacity: 0,
+          scale: 0.97,
+          ease: 'power2.inOut',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: `${startPct * 100}% top`,
+            end: `${endPct * 100}% top`,
+            scrub: 0.4,
           },
         });
 
-        tl.to(wordOut, { yPercent: -110, opacity: 0, duration: 0.5 }, 0);
-        tl.to(wordIn, { yPercent: 0, opacity: 1, duration: 0.62 }, 0.02);
+        // Incoming card (next): y 80 → 0, opacity 0 → 1, scale 0.97 → 1
+        gsap.fromTo(
+          cards[i + 1],
+          { y: 80, opacity: 0, scale: 0.97 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            ease: 'power2.inOut',
+            scrollTrigger: {
+              trigger: wrapper,
+              start: `${startPct * 100}% top`,
+              end: `${endPct * 100}% top`,
+              scrub: 0.4,
+            },
+          },
+        );
+      }
 
-        tl.to(desc, { opacity: 0, duration: 0.18 }, 0).add(() => {
-          desc.textContent = slides[i].desc;
-        }, 0.2);
-        tl.to(desc, { opacity: 0.85, duration: 0.42 }, 0.2);
-
-        state.tl = tl;
-      };
-
-      applyImmediate(0);
-
-      const STEP_FACTOR = 0.78;
-      const HYST = 0.18;
-      const SCRUB = 0.18;
-
-      const st = ScrollTrigger.create({
-        trigger: root,
-        start: "top top",
-        end: () =>
-          `+=${Math.max(1, total - 1) * window.innerHeight * STEP_FACTOR}`,
-        pin: true,
-        scrub: SCRUB,
-        anticipatePin: 1,
-        fastScrollEnd: true,
-        preventOverlaps: true,
-        invalidateOnRefresh: true,
-
-        onToggle: (self) => setNoSnap(self.isActive),
-
-        onEnter: (self) => {
-          const i = Math.round(self.progress * (total - 1));
-          applyImmediate(Math.min(total - 1, Math.max(0, i)));
-        },
-        onRefresh: (self) => {
-          const i = Math.round(self.progress * (total - 1));
-          applyImmediate(Math.min(total - 1, Math.max(0, i)));
-        },
-
+      // Counter updater — flips active index at each transition midpoint (the
+      // slot boundary itself), matching the snap points.
+      ScrollTrigger.create({
+        trigger: wrapper,
+        start: 'top top',
+        end: 'bottom bottom',
         onUpdate: (self) => {
-          if (state.isAnimating) return;
-
           const p = self.progress;
-          const currentP = state.i * step;
-
-          const v = self.getVelocity();
-          const dir = v === 0 ? 0 : v > 0 ? 1 : -1;
-
-          const forwardThreshold = currentP + step * (0.5 + HYST);
-          const backThreshold = currentP - step * (0.5 + HYST);
-
-          let next = state.i;
-
-          if (dir >= 0 && state.i < total - 1 && p >= forwardThreshold) {
-            next = state.i + 1;
-          } else if (dir <= 0 && state.i > 0 && p <= backThreshold) {
-            next = state.i - 1;
+          let idx = 0;
+          for (let i = 0; i < cards.length - 1; i++) {
+            if (p >= (i + 1) * slotPct) idx = i + 1;
           }
-
-          if (next !== state.i) animateTo(next);
+          setActiveIndex(idx);
         },
       });
 
-      const onResize = () => ScrollTrigger.refresh();
-      window.addEventListener("resize", onResize);
-      requestAnimationFrame(() => ScrollTrigger.refresh());
+      // Snap — land cleanly on each card's settled zone (centers of the 4 slots,
+      // plus the very top and bottom). Subtle: only kicks in after the user
+      // pauses, never fighting active scrolling.
+      ScrollTrigger.create({
+        trigger: wrapper,
+        start: 'top top',
+        end: 'bottom bottom',
+        snap: {
+          snapTo: [0, 0.25, 0.5, 0.75, 1],
+          duration: { min: 0.2, max: 0.4 },
+          delay: 0.05,
+          ease: 'power2.inOut',
+        },
+      });
+    }, wrapper);
 
-      return () => {
-        window.removeEventListener("resize", onResize);
-        st.kill();
-      };
-    }, root);
+    // Re-measure once layout has settled (fonts, images, other effects)
+    const refreshId = setTimeout(() => ScrollTrigger.refresh(), 100);
 
     return () => {
-      setNoSnap(false);
+      clearTimeout(refreshId);
       ctx.revert();
     };
-  }, [slides]);
+  }, []);
 
   return (
     <section
       id="architecture"
-      className="section architecture"
-      ref={rootRef}
-      aria-label={t("arch_aria")}
+      className="arch-wrapper"
+      ref={wrapperRef}
+      aria-label="What we build"
     >
-      <div className="gridOverlay" aria-hidden="true" />
-      <div className="gridVignette" aria-hidden="true" />
-
-      <div className="container arch">
-        <div className="arch__left" aria-hidden="true">
-          <div className="arch__wordStack">
-            <div className="arch__word arch__word--out" ref={wordOutRef}>
-              {slides[index].word}
-            </div>
-            <div className="arch__word arch__word--in" ref={wordInRef}>
-              {slides[index].word}
+      <div className="arch-stage" ref={stageRef}>
+        <div className="arch-left">
+          <div className="arch-left__inner">
+            <span className="arch-label">{T(t.studio.architecture)}</span>
+            <h2 className="arch-title">
+              {T(t.studio.archTitle)}
+            </h2>
+            <div className="arch-counter" aria-live="polite">
+              <span className="arch-counter__current">
+                {String(activeIndex + 1).padStart(2, '0')}
+              </span>
+              <span className="arch-counter__sep"> / </span>
+              <span className="arch-counter__total">
+                {String(CARDS.length).padStart(2, '0')}
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="arch__right">
-          <p className="arch__kicker">{t("arch_kicker")}</p>
-          <p className="arch__desc" ref={descRef}>
-            {slides[index].desc}
-          </p>
-
-          <div className="arch__rail" aria-hidden="true">
-            {slides.map((s, i) => (
-              <div
-                key={`${s.word}-${i}`}
-                className={`arch__tick ${i === index ? "is-active" : ""}`}
-              />
+        <div className="arch-right">
+          <div className="arch-cards">
+            {CARDS.map((card, i) => (
+              <article
+                key={card.label}
+                ref={(el) => (cardsRef.current[i] = el)}
+                className="arch-card"
+                aria-hidden={i !== activeIndex}
+              >
+                <div className="arch-card__inner">
+                  <p className="arch-card__label">{card.label}</p>
+                  <h3 className="arch-card__title">{card.title}</h3>
+                  <p className="arch-card__desc">{card.desc}</p>
+                  <div className="arch-card__tags">
+                    {card.tags.map((tag) => (
+                      <span key={tag} className="arch-card__tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
-
-          <p className="arch__hint" aria-hidden="true">
-            {t("arch_hint")}
-          </p>
         </div>
       </div>
     </section>

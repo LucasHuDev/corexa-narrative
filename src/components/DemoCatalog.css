@@ -1,0 +1,259 @@
+/* ═══════════════════════════════════════════════════
+   DEMO CATALOG — three-tier solutions grid
+   ═══════════════════════════════════════════════════ */
+
+.demo {
+  position: relative;
+  padding: clamp(100px, 12vw, 160px) 0;
+  background: #010101;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.demo__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 6vw, 80px);
+}
+
+/* ── Header ───────────────────────────────────────── */
+.demo__head {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 720px;
+}
+
+.demo__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.demo__sub {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 560px;
+}
+
+/* ── Grid ─────────────────────────────────────────── */
+.demo__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* ── Card ─────────────────────────────────────────── */
+.demo__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 44px 36px 36px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease;
+  will-change: transform;
+}
+
+/* Radial glow on hover, from top-center */
+.demo__card::before {
+  content: "";
+  position: absolute;
+  top: -45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130%;
+  height: 90%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.09),
+    rgba(255, 255, 255, 0) 62%
+  );
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  pointer-events: none;
+}
+
+.demo__card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.demo__card:hover::before {
+  opacity: 1;
+}
+
+/* Top-edge glow line on hover */
+.demo__card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.demo__card:hover::after {
+  opacity: 1;
+}
+
+.demo__card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Badge */
+.demo__badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  z-index: 2;
+}
+
+/* Top meta: level + stack */
+.demo__card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.demo__level {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.32);
+  font-feature-settings: "tnum";
+}
+
+.demo__stack {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Name */
+.demo__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  transition: letter-spacing 0.4s ease;
+}
+
+.demo__card:hover .demo__name {
+  letter-spacing: 0.02em;
+}
+
+/* Description */
+.demo__desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Demo blurb — set apart with hairline borders */
+.demo__demo {
+  margin: 4px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.42);
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Features */
+.demo__features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.demo__feature {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Price — pushed to bottom so all cards align */
+.demo__price {
+  margin: auto 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+/* CTA actions row */
+.demo__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.demo__cta {
+  width: 100%;
+  text-align: center;
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
+.demo__cta.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 980px) {
+  .demo__grid {
+    grid-template-columns: 1fr;
+  }
+  .demo__card {
+    padding: 36px 28px 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .demo {
+    padding: 72px 0;
+  }
+}

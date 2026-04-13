@@ -1,0 +1,444 @@
+/* ═══════════════════════════════════════════════════
+   ARCH DEMO — Premium tier (€2,500)
+   Pure black, heavy whitespace, GSAP driven,
+   editorial typography, numbered sections,
+   parallax images, magnetic buttons.
+   This must FEEL expensive.
+   ═══════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap');
+
+.arch-d {
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.arch-d__container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+/* ── Numbered section heads ──────────────────────── */
+.arch-d__section-head {
+  display: flex; align-items: baseline; gap: 20px;
+  margin-bottom: clamp(48px, 6vw, 80px);
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.arch-d__section-num {
+  font-family: 'Cormorant Garamond', serif; font-weight: 300;
+  font-size: 0.85rem; letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.2);
+}
+
+.arch-d__section-label {
+  margin: 0; font-weight: 200; font-size: 0.78rem;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── Navbar — hides on scroll down ────────────────── */
+.arch-d__nav {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+  background: transparent;
+  transition: transform 0.45s ease, background 0.4s ease;
+}
+
+.arch-d__nav.is-hidden { transform: translateY(-100%); }
+
+.arch-d__nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 80px;
+}
+
+.arch-d__logo {
+  font-weight: 200; font-size: 0.78rem; letter-spacing: 0.4em;
+  text-transform: uppercase; color: #fff;
+}
+
+.arch-d__links { display: flex; gap: 36px; }
+.arch-d__links a {
+  color: rgba(255,255,255,0.35); font-size: 0.7rem; font-weight: 300;
+  letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none;
+  transition: color 0.3s;
+}
+.arch-d__links a:hover { color: #fff; }
+
+/* ── Hero — full screen, cinematic ───────────────── */
+.arch-d__hero {
+  position: relative;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 0 40px; overflow: hidden;
+}
+
+.arch-d__hero-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.arch-d__hero-inner {
+  text-align: center;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.arch-d__hero-line {
+  font-weight: 200; font-size: clamp(3.5rem, 9vw, 10rem);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin: 0; line-height: 0.95;
+  will-change: clip-path;
+}
+
+.arch-d__hero-line--accent {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.arch-d__hero-sub {
+  font-weight: 300; font-size: 0.78rem;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-top: 12px; opacity: 0;
+}
+
+.arch-d__scroll-hint {
+  position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  opacity: 0;
+}
+
+.arch-d__scroll-line {
+  display: block; width: 1px; height: 56px;
+  background: rgba(255,255,255,0.15);
+  animation: archScrollPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes archScrollPulse {
+  0%, 100% { opacity: 0.15; transform: scaleY(1); }
+  50% { opacity: 0.5; transform: scaleY(1.3); transform-origin: top; }
+}
+
+.arch-d__scroll-text {
+  font-size: 0.55rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: rgba(255,255,255,0.2); writing-mode: vertical-rl;
+}
+
+/* ── Manifesto ───────────────────────────────────── */
+.arch-d__manifesto-section {
+  padding: clamp(120px, 16vw, 240px) 0;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+.arch-d__manifesto {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+  line-height: 1.6;
+  color: rgba(255,255,255,0.5);
+  max-width: 800px;
+  text-indent: 2em;
+}
+
+/* ── Projects — asymmetric grid ──────────────────── */
+.arch-d__projects {
+  padding: clamp(120px, 16vw, 240px) 0;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+.arch-d__projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.arch-d__proj-card {
+  position: relative; display: flex; flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.04);
+  overflow: hidden; cursor: pointer;
+  transition: border-color 0.5s ease;
+}
+
+.arch-d__proj-card:hover { border-color: rgba(255,255,255,0.2); }
+
+/* Middle card spans full width and is taller */
+.arch-d__proj-card--tall {
+  grid-column: 1 / -1;
+}
+
+.arch-d__proj-img {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+
+.arch-d__proj-card--tall .arch-d__proj-img {
+  aspect-ratio: 21/9;
+}
+
+.arch-d__proj-photo {
+  position: absolute; inset: -30px 0 0 0;
+  width: 100%; height: calc(100% + 30px); object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.arch-d__proj-card:hover .arch-d__proj-photo { transform: scale(1.05); }
+
+.arch-d__proj-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 40%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.arch-d__proj-card:hover .arch-d__proj-overlay { opacity: 1; }
+
+.arch-d__proj-info {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 28px 24px;
+  position: relative;
+}
+
+.arch-d__proj-tag {
+  font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+.arch-d__proj-name {
+  margin: 0; font-weight: 700; font-size: 1.3rem;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  transition: letter-spacing 0.5s ease;
+}
+
+.arch-d__proj-card:hover .arch-d__proj-name { letter-spacing: 0.1em; }
+
+.arch-d__proj-loc {
+  font-size: 0.72rem; color: rgba(255,255,255,0.35);
+  font-weight: 300;
+}
+
+.arch-d__proj-link {
+  font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  margin-top: 4px;
+}
+
+.arch-d__proj-card:hover .arch-d__proj-link {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ── Philosophy — stacked full-screen ────────────── */
+.arch-d__philo-stack {
+  background: #000;
+}
+
+.arch-d__philo-item {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 40px;
+}
+
+.arch-d__philo-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.12);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.arch-d__philo-item.is-visible .arch-d__philo-num { opacity: 1; }
+
+.arch-d__philo-statement {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  max-width: 760px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arch-d__philo-item.is-visible .arch-d__philo-statement {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Services — numbered, editorial ──────────────── */
+.arch-d__services {
+  padding: clamp(120px, 16vw, 240px) 0;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+.arch-d__svc-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 24px;
+  padding: 48px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: padding-left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arch-d__svc-row:first-child { border-top: 1px solid rgba(255,255,255,0.04); }
+
+.arch-d__svc-row:hover,
+.arch-d__svc-row.is-open {
+  padding-left: 28px;
+}
+
+.arch-d__svc-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.15);
+  padding-top: 8px;
+}
+
+.arch-d__svc-body { display: flex; flex-direction: column; }
+
+.arch-d__svc-name {
+  margin: 0; font-weight: 800; font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: 0.02em; text-transform: uppercase; line-height: 1;
+  transition: color 0.3s, letter-spacing 0.5s ease;
+}
+
+.arch-d__svc-row:hover .arch-d__svc-name {
+  color: #fff; letter-spacing: 0.06em;
+}
+
+.arch-d__svc-desc {
+  margin: 0; font-weight: 300; font-size: 0.88rem; line-height: 1.7;
+  color: rgba(255,255,255,0.35);
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.6s ease, opacity 0.5s ease, margin 0.5s ease;
+}
+
+.arch-d__svc-row.is-open .arch-d__svc-desc {
+  max-height: 120px; opacity: 1; margin-top: 18px;
+}
+
+/* ── Awards ──────────────────────────────────────── */
+.arch-d__awards {
+  padding: clamp(100px, 14vw, 200px) 0;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+.arch-d__award {
+  display: flex; align-items: baseline; gap: 28px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.arch-d__award:first-of-type { border-top: 1px solid rgba(255,255,255,0.04); }
+
+.arch-d__award-year {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.2);
+  min-width: 50px;
+}
+
+.arch-d__award-title {
+  font-weight: 300; font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ── Contact CTA ──────────────────────────────────── */
+.arch-d__cta {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 32px;
+  text-align: center; padding: 0 40px;
+}
+
+.arch-d__cta-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.12);
+}
+
+.arch-d__cta-title {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(3rem, 7vw, 7rem);
+  letter-spacing: 0.01em;
+}
+
+.arch-d__cta-line {
+  width: 56px; height: 1px; background: rgba(255,255,255,0.15);
+}
+
+.arch-d__cta-email {
+  margin: 0; font-weight: 300; font-size: 0.82rem;
+  letter-spacing: 0.2em; color: rgba(255,255,255,0.3);
+}
+
+.arch-d__magnetic-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 22px 56px;
+  background: #fff; color: #000;
+  font-family: inherit; font-weight: 600; font-size: 0.75rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none; border: none; cursor: pointer;
+  will-change: transform;
+  transition: background 0.35s ease, letter-spacing 0.35s ease;
+}
+
+.arch-d__magnetic-btn:hover {
+  background: rgba(255,255,255,0.88);
+  letter-spacing: 0.25em;
+}
+
+/* ── Footer ───────────────────────────────────────── */
+.arch-d__footer {
+  padding: 56px 0;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.65rem; color: rgba(255,255,255,0.2);
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+.arch-d__footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.arch-d__footer-year { color: rgba(255,255,255,0.12); }
+.arch-d__footer-credit { color: rgba(255,255,255,0.08); font-weight: 300; }
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .arch-d__projects-grid { grid-template-columns: 1fr; gap: 32px; }
+  .arch-d__proj-card--tall { grid-column: 1; }
+  .arch-d__proj-img { aspect-ratio: 16/9; }
+  .arch-d__proj-card--tall .arch-d__proj-img { aspect-ratio: 16/9; }
+  .arch-d__svc-row { grid-template-columns: 40px 1fr; gap: 16px; }
+}
+
+@media (max-width: 600px) {
+  .arch-d__hero-line { font-size: clamp(2.2rem, 12vw, 4rem); }
+  .arch-d__container { padding: 0 24px; }
+  .arch-d__nav-inner { padding: 0 24px; }
+  .arch-d__links { gap: 18px; }
+  .arch-d__links a { font-size: 0.62rem; letter-spacing: 0.12em; }
+  .arch-d__footer-inner { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .arch-d__svc-row { grid-template-columns: 1fr; gap: 8px; }
+  .arch-d__svc-num { display: none; }
+  .arch-d__manifesto { font-size: clamp(1.2rem, 5vw, 1.8rem); }
+}

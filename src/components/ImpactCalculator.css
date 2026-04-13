@@ -1,0 +1,190 @@
+/* ═══════════════════════════════════════════════════
+   IMPACT CALCULATOR — interactive industry metrics
+   ═══════════════════════════════════════════════════ */
+
+.impact {
+  position: relative;
+  padding: clamp(120px, 14vw, 180px) 0 clamp(100px, 12vw, 160px);
+  background: #020202;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.impact__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+}
+
+/* ── Header ───────────────────────────────────────── */
+.impact__head {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 720px;
+}
+
+.impact__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.impact__sub {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 560px;
+}
+
+/* ── Tabs ─────────────────────────────────────────── */
+.impact__tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.impact__tab {
+  all: unset;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 20px;
+  min-height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.impact__tab:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.impact__tab.is-active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.impact__tab-icon {
+  font-size: 1.05rem;
+  opacity: 0.85;
+}
+
+.impact__tab:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 3px;
+}
+
+/* ── Panel ────────────────────────────────────────── */
+.impact__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.impact__headline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 640px;
+}
+
+.impact__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.impact__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 40px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #030303;
+}
+
+.impact__value {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #fff;
+  font-feature-settings: "tnum";
+}
+
+.impact__prefix {
+  color: rgba(255, 255, 255, 0.85);
+  margin-right: 2px;
+}
+
+.impact__label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.4);
+  max-width: 34ch;
+}
+
+/* ── Footer note ──────────────────────────────────── */
+.impact__foot {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .impact__tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .impact__grid {
+    grid-template-columns: 1fr;
+  }
+  .impact__card {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .impact {
+    padding: 72px 0 64px;
+  }
+  .impact__tab {
+    padding: 14px 12px;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+  .impact__tab-icon {
+    display: none;
+  }
+}
