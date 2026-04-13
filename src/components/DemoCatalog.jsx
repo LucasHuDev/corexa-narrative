@@ -29,7 +29,7 @@ export default function DemoCatalog() {
         T(t.demoCatalog.tiers.launch.f3),
         T(t.demoCatalog.tiers.launch.f4),
       ],
-      demoUrl: 'http://localhost:3001/demos/barber/',
+      demoUrl: '/demos/barberdemo.html',
     },
     {
       level: '02',
@@ -45,7 +45,7 @@ export default function DemoCatalog() {
         T(t.demoCatalog.tiers.system.f3),
         T(t.demoCatalog.tiers.system.f4),
       ],
-      demoUrl: 'http://localhost:3001/demos/cafe/',
+      demoUrl: '/demos/cafedemo.html',
     },
     {
       level: '03',
@@ -61,7 +61,7 @@ export default function DemoCatalog() {
         T(t.demoCatalog.tiers.premium.f3),
         T(t.demoCatalog.tiers.premium.f4),
       ],
-      demoUrl: 'http://localhost:3001/demos/arch/',
+      demoUrl: '/demos/archdemo.html',
     },
   ];
 
