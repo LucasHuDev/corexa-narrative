@@ -457,6 +457,39 @@
         font-size: 1.2rem;
       }
 
+      /* ── Gallery ──────────────────────────────────────── */
+      .gallery {
+        padding: 120px 0;
+        border-top: 1px solid rgba(200, 134, 10, 0.08);
+      }
+      .gallery__grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 40px;
+      }
+      .gallery__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 1;
+        transition: transform 0.6s, filter 0.6s;
+        filter: grayscale(40%);
+        display: block;
+      }
+      .gallery__item {
+        overflow: hidden;
+        border: 1px solid rgba(200, 134, 10, 0.08);
+      }
+      .gallery__item:hover .gallery__img {
+        transform: scale(1.05);
+        filter: grayscale(0%);
+      }
+      .gallery__item--large {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+
       /* ── Story ────────────────────────────────────────── */
       .story {
         padding: 120px 0;
@@ -709,9 +742,10 @@
       @media (max-width: 768px) {
         .hero {
           grid-template-columns: 1fr;
+          grid-template-rows: auto 400px;
         }
         .hero__right {
-          display: none;
+          display: block;
         }
         .hero__left {
           min-height: 100vh;
@@ -723,6 +757,13 @@
         }
         .story__inner {
           grid-template-columns: 1fr;
+        }
+        .gallery__grid {
+          grid-template-columns: 1fr;
+        }
+        .gallery__item--large {
+          grid-column: auto;
+          grid-row: auto;
         }
         .stats__grid {
           grid-template-columns: repeat(2, 1fr);
@@ -864,6 +905,30 @@
             background-image: url(https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80);
           "
         ></div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="gallery">
+      <div class="container">
+        <h2 class="section-title reveal">Atmosphere</h2>
+        <div class="gallery__grid">
+          <div class="gallery__item gallery__item--large reveal">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1000&q=80" alt="Cafe ambiance" class="gallery__img" loading="lazy">
+          </div>
+          <div class="gallery__item reveal reveal-d1">
+            <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt="Latte art" class="gallery__img" loading="lazy">
+          </div>
+          <div class="gallery__item reveal reveal-d2">
+            <img src="https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=600&q=80" alt="Coffee pouring" class="gallery__img" loading="lazy">
+          </div>
+          <div class="gallery__item reveal reveal-d1">
+            <img src="https://images.unsplash.com/photo-1600329068032-4d1cccdb4ce7?w=600&q=80" alt="Pastry" class="gallery__img" loading="lazy">
+          </div>
+          <div class="gallery__item reveal reveal-d2">
+            <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80" alt="Beans" class="gallery__img" loading="lazy">
+          </div>
+        </div>
       </div>
     </section>
 
