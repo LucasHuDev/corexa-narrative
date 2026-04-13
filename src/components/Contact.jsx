@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n, useT } from "../i18n/I18nProvider";
@@ -19,6 +20,15 @@ const SERVICE_OPTIONS = [
   "Tools & Automation",
   "Other",
 ];
+
+const SERVICE_BY_ID = {
+  launch: "Launch (WordPress)",
+  custom: "Custom Frontend",
+  premium: "Premium System (React + GSAP)",
+  audit: "Audit & Restructure",
+  maintenance: "Maintenance",
+  tools: "Tools & Automation",
+};
 
 function normalizeService(raw) {
   if (!raw) return "";
@@ -56,6 +66,8 @@ export default function Contact() {
   const rootRef = useRef(null);
   const { t, lang } = useI18n();
   const T = useT();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({
     name: "",
@@ -111,6 +123,26 @@ export default function Contact() {
       window.removeEventListener("hashchange", applyFromUrl);
     };
   }, []);
+
+  useEffect(() => {
+    const state = location.state;
+    if (!state) return;
+    const { service, brief } = state;
+    if (!service && !brief) return;
+
+    setValues((v) => ({
+      ...v,
+      type: service && SERVICE_BY_ID[service] ? SERVICE_BY_ID[service] : v.type,
+      message: brief ? brief : v.message,
+    }));
+
+    navigate(location.pathname, { replace: true, state: null });
+
+    setTimeout(() => {
+      const el = document.getElementById("contact");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  }, [location.state, location.pathname, navigate]);
 
   const errors = useMemo(() => {
     const e = {};

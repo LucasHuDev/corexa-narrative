@@ -5,6 +5,8 @@ import { useI18n, useT } from "../i18n/I18nProvider";
 import { t as Trans } from "../i18n/translations";
 import ServiceModals from "./ServiceModals";
 import ExtensionModals from "./ExtensionModals";
+import ServiceAccordion from "./ServiceAccordion.jsx";
+import ExtensionAccordion from "./ExtensionAccordion.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1077,21 +1079,13 @@ export default function Builds() {
       ref={rootRef}
     >
       <div className="container builds__inner">
-        <div className="builds__grid">
-          {core.map((it) => (
-            <Card key={it.id} {...it} />
-          ))}
-        </div>
+        <ServiceAccordion />
         <div className="builds__divider" aria-hidden="true" />
         <header className="builds__head builds__head--sub">
           <p className="eyebrow">{T(Trans.extensions.label)}</p>
           <h2 className="title">{T(Trans.extensions.title)}</h2>
         </header>
-        <div className="builds__grid">
-          {ext.map((it) => (
-            <Card key={it.id} {...it} />
-          ))}
-        </div>
+        <ExtensionAccordion />
       </div>
 
       {["launch", "custom", "premium"].includes(activeId) ? (

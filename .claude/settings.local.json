@@ -21,7 +21,11 @@
       "Bash(node -e \"try { require\\('fs'\\).readFileSync\\('src/components/IndustryDemo.jsx','utf8'\\); console.log\\('Read OK'\\); } catch\\(e\\) { console.log\\(e.message\\); }\")",
       "Bash(npx -y esbuild --bundle --jsx=automatic --loader:.jsx=jsx src/components/IndustryDemo.jsx --outfile=/dev/null)",
       "Bash(node -e ':*)",
-      "Bash(node -e)"
+      "Bash(node -e)",
+      "Bash(curl -s http://localhost:5175/src/components/Builds.jsx)",
+      "Bash(curl -s http://localhost:5175/src/components/ServiceModals.jsx)",
+      "Bash(node -e \"const m = require\\('./src/i18n/translations.js'\\); console.log\\('serviceAccordion tier03:', !!m.t.serviceAccordion.tier03\\); console.log\\('extensionAccordion ext01:', !!m.t.extensionAccordion.ext01\\); console.log\\('extensionAccordion ext02:', !!m.t.extensionAccordion.ext02\\); console.log\\('extensionAccordion ext03:', !!m.t.extensionAccordion.ext03\\);\")",
+      "Bash(ls src/pages/Contact* src/components/Contact*)"
     ]
   }
 }

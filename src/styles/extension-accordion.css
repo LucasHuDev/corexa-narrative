@@ -1,0 +1,208 @@
+.xacc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.xacc__item {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  transition: background 0.25s ease;
+}
+
+.xacc__item:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.xacc__header {
+  display: grid;
+  grid-template-columns: 130px 1fr auto;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  padding: clamp(28px, 4vw, 40px) clamp(16px, 3vw, 28px);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: #fff;
+  font-family: inherit;
+  transition: background 0.2s ease;
+}
+
+.xacc__header:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.xacc__num {
+  font-family: 'Barlow Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.32);
+  text-transform: uppercase;
+}
+
+.xacc__title {
+  margin: 0;
+  font-family: 'Barlow Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+
+.xacc__toggle {
+  font-family: 'Barlow Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+  width: 28px;
+  text-align: center;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.xacc__item--open .xacc__toggle {
+  color: #fff;
+}
+
+.xacc__body {
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+}
+
+.xacc__body-inner {
+  padding: clamp(8px, 1.5vw, 16px) clamp(16px, 3vw, 28px) clamp(36px, 5vw, 56px);
+}
+
+.xacc__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.1fr;
+  gap: clamp(28px, 4vw, 56px);
+  margin-bottom: clamp(32px, 4vw, 48px);
+}
+
+.xacc__col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.xacc__col-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.xacc__col-mark {
+  font-size: 0.85rem;
+  letter-spacing: 0;
+}
+
+.xacc__col--yes .xacc__col-title {
+  color: #fff;
+}
+
+.xacc__col--no .xacc__col-title {
+  color: #c0392b;
+}
+
+.xacc__col--when .xacc__col-title {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.xacc__col-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.xacc__col-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.xacc__bullet {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.xacc__bullet--yes {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.xacc__bullet--no {
+  background: #7a2020;
+}
+
+.xacc__col-text {
+  margin: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.xacc__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  font-family: 'Barlow Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 14px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.xacc__cta:hover {
+  background: #fff;
+  color: #020202;
+  border-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .xacc__header {
+    grid-template-columns: 100px 1fr auto;
+    gap: 14px;
+    padding: 24px 4px;
+  }
+
+  .xacc__cols {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .xacc__body-inner {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}

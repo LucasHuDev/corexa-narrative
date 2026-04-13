@@ -740,4 +740,231 @@ export const t = {
     ext3Title: { en: "Tools & Automation.", es: "Herramientas & Automatización." },
     viewMore: { en: "View →", es: "Ver →" },
   },
+  serviceAccordion: {
+    forYou: { en: "It's for you if", es: "Es para vos si" },
+    notForYou: { en: "It's not for you if", es: "No es para vos si" },
+    whenLabel: { en: "When to choose it", es: "Cuándo elegirlo" },
+    cta: { en: "Get a quote →", es: "Obtener cotización →" },
+    tier01: {
+      title: { en: "Launch (WordPress)", es: "Launch (WordPress)" },
+      yes: {
+        en: [
+          "You need to go live fast and professionally",
+          "Your team manages content without a developer (text, images, pages)",
+          "You're validating a business idea and need a solid web presence",
+          "Budget matters and you want maximum value",
+        ],
+        es: [
+          "Necesitás salir al aire rápido y de forma profesional",
+          "Tu equipo gestiona el contenido sin un desarrollador (textos, imágenes, páginas)",
+          "Estás validando una idea y necesitás presencia web sólida",
+          "El presupuesto importa y querés el máximo valor",
+        ],
+      },
+      no: {
+        en: [
+          "You need custom interactions or animations",
+          "Your site IS the product experience",
+          "You plan to scale with a dev team long-term",
+          "You need to manage complex content like products, stock or multilingual",
+        ],
+        es: [
+          "Necesitás interacciones o animaciones personalizadas",
+          "Tu sitio ES la experiencia del producto",
+          "Planeás escalar con un equipo de devs a largo plazo",
+          "Necesitás gestionar contenido complejo como productos, stock o multiidioma",
+        ],
+      },
+      when: {
+        en: "Choose Launch when speed and simplicity are the priority. Your team can edit text and images from day one, without depending on anyone. Professional presence, live fast, built to last.",
+        es: "Elegí Launch cuando la velocidad y la simplicidad son la prioridad. Tu equipo puede editar textos e imágenes desde el día uno, sin depender de nadie. Presencia profesional, en vivo rápido, construida para durar.",
+      },
+    },
+    tier02: {
+      title: { en: "Custom Frontend", es: "Custom Frontend" },
+      yes: {
+        en: [
+          "You want a site that looks and feels unique",
+          "You need custom animations and scroll interactions",
+          "Your brand competes at a high level and needs to look like it",
+          "You need to manage structured content — articles, listings, menu, services — from your own panel without touching code",
+        ],
+        es: [
+          "Querés un sitio que se vea y se sienta único",
+          "Necesitás animaciones y scroll interactions personalizadas",
+          "Tu marca compite en el nivel alto y necesita verse así",
+          "Necesitás gestionar contenido estructurado: artículos, propiedades, menú, servicios — desde un panel propio sin tocar código",
+        ],
+      },
+      no: {
+        en: [
+          "You need to launch in under two weeks",
+          "You're early-stage and testing your offer",
+          "You don't need animations or custom design",
+          "WordPress is enough for what you need",
+        ],
+        es: [
+          "Necesitás lanzar en menos de dos semanas",
+          "Estás en etapa temprana testeando tu oferta",
+          "No necesitás animaciones ni diseño personalizado",
+          "WordPress es suficiente para lo que necesitás",
+        ],
+      },
+      when: {
+        en: "Choose Custom Frontend when your brand deserves more than a template and your team needs to manage content from their own panel. Headless CMS included — edit articles, products or services without depending on a developer for day-to-day updates.",
+        es: "Elegí Custom Frontend cuando tu marca merece más que un template y tu equipo necesita gestionar contenido desde un panel propio. CMS headless incluido — editás artículos, productos o servicios sin depender de un desarrollador para el día a día.",
+      },
+    },
+    tier03: {
+      title: { en: "Premium System", es: "Premium System" },
+      yes: {
+        en: [
+          "Your brand competes at the very top and needs to look like it",
+          "Motion and scroll interactions are central to the product experience",
+          "You need full content management: products, stock, pricing, multilingual — from an advanced panel",
+          "You're building a system a dev team will extend",
+        ],
+        es: [
+          "Tu marca compite en el extremo superior y necesita verse así",
+          "El movimiento y scroll interactions son centrales a la experiencia del producto",
+          "Necesitás gestión completa de contenido: productos, stock, precios, multiidioma — desde un panel avanzado",
+          "Estás construyendo un sistema que un equipo de devs va a extender",
+        ],
+      },
+      no: {
+        en: [
+          "You need a site live in under a week",
+          "You don't need animations or advanced visual experience",
+          "You're early-stage and validating the business",
+          "Budget is the main constraint — this is an investment",
+        ],
+        es: [
+          "Necesitás un sitio en vivo en menos de una semana",
+          "No necesitás animaciones ni experiencia visual avanzada",
+          "Estás en etapa temprana y validando el negocio",
+          "El presupuesto es la restricción principal — esto es una inversión",
+        ],
+      },
+      when: {
+        en: "Choose Premium when the site itself is part of the product experience. Your team manages complex content from their own advanced panel — products, stock, pricing, multilingual. When someone lands on your page, they immediately feel the quality of what you build.",
+        es: "Elegí Premium cuando el sitio en sí es parte de la experiencia del producto. Tu equipo gestiona contenido complejo desde un panel propio y avanzado — productos, stock, precios, multiidioma. Cuando alguien llega a tu página, siente inmediatamente la calidad de lo que construís.",
+      },
+    },
+  },
+  extensionAccordion: {
+    forYou: { en: "It's for you if", es: "Es para vos si" },
+    notForYou: { en: "It's not for you if", es: "No es para vos si" },
+    whenLabel: { en: "When to choose it", es: "Cuándo elegirlo" },
+    cta: { en: "Get a quote →", es: "Obtener cotización →" },
+    ext01: {
+      label: { en: "EXTENSION 01", es: "EXTENSIÓN 01" },
+      title: { en: "Audit & Restructure", es: "Auditoría & Reestructura" },
+      yes: {
+        en: [
+          "Your site has been live for a while but isn't generating results",
+          "You don't appear on Google or your ranking has dropped",
+          "The site is slow, has errors or looks outdated",
+          "You've had a security issue or suspect you might have one",
+          "You want to know exactly what's broken — and have it fixed",
+        ],
+        es: [
+          "Tu sitio existe hace tiempo pero no te genera resultados",
+          "No aparecés en Google o tu posicionamiento empeoró",
+          "El sitio es lento, tiene errores o se ve desactualizado",
+          "Tuviste un problema de seguridad o creés que podés tenerlo",
+          "Querés saber exactamente qué está fallando — y que lo arreglemos",
+        ],
+      },
+      no: {
+        en: [
+          "Your site launched less than 3 months ago and is working well",
+          "You already have a technical team monitoring and maintaining everything",
+          "You're about to rebuild the site completely from scratch",
+          "You only need minor visual adjustments",
+        ],
+        es: [
+          "Tu sitio fue lanzado hace menos de 3 meses y está funcionando bien",
+          "Ya tenés un equipo técnico que monitorea y mantiene todo",
+          "Estás por rehacer el sitio completamente desde cero",
+          "Solo necesitás ajustes visuales menores",
+        ],
+      },
+      when: {
+        en: "When your site exists but isn't working for you. We audit speed, security, SEO and user experience — and we execute the fixes. We don't hand you a report and leave you alone. We solve it.",
+        es: "Cuando tu sitio ya existe pero no trabaja para vos. Auditamos velocidad, seguridad, SEO y experiencia de usuario — y ejecutamos los arreglos. No te entregamos un reporte y te dejamos solo. Lo resolvemos.",
+      },
+    },
+    ext02: {
+      label: { en: "EXTENSION 02", es: "EXTENSIÓN 02" },
+      title: { en: "Monthly Maintenance", es: "Mantenimiento Mensual" },
+      yes: {
+        en: [
+          "You have an active site that matters to your business",
+          "You don't want to worry about updates, backups or security",
+          "You need fast support when something breaks or you want to change something",
+          "You want someone reliable looking after your site every month",
+        ],
+        es: [
+          "Tenés un sitio activo que es importante para tu negocio",
+          "No querés preocuparte por actualizaciones, backups o seguridad",
+          "Necesitás soporte rápido cuando algo falla o querés cambiar algo",
+          "Querés que alguien de confianza cuide tu sitio todos los meses",
+        ],
+      },
+      no: {
+        en: [
+          "Your site is completely static and never changes",
+          "You already have a dedicated technical team handling this",
+          "You prefer to fix problems as they appear, without a monthly plan",
+          "You just launched and are still evaluating whether the site works",
+        ],
+        es: [
+          "Tu sitio es completamente estático y nunca cambia",
+          "Ya tenés un equipo técnico dedicado a esto",
+          "Preferís resolver los problemas cuando aparecen, sin plan mensual",
+          "Recién lanzaste y todavía estás evaluando si el sitio funciona",
+        ],
+      },
+      when: {
+        en: "When your site is a real business asset and you can't afford for it to go down, go stale or become vulnerable. We handle everything — updates, automatic backups, monitoring and minor changes included. No long contracts.",
+        es: "Cuando tu sitio es un activo real de tu negocio y no podés permitirte que se caiga, se desactualice o quede vulnerable. Nos encargamos de todo — actualizaciones, backups automáticos, monitoreo y cambios menores incluidos. Sin contratos largos.",
+      },
+    },
+    ext03: {
+      label: { en: "EXTENSION 03", es: "EXTENSIÓN 03" },
+      title: { en: "Tools & Automations", es: "Herramientas & Automatizaciones" },
+      yes: {
+        en: [
+          "There are tasks you repeat every day that consume time you could use elsewhere",
+          "You pay someone to do something a system could handle automatically",
+          "Your internal processes run on spreadsheets, WhatsApp or paper",
+          "You want a tool built exactly for your business — not generic software that never quite fits",
+        ],
+        es: [
+          "Hay tareas que repetís todos los días y te consumen tiempo que podrías usar en otra cosa",
+          "Pagás a alguien para hacer algo que un sistema podría hacer solo",
+          "Tus procesos internos funcionan con planillas, WhatsApp o papel",
+          "Querés una herramienta hecha exactamente para tu negocio — no un software genérico que no termina de encajar",
+        ],
+      },
+      no: {
+        en: [
+          "Your processes are already fully digitized and automated",
+          "You use standard market software and it covers everything you need",
+          "You're at a very early stage and don't have defined processes yet",
+          "You're not sure which task you want to automate",
+        ],
+        es: [
+          "Tus procesos ya están completamente digitalizados y automatizados",
+          "Usás un software estándar del mercado y te alcanza con lo que ofrece",
+          "Estás en etapa muy temprana y todavía no tenés procesos definidos",
+          "No tenés claridad de qué tarea querés automatizar",
+        ],
+      },
+      when: {
+        en: "It doesn't matter if you run a hotel, a hardware store or a barbershop — if there's something you do manually every day, there's a way to automate it. We build the exact tool your business needs. You keep doing what you do best. The system does the rest.",
+        es: "No importa si tenés un hotel, un corralón o una barbería — si hay algo que hacés a mano todos los días, hay una forma de automatizarlo. Construimos la herramienta exacta que tu negocio necesita. Vos seguís haciendo lo que sabés hacer. El sistema hace el resto.",
+      },
+    },
+  },
 };

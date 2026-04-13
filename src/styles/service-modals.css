@@ -2053,14 +2053,22 @@
    ============================================================================= */
 
 @media (max-width: 640px) {
+  .sm-overlay {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom, 24px);
+  }
   .sm-nav {
     padding: 12px 20px;
   }
   .sm-hero {
     padding: 40px 24px 32px;
+    padding-top: clamp(72px, 12vw, 96px);
   }
   .sm-body {
     padding: 0 20px 100px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
   .sm-h1 {
     font-size: clamp(1.8rem, 8vw, 2.6rem);
@@ -2095,6 +2103,9 @@
   .pm-hero {
     padding: 48px 24px 40px;
   }
+  .pm-hw {
+    font-size: clamp(2.4rem, 8vw, 4rem);
+  }
   .pm-body {
     padding: 32px 20px 0;
   }
@@ -2123,8 +2134,11 @@
     justify-content: flex-start;
   }
   .sm-close-fixed-back {
-    bottom: 16px;
-    left: 16px;
+    top: 16px;
+    bottom: auto;
+    left: auto;
+    right: 16px;
+    z-index: 1000;
     font-size: 12px;
     padding: 9px 16px;
   }
