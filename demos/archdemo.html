@@ -192,6 +192,53 @@
             transform-origin: left;
         }
 
+        .nav__hamburger { display: none; background: none; border: none; padding: 10px; cursor: none; color: var(--text-color); font-size: 1.5rem; }
+        @media(max-width: 768px) {
+            .nav__links { display: none; }
+            .nav__hamburger { display: block; }
+        }
+
+        /* ── Modals & Mobile Menu ──────────────────────────────── */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(5,5,5,0.95);
+            backdrop-filter: blur(10px); z-index: 1000;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .overlay.is-active { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: #050505; border: 1px solid var(--border-color);
+            padding: 64px 48px; width: 100%; max-width: 600px; position: relative;
+            transform: translateY(40px); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .overlay.is-active .modal { transform: translateY(0); }
+        .modal__close {
+            position: absolute; top: 24px; right: 24px; background: none; border: none;
+            font-size: 1.5rem; color: var(--text-color); cursor: none;
+        }
+        .modal__title { font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 32px; letter-spacing: 0.05em; font-weight: 300; }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 8px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px 0; background: transparent; border: none; border-bottom: 1px solid var(--border-color);
+            color: var(--text-color); font-family: var(--font-sans); font-size: 1rem; outline: none; transition: border-color 0.3s;
+            cursor: none;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--text-color); }
+        .btn-submit {
+            width: 100%; padding: 20px; background: var(--text-color); color: var(--bg-color); border: none;
+            font-family: var(--font-sans); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; cursor: none; margin-top: 16px; transition: opacity 0.3s;
+        }
+        .btn-submit:hover { opacity: 0.8; }
+
+        .mob-menu {
+            position: fixed; inset: 0; background: var(--bg-color); z-index: 500;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 40px; transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mob-menu.is-active { transform: translateY(0); }
+        .mob-menu a { font-family: var(--font-serif); font-size: 3rem; color: var(--text-color); }
+
         /* ── Hero ─────────────────────────────────────────────────── */
         .hero {
             position: relative;
@@ -515,7 +562,16 @@
             <a href="#studio" class="magnetic">Studio</a>
             <a href="#contact" class="magnetic">Contact</a>
         </div>
+        <button class="nav__hamburger magnetic" aria-label="Menu" onclick="toggleArchMenu(true)">&#9776;</button>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mob-menu" id="archMobMenu">
+        <button class="modal__close" onclick="toggleArchMenu(false)">&times;</button>
+        <a href="#about" onclick="toggleArchMenu(false)">Studio</a>
+        <a href="#projects" onclick="toggleArchMenu(false)">Selected Work</a>
+        <a href="#" onclick="toggleArchMenu(false); openArchModal()">Inquire</a>
+    </div>
 
     <!-- Main Wrapper for Lenis -->
     <div id="smooth-wrapper">
@@ -660,7 +716,7 @@
             <!-- Footer -->
             <footer class="footer" id="contact">
                 <div class="footer__main">
-                    <h2 class="footer__title magnetic">INQUIRE</h2>
+                    <button class="footer__title split-words magnetic" onclick="openArchModal()" style="background:none;border:none;color:inherit;font-family:inherit;font-size:inherit;padding:0;">INQUIRE</button>
                 </div>
                 <div class="footer__bottom">
                     <span>&copy; Kova Studio 2025</span>
@@ -670,6 +726,31 @@
             </footer>
 
     </div> <!-- end smooth-wrapper -->
+
+    <!-- Inquiry Modal -->
+    <div class="overlay" id="archModal">
+        <div class="modal">
+            <button class="modal__close" onclick="closeArchModal()">&times;</button>
+            <div id="archFormContainer">
+                <h3 class="modal__title">Start a Project</h3>
+                <form id="archForm" onsubmit="handleArchInquiry(event)">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Project Details</label>
+                        <textarea rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit magnetic" id="archSubmitBtn">Submit Inquiry</button>
+                </form>
+            </div>
+            <div id="archSuccess" style="display:none; text-align:center; padding: 40px 0;">
+                <h3 style="font-family:var(--font-serif); font-size:3rem; margin-bottom:16px;">Received.</h3>
+                <p style="color:var(--text-muted); font-family:var(--font-sans); letter-spacing:0.05em;">Our partners will review your brief and contact you shortly.</p>
+            </div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

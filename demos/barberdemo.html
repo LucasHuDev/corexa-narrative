@@ -138,6 +138,49 @@ button{font-family:inherit;cursor:pointer}
   .hero__title{font-size:clamp(2.5rem,14vw,3.5rem);margin-bottom:8px;}
   .section{padding:60px 20px}
 }
+
+/* ── Modals & Overlays ────────────────────────── */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px); z-index: 200;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.overlay.is-active { opacity: 1; pointer-events: auto; }
+.modal {
+  background: #111; border: 1px solid rgba(245,240,232,0.1);
+  padding: 40px; width: 100%; max-width: 480px; position: relative;
+  transform: translateY(20px); transition: transform 0.4s;
+}
+.overlay.is-active .modal { transform: translateY(0); }
+.modal__close {
+  position: absolute; top: 16px; right: 20px; background: none; border: none;
+  font-size: 1.5rem; color: #F5F0E8; cursor: pointer;
+}
+.modal__title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: #C8A96E; margin-bottom: 24px; letter-spacing: 0.05em; }
+.form-group { margin-bottom: 16px; text-align: left; }
+.form-group label { display: block; font-size: 0.8rem; color: rgba(245,240,232,0.5); margin-bottom: 8px; }
+.form-group input, .form-group select {
+  width: 100%; padding: 12px; background: rgba(245,240,232,0.05); border: 1px solid rgba(245,240,232,0.15);
+  color: #F5F0E8; font-family: inherit; font-size: 0.9rem;
+}
+.form-group input:focus, .form-group select:focus { border-color: #C8A96E; outline: none; }
+.btn-submit {
+  width: 100%; padding: 14px; background: #C8A96E; color: #0D0D0D; border: none;
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.05em; margin-top: 10px; transition: background 0.3s;
+}
+.btn-submit:hover { background: #dcb878; }
+
+/* ── Mobile Menu ──────────────────────────────── */
+.mob-menu {
+  position: fixed; inset: 0; background: #0D0D0D; z-index: 150;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 32px; transform: translateX(100%); transition: transform 0.4s ease-in-out;
+}
+.mob-menu.is-active { transform: translateX(0); }
+.mob-menu a { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.05em; color: #F5F0E8; }
+.mob-menu .nav__cta { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; border: none; color: #C8A96E; display: block; }
+.mob-close { position: absolute; top: 16px; right: 24px; background: none; border: none; font-size: 2rem; color: #F5F0E8; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -238,6 +281,82 @@ button{font-family:inherit;cursor:pointer}
   <div class="footer__logo">FADE & BLADE</div>
   <p>&copy; 2025 Fade & Blade. Dublin, Ireland.</p>
 </footer>
+
+<!-- Mobile Menu -->
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMenu(false)">&times;</button>
+  <a href="#services" onclick="toggleMenu(false)">Services</a>
+  <a href="#gallery" onclick="toggleMenu(false)">Gallery</a>
+  <button class="nav__cta" onclick="toggleMenu(false); openModal()">Book Now</button>
+</div>
+
+<!-- Booking Modal -->
+<div class="overlay" id="bookingOverlay">
+  <div class="modal">
+    <button class="modal__close" onclick="closeModal()">&times;</button>
+    <div id="bookingFormContainer">
+      <h3 class="modal__title">Book an Appointment</h3>
+      <form id="bookingForm" onsubmit="handleBooking(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label>Service</label>
+          <select required>
+            <option value="">Select a service</option>
+            <option>Classic Cut</option>
+            <option>Fade + Beard</option>
+            <option>Hot Towel Shave</option>
+            <option>Kids Cut</option>
+          </select>
+        </div>
+        <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div><label>Date</label><input type="date" required></div>
+          <div><label>Time</label><input type="time" required></div>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Confirm Booking</button>
+      </form>
+    </div>
+    <div id="bookingSuccess" style="display:none; text-align:center; padding: 40px 0;">
+      <div style="font-size:3rem; color:#C8A96E; margin-bottom:16px;">&#10004;</div>
+      <h3 style="font-family:'Bebas Neue', sans-serif; font-size:2.5rem; color:#F5F0E8; margin-bottom: 8px;">Appointment Confirmed</h3>
+      <p style="color:rgba(245,240,232,0.5); font-size:0.9rem;">We've secured your spot. See you soon at Fade & Blade.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleMenu(show) {
+    document.getElementById('mobMenu').classList.toggle('is-active', show);
+  }
+  document.querySelector('.nav__hamburger').addEventListener('click', () => toggleMenu(true));
+
+  function openModal() { document.getElementById('bookingOverlay').classList.add('is-active'); }
+  function closeModal() { document.getElementById('bookingOverlay').classList.remove('is-active'); }
+  
+  // Wire "Book" links
+  document.querySelectorAll('a[href="#booking"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  function handleBooking(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Processing...';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
+
+    // Simulate API call
+    setTimeout(() => {
+      document.getElementById('bookingFormContainer').style.display = 'none';
+      document.getElementById('bookingSuccess').style.display = 'block';
+    }, 1500);
+  }
+</script>
 
 </body>
 </html>
