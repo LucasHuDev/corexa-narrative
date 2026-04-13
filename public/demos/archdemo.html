@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Lenis styles are native below -->
     <style>
         :root {
             --bg-color: #050505;
@@ -26,18 +25,14 @@
             padding: 0;
         }
 
-        html.lenis, html.lenis body {
-            height: auto;
-        }
-
+        /* Lenis native requirements */
+        html.lenis, html.lenis body { height: auto; }
+        
         html {
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
-        
-        html::-webkit-scrollbar {
-            display: none;
-        }
+        html::-webkit-scrollbar { display: none; }
 
         body {
             background: var(--bg-color);
@@ -48,59 +43,77 @@
             -webkit-font-smoothing: antialiased;
             cursor: none;
             overflow-x: hidden;
+            overscroll-behavior: none;
         }
 
         img { display: block; max-width: 100%; height: auto; }
-        a { color: inherit; text-decoration: none; cursor: none; }
-        button { font-family: inherit; cursor: none; }
+        a, button { color: inherit; text-decoration: none; cursor: none; font-family: inherit; }
 
-        /* ── Custom cursor ────────────────────────────────── */
-        .cursor {
+        /* ── Advanced Custom Cursor ─────────────────────────────────── */
+        .cursor-dot, .cursor-ring, .cursor-text {
             position: fixed;
             top: 0;
             left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-dot {
             width: 8px;
             height: 8px;
             background: var(--text-color);
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                        height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                        background 0.4s;
             mix-blend-mode: difference;
+        }
+
+        .cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(235, 235, 235, 0.5);
+            border-radius: 50%;
+            transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-text {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: #050505;
+            opacity: 0;
+            transition: opacity 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .cursor::after {
-            content: 'VIEW';
-            font-family: var(--font-sans);
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            color: #050505;
-            opacity: 0;
-            transition: opacity 0.3s;
+        /* Hover States for Cursor */
+        body.is-magnetic .cursor-ring {
+            width: 60px;
+            height: 60px;
+            border-color: transparent;
+            background: rgba(235, 235, 235, 0.1);
         }
 
-        .cursor.is-hover {
-            width: 64px;
-            height: 64px;
+        body.is-image-hover .cursor-ring {
+            width: 80px;
+            height: 80px;
             background: var(--text-color);
+            border-color: var(--text-color);
+            mix-blend-mode: normal;
         }
 
-        .cursor.is-hover::after {
-            opacity: 1;
-        }
+        body.is-image-hover .cursor-dot { opacity: 0; }
+        body.is-image-hover .cursor-text { opacity: 1; }
 
-        /* ── Intro overlay ────────────────────────────────── */
+        /* ── Intro ────────────────────────────────────────────────── */
         .intro {
             position: fixed;
             inset: 0;
             z-index: 10000;
-            background: #020202;
+            background: var(--bg-color);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,7 +135,12 @@
             transform: translateY(100%);
         }
 
-        /* ── Navbar ───────────────────────────────────────── */
+        /* ── Layout & Skew Wrapper ────────────────────────────────── */
+        #skew-wrapper {
+            will-change: transform;
+        }
+
+        /* ── Navbar (Magnetic) ────────────────────────────────────── */
         .nav {
             position: fixed;
             top: 0;
@@ -142,38 +160,43 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             font-weight: 500;
+            display: inline-block;
+            padding: 10px; /* larger hit area for magnetism */
         }
 
         .nav__links {
             display: flex;
-            gap: 40px;
+            gap: 24px;
         }
 
-        .nav__links a {
+        .nav__links a.magnetic {
             font-size: 0.75rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
+            padding: 10px 16px;
+            display: inline-block;
             position: relative;
-            overflow: hidden;
         }
 
-        .nav__links a::after {
+        .nav__links a.magnetic::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 6px;
+            left: 16px;
+            right: 16px;
             height: 1px;
             background: currentColor;
-            transform: translateX(-101%);
+            transform: scaleX(0);
+            transform-origin: right;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .nav__links a:hover::after {
-            transform: translateX(0);
+        .nav__links a.magnetic:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
-        /* ── Hero ─────────────────────────────────────────── */
+        /* ── Hero ─────────────────────────────────────────────────── */
         .hero {
             position: relative;
             height: 100vh;
@@ -181,7 +204,6 @@
             flex-direction: column;
             justify-content: center;
             padding: 0 48px;
-            overflow: hidden;
         }
 
         .hero__bg {
@@ -189,13 +211,16 @@
             inset: 0;
             z-index: -1;
             pointer-events: none;
+            overflow: hidden;
         }
 
         .hero__img {
             width: 100%;
             height: 120%;
             object-fit: cover;
-            filter: brightness(0.6) grayscale(20%);
+            filter: brightness(0.5) contrast(120%);
+            transform-origin: center;
+            will-change: transform;
         }
 
         .hero__content {
@@ -211,6 +236,7 @@
             line-height: 0.9;
             letter-spacing: -0.02em;
             text-transform: uppercase;
+            mix-blend-mode: difference;
         }
 
         .hero__meta {
@@ -221,31 +247,39 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--text-color);
+            mix-blend-mode: difference;
         }
 
-        /* ── Manifesto ────────────────────────────────────── */
+        /* ── Manifesto Scrubbing ──────────────────────────────────── */
         .manifesto {
-            padding: 240px 48px;
+            min-height: 120vh;
+            display: flex;
+            align-items: center;
+            padding: 0 48px;
             background: var(--bg-color);
-            position: relative;
-            z-index: 2;
         }
 
         .manifesto__inner {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             text-align: center;
         }
 
         .manifesto__text {
             font-family: var(--font-serif);
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 6vw, 5rem);
             line-height: 1.2;
             font-weight: 300;
             color: var(--text-color);
         }
 
-        /* ── Selected Projects ────────────────────────────── */
+        /* Target words for scrubbing */
+        .scrub-target .word {
+            opacity: 0.1;
+            will-change: opacity;
+        }
+
+        /* ── Selected Projects ────────────────────────────────────── */
         .projects {
             padding: 120px 48px 240px;
             background: var(--bg-color);
@@ -255,7 +289,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 120px;
+            margin-bottom: 160px;
             padding-bottom: 24px;
             border-bottom: 1px solid var(--border-color);
         }
@@ -276,7 +310,7 @@
         .project-list {
             display: flex;
             flex-direction: column;
-            gap: 160px;
+            gap: 200px;
         }
 
         .project {
@@ -286,24 +320,17 @@
             align-items: center;
         }
 
-        .project:nth-child(even) {
-            grid-template-columns: 1.5fr 1fr;
-        }
-
-        .project:nth-child(even) .project__media {
-            order: 2;
-        }
+        .project:nth-child(even) { grid-template-columns: 1.5fr 1fr; }
+        .project:nth-child(even) .project__media { order: 2; }
 
         .project__media {
             position: relative;
             aspect-ratio: 4/5;
             overflow: hidden;
-            clip-path: inset(100% 0 0 0);
+            clip-path: inset(100% 0 0 0); /* for entrance anim */
         }
-
-        .project:nth-child(even) .project__media {
-            aspect-ratio: 16/9;
-        }
+        
+        .project:nth-child(even) .project__media { aspect-ratio: 16/9; }
 
         .project__img {
             width: 100%;
@@ -311,13 +338,15 @@
             object-fit: cover;
             position: absolute;
             top: 0;
-            /* grayscale effect for luxury aesthetic */
-            filter: grayscale(80%) contrast(110%);
-            transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: grayscale(100%) contrast(120%);
+            transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, filter;
         }
 
+        /* Extreme hover scale + color */
         .project__media:hover .project__img {
             filter: grayscale(0%) contrast(100%);
+            transform: scale(1.05); /* Scales locally inside the already moving parallax container */
         }
 
         .project__info {
@@ -337,7 +366,7 @@
 
         .project__title {
             font-family: var(--font-serif);
-            font-size: clamp(3rem, 5vw, 5rem);
+            font-size: clamp(3rem, 5vw, 6rem);
             font-weight: 300;
             line-height: 1;
         }
@@ -349,20 +378,21 @@
             max-width: 400px;
         }
 
-        /* ── Philosophy/Services ──────────────────────────── */
+        /* ── Services ─────────────────────────────────────────────── */
         .services {
             padding: 0 48px 240px;
         }
 
         .service-item {
             border-bottom: 1px solid var(--border-color);
-            padding: 40px 0;
+            padding: 60px 0;
             display: grid;
             grid-template-columns: 100px 1fr 2fr;
             gap: 40px;
             align-items: flex-start;
             position: relative;
             overflow: hidden;
+            transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .service-item::before {
@@ -378,6 +408,10 @@
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        .service-item:hover {
+            padding: 80px 0 60px;
+        }
+
         .service-item:hover::before {
             transform: scaleX(1);
         }
@@ -390,7 +424,7 @@
 
         .service-title {
             font-family: var(--font-serif);
-            font-size: 3rem;
+            font-size: clamp(2rem, 4vw, 4rem);
             font-weight: 300;
             line-height: 1;
         }
@@ -401,7 +435,7 @@
             max-width: 500px;
         }
 
-        /* ── Footer ───────────────────────────────────────── */
+        /* ── Footer ───────────────────────────────────────────────── */
         .footer {
             height: 100vh;
             background: #020202;
@@ -410,7 +444,6 @@
             justify-content: space-between;
             padding: 48px;
             position: relative;
-            z-index: 1;
         }
 
         .footer__main {
@@ -419,14 +452,16 @@
         }
 
         .footer__title {
+            display: inline-block;
             font-family: var(--font-serif);
-            font-size: clamp(5rem, 15vw, 18rem);
+            font-size: clamp(5rem, 15vw, 20rem);
             font-weight: 300;
             line-height: 0.8;
             color: var(--bg-color);
             -webkit-text-stroke: 1px var(--border-color);
             transition: color 0.6s, -webkit-text-stroke 0.6s;
             cursor: none;
+            padding: 24px;
         }
 
         .footer__title:hover {
@@ -443,29 +478,32 @@
             color: var(--text-muted);
         }
 
-        /* ── Responsive ───────────────────────────────────── */
+        /* ── Webkit Responsive ────────────────────────────────────── */
         @media(max-width: 1024px) {
             .project { grid-template-columns: 1fr !important; gap: 40px; }
             .project:nth-child(even) .project__media { order: 1; }
-            .service-item { grid-template-columns: 1fr; gap: 24px; padding: 32px 0; }
+            .service-item { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+            .service-item:hover { padding: 40px 0; }
             .service-num { display: none; }
         }
 
         @media(max-width: 768px) {
             body { cursor: auto; }
-            .cursor { display: none; }
+            .cursor-dot, .cursor-ring, .cursor-text { display: none; }
             .nav { padding: 24px; }
             .hero { padding: 0 24px; }
             .manifesto, .projects, .services, .footer { padding: 120px 24px; }
-            .footer { padding: 24px; height: auto; padding-top: 120px;}
-            .project-list { gap: 80px; }
+            .footer { height: auto; padding-top: 160px; }
+            .project-list { gap: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
+    <!-- Ultra Premium Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-text" id="cursorText">VIEW</div>
 
     <!-- Intro -->
     <div class="intro" id="intro">
@@ -474,183 +512,223 @@
 
     <!-- Nav -->
     <nav class="nav">
-        <div class="nav__logo">KOVA</div>
+        <a href="#" class="nav__logo magnetic">KOVA</a>
         <div class="nav__links">
-            <a href="#projects">Work</a>
-            <a href="#studio">Studio</a>
-            <a href="#contact">Contact</a>
+            <a href="#projects" class="magnetic">Work</a>
+            <a href="#studio" class="magnetic">Studio</a>
+            <a href="#contact" class="magnetic">Contact</a>
         </div>
     </nav>
 
-    <!-- Main Wrapper for Lenis -->
+    <!-- Main Wrapper for Lenis & Skew Effect -->
     <div id="smooth-wrapper">
+        <div id="skew-wrapper">
 
-        <!-- Hero -->
-        <section class="hero">
-            <div class="hero__bg">
-                <!-- Extremely high quality minimal interior -->
-                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=2000&q=80" alt="Kova Interior" class="hero__img" id="heroImg">
-            </div>
-            
-            <div class="hero__content">
-                <h1 class="hero__title">
-                    <div class="hero__line">Architecture</div>
-                    <div class="hero__line">Is Intention</div>
-                </h1>
-
-                <div class="hero__meta">
-                    <span>Dublin, EU</span>
-                    <span>Scroll to explore</span>
+            <!-- Hero -->
+            <section class="hero">
+                <div class="hero__bg">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=2000&q=80" alt="Kova Interior" class="hero__img" id="heroImg">
                 </div>
-            </div>
-        </section>
+                
+                <div class="hero__content">
+                    <h1 class="hero__title">
+                        <div class="hero__line">Architecture</div>
+                        <div class="hero__line">Is Intention</div>
+                    </h1>
 
-        <!-- Manifesto -->
-        <section class="manifesto" id="studio">
-            <div class="manifesto__inner">
-                <p class="manifesto__text split-lines">We believe architecture is the most intimate form of design. It shapes how you wake, how you work, how you breathe. Every millimeter matters. Every shadow has a purpose.</p>
-            </div>
-        </section>
-
-        <!-- Projects -->
-        <section id="projects" class="projects">
-            <div class="section-header">
-                <h2 class="section-title split-words">Selected Work</h2>
-                <span class="section-num">2023—2025</span>
-            </div>
-
-            <div class="project-list">
-                <!-- Project 1 -->
-                <article class="project">
-                    <div class="project__media trigger-media">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80" alt="Casa Minimal" class="project__img parallaxy">
+                    <div class="hero__meta">
+                        <span>Dublin, EU</span>
+                        <span>Scroll to explore</span>
                     </div>
-                    <div class="project__info">
-                        <div class="project__meta">
-                            <span>Residential</span>
-                            <span>2024</span>
+                </div>
+            </section>
+
+            <!-- Manifesto -->
+            <section class="manifesto" id="studio">
+                <div class="manifesto__inner">
+                    <p class="manifesto__text scrub-target">We believe architecture is the most intimate form of design. It shapes how you wake, how you work, how you breathe. Every millimeter matters. Every shadow has a purpose.</p>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section id="projects" class="projects">
+                <div class="section-header">
+                    <h2 class="section-title split-words">Selected Work</h2>
+                    <span class="section-num">2023—2025</span>
+                </div>
+
+                <div class="project-list">
+                    <!-- Project 1 -->
+                    <article class="project">
+                        <div class="project__media trigger-media">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80" alt="Casa Minimal" class="project__img parallaxy">
                         </div>
-                        <h3 class="project__title split-words">Casa Minimal</h3>
-                        <p class="project__desc">A brutalist interpretation of the classic Irish seaside home. Raw concrete meets expansive glass, anchoring the structure to the coastal rock while opening entirely to the Irish Sea.</p>
-                    </div>
-                </article>
-
-                <!-- Project 2 -->
-                <article class="project">
-                    <div class="project__media trigger-media">
-                        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80" alt="Torre Glass" class="project__img parallaxy">
-                    </div>
-                    <div class="project__info">
-                        <div class="project__meta">
-                            <span>Commercial</span>
-                            <span>2023</span>
+                        <div class="project__info">
+                            <div class="project__meta">
+                                <span>Residential</span>
+                                <span>2024</span>
+                            </div>
+                            <h3 class="project__title split-words">Casa Minimal</h3>
+                            <p class="project__desc">A brutalist interpretation of the classic Irish seaside home. Raw concrete meets expansive glass, anchoring the structure to the coastal rock while opening entirely to the Irish Sea.</p>
                         </div>
-                        <h3 class="project__title split-words">Torre Glass</h3>
-                        <p class="project__desc">Redefining the Dublin skyline. A sustainable, net-zero commercial hub utilizing parametric louvers that adapt to daily sunlight patterns, reducing thermal intake by 40%.</p>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Project 3 -->
-                <article class="project">
-                    <div class="project__media trigger-media">
-                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80" alt="Pavilion 04" class="project__img parallaxy">
-                    </div>
-                    <div class="project__info">
-                        <div class="project__meta">
-                            <span>Institutional</span>
-                            <span>2024</span>
+                    <!-- Project 2 -->
+                    <article class="project">
+                        <div class="project__media trigger-media">
+                            <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80" alt="Torre Glass" class="project__img parallaxy">
                         </div>
-                        <h3 class="project__title split-words">Pavilion 04</h3>
-                        <p class="project__desc">An art gallery embedded seamlessly into Phoenix Park. The structure is submerged three meters underground, ensuring the natural landscape above remains entirely undisrupted.</p>
+                        <div class="project__info">
+                            <div class="project__meta">
+                                <span>Commercial</span>
+                                <span>2023</span>
+                            </div>
+                            <h3 class="project__title split-words">Torre Glass</h3>
+                            <p class="project__desc">Redefining the Dublin skyline. A sustainable, net-zero commercial hub utilizing parametric louvers that adapt to daily sunlight patterns, reducing thermal intake by 40%.</p>
+                        </div>
+                    </article>
+
+                    <!-- Project 3 -->
+                    <article class="project">
+                        <div class="project__media trigger-media">
+                            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80" alt="Pavilion 04" class="project__img parallaxy">
+                        </div>
+                        <div class="project__info">
+                            <div class="project__meta">
+                                <span>Institutional</span>
+                                <span>2024</span>
+                            </div>
+                            <h3 class="project__title split-words">Pavilion 04</h3>
+                            <p class="project__desc">An art gallery embedded seamlessly into Phoenix Park. The structure is submerged three meters underground, ensuring the natural landscape above remains entirely undisrupted.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Services -->
+            <section class="services">
+                <div class="section-header">
+                    <h2 class="section-title split-words">Expertise</h2>
+                    <span class="section-num">Practice</span>
+                </div>
+
+                <div class="services-list">
+                    <div class="service-item magnetic">
+                        <span class="service-num">01</span>
+                        <h3 class="service-title">Residential</h3>
+                        <p class="service-desc">Private homes and residential complexes designed outward from the human experience, focusing on spatial psychology, natural light integration, and heirloom materials.</p>
                     </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- Services -->
-        <section class="services">
-            <div class="section-header">
-                <h2 class="section-title split-words">Expertise</h2>
-                <span class="section-num">Practice</span>
-            </div>
-
-            <div class="services-list">
-                <div class="service-item">
-                    <span class="service-num">01</span>
-                    <h3 class="service-title">Residential</h3>
-                    <p class="service-desc">Private homes and residential complexes designed outward from the human experience, focusing on spatial psychology, natural light integration, and heirloom materials.</p>
+                    <div class="service-item magnetic">
+                        <span class="service-num">02</span>
+                        <h3 class="service-title">Commercial</h3>
+                        <p class="service-desc">Corporate structures, flagships, and hospitality environments that translate brand ethos into physical, inhabitable form. Architecture as spatial branding.</p>
+                    </div>
+                    <div class="service-item magnetic">
+                        <span class="service-num">03</span>
+                        <h3 class="service-title">Consultation</h3>
+                        <p class="service-desc">Feasibility studies, zoning negotiations, and environmental impact strategies. We navigate complex regulatory landscapes for large-scale developments.</p>
+                    </div>
                 </div>
-                <div class="service-item">
-                    <span class="service-num">02</span>
-                    <h3 class="service-title">Commercial</h3>
-                    <p class="service-desc">Corporate structures, flagships, and hospitality environments that translate brand ethos into physical, inhabitable form. Architecture as spatial branding.</p>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer" id="contact">
+                <div class="footer__main">
+                    <h2 class="footer__title magnetic">INQUIRE</h2>
                 </div>
-                <div class="service-item">
-                    <span class="service-num">03</span>
-                    <h3 class="service-title">Consultation</h3>
-                    <p class="service-desc">Feasibility studies, zoning negotiations, and environmental impact strategies. We navigate complex regulatory landscapes for large-scale developments.</p>
+                <div class="footer__bottom">
+                    <span>&copy; Kova Studio 2025</span>
+                    <span>Dublin, Ireland</span>
+                    <span>Crafted by CorexaStudio</span>
                 </div>
-            </div>
-        </section>
+            </footer>
 
-        <!-- Footer -->
-        <footer class="footer" id="contact">
-            <div class="footer__main">
-                <h2 class="footer__title">INQUIRE</h2>
-            </div>
-            <div class="footer__bottom">
-                <span>&copy; Kova Studio 2025</span>
-                <span>Dublin, Ireland</span>
-                <span>Crafted by CorexaStudio</span>
-            </div>
-        </footer>
+        </div> <!-- end skew-wrapper -->
+    </div> <!-- end smooth-wrapper -->
 
-    </div>
-
-    <!-- Scripts -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-    
-    <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    
-    <!-- SplitType -->
     <script src="https://unpkg.com/split-type"></script>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        /* ── Smooth Scroll (Lenis) ── */
+        /* ── Smooth Scroll (Lenis) + Skew on Scroll ── */
         const lenis = new Lenis({
             duration: 1.5,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
             smooth: true,
         });
 
-        lenis.on('scroll', ScrollTrigger.update);
+        // Add Skew logic
+        let proxy = { skew: 0 };
+        let skewSetter = gsap.quickSetter("#skew-wrapper", "skewY", "deg");
+        let clamp = gsap.utils.clamp(-6, 6); // Max skew degrees
+
+        lenis.on('scroll', (e) => {
+            ScrollTrigger.update();
+            // Calculate skew based on velocity
+            if (Math.abs(e.velocity) > 0.05) {
+                let skew = clamp(e.velocity * -0.5); 
+                // Animate smoothly towards the skew value
+                gsap.to(proxy, { skew: skew, duration: 0.3, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
+            } else {
+                // Return to 0
+                gsap.to(proxy, { skew: 0, duration: 0.3, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
+            }
+        });
+
         gsap.ticker.add((time)=>{
             lenis.raf(time * 1000);
         });
         gsap.ticker.lagSmoothing(0);
 
-
-        /* ── Custom Cursor ── */
-        const cursor = document.getElementById('cursor');
-        if (window.matchMedia('(pointer:fine)').matches) {
+        /* ── Cursor & Magnetism ── */
+        const isFinePointer = window.matchMedia('(pointer:fine)').matches;
+        
+        if (isFinePointer) {
+            const cursorDot = document.getElementById('cursorDot');
+            const cursorRing = document.getElementById('cursorRing');
+            const cursorText = document.getElementById('cursorText');
             
             // GSAP quickTo for smooth cursor follow
-            const xTo = gsap.quickTo(cursor, "x", {duration: 0.1, ease: "power3"});
-            const yTo = gsap.quickTo(cursor, "y", {duration: 0.1, ease: "power3"});
+            const xDotTo = gsap.quickTo(cursorDot, "x", {duration: 0.1, ease: "power3"});
+            const yDotTo = gsap.quickTo(cursorDot, "y", {duration: 0.1, ease: "power3"});
+            const xRingTo = gsap.quickTo(cursorRing, "x", {duration: 0.3, ease: "power3"});
+            const yRingTo = gsap.quickTo(cursorRing, "y", {duration: 0.3, ease: "power3"});
+            const xTextTo = gsap.quickTo(cursorText, "x", {duration: 0.3, ease: "power3"});
+            const yTextTo = gsap.quickTo(cursorText, "y", {duration: 0.3, ease: "power3"});
 
             window.addEventListener('mousemove', e => {
-                xTo(e.clientX);
-                yTo(e.clientY);
+                xDotTo(e.clientX); yDotTo(e.clientY);
+                xRingTo(e.clientX); yRingTo(e.clientY);
+                xTextTo(e.clientX); yTextTo(e.clientY);
             });
 
-            // Hover on Project Media and Links
-            document.querySelectorAll('.trigger-media, .footer__title').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
+            // 1. Hover on Project Media -> Expand and show VIEW
+            document.querySelectorAll('.trigger-media').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('is-image-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('is-image-hover'));
+            });
+
+            // 2. Magnetic Elements (Nav Links, Footer Title)
+            document.querySelectorAll('.magnetic').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('is-magnetic'));
+                el.addEventListener('mouseleave', (e) => {
+                    document.body.classList.remove('is-magnetic');
+                    gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
+                });
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    // Magnetic drag amount
+                    const distX = (e.clientX - centerX) * 0.3;
+                    const distY = (e.clientY - centerY) * 0.3;
+                    
+                    gsap.to(el, { x: distX, y: distY, duration: 0.4, ease: "power2.out" });
+                });
             });
         }
 
@@ -661,38 +739,36 @@
         
         tl.to(introText.chars, {
             y: 0,
-            duration: 1,
-            stagger: 0.05,
+            duration: 1.2,
+            stagger: 0.08,
             ease: "expo.out",
             delay: 0.2
         })
         .to(introText.chars, {
             y: -100,
             opacity: 0,
-            duration: 0.6,
-            stagger: 0.04,
+            duration: 0.8,
+            stagger: 0.05,
             ease: "power3.in",
-            delay: 0.8
+            delay: 0.6
         })
         .to('#intro', {
             yPercent: -100,
-            duration: 1,
+            duration: 1.2,
             ease: "expo.inOut",
             onComplete: startHero
         });
 
         /* ── Text Splitting Preparations ── */
         function initSplitText() {
-            // Manifesto
-            new SplitType('.split-lines', { types: 'lines, words', lineClass: 'split-line' });
+            // Manifesto Scrubbing
+            new SplitType('.scrub-target', { types: 'words', wordClass: 'word' });
             
-            // Subheadings
+            // Subheadings Entrance
             document.querySelectorAll('.split-words').forEach(el => {
                 new SplitType(el, { types: 'words', wordClass: 'split-word' });
             });
 
-            // Hide words/lines for scroll triggers
-            gsap.set('.split-line .word', { yPercent: 120 });
             gsap.set('.split-word', { yPercent: 120 });
         }
 
@@ -705,44 +781,44 @@
             const heroLines = new SplitType('.hero__line', {types: 'words'});
             gsap.from(heroLines.words, {
                 yPercent: 120,
-                duration: 1.5,
-                stagger: 0.1,
+                duration: 1.8,
+                stagger: 0.15,
                 ease: "expo.out"
             });
 
-            // Hero Image Parallax (starts immediately)
+            // Hero Image Scale/Parallax
             gsap.to('#heroImg', {
-                yPercent: 20,
+                yPercent: 15,
+                scale: 1.1,
                 ease: "none",
                 scrollTrigger: {
                     trigger: ".hero",
                     start: "top top",
                     end: "bottom top",
-                    scrub: true
+                    scrub: 1.5
                 }
             });
 
-            // Setup ScrollTriggers for elements below fold
             setupScrollTriggers();
         }
 
-        /* ── Scroll Animations ── */
+        /* ── Complex Post-Hero Animations ── */
         function setupScrollTriggers() {
             
-            // Manifesto Reveal
-            gsap.to('.split-lines .word', {
-                yPercent: 0,
-                duration: 1.2,
-                stagger: 0.02,
-                ease: "power4.out",
+            // 1. Manifesto Text Scrubbing (Lights up linked to scroll)
+            gsap.to('.scrub-target .word', {
+                opacity: 1,
+                stagger: 0.1,
+                ease: "none",
                 scrollTrigger: {
                     trigger: ".manifesto",
-                    start: "top 70%",
-                    once: true
+                    start: "top 60%",
+                    end: "bottom 80%",
+                    scrub: 1 // smooth scrubbing
                 }
             });
 
-            // Title Reveals
+            // 2. Titles Bounce Up
             document.querySelectorAll('.split-words').forEach(title => {
                 gsap.to(title.querySelectorAll('.split-word'), {
                     yPercent: 0,
@@ -757,46 +833,47 @@
                 });
             });
 
-            // Project Images clip-path reveal
+            // 3. Image Clip-Path Reveals
             document.querySelectorAll('.project__media').forEach(media => {
                 gsap.to(media, {
                     clipPath: "inset(0% 0 0 0)",
-                    duration: 1.5,
-                    ease: "expo.out",
+                    duration: 1.8,
+                    ease: "expo.inOut",
                     scrollTrigger: {
                         trigger: media,
-                        start: "top 80%",
+                        start: "top 85%",
                         once: true
                     }
                 });
             });
 
-            // Parallax inside Project Images
+            // 4. Constant Parallax inside Images
             document.querySelectorAll('.parallaxy').forEach(img => {
                 gsap.to(img, {
-                    yPercent: -15,
+                    yPercent: -20,
                     ease: "none",
                     scrollTrigger: {
                         trigger: img.closest('.project__media'),
                         start: "top bottom",
                         end: "bottom top",
-                        scrub: true
+                        scrub: 1
                     }
                 });
             });
 
-            // Services fade in
-            gsap.from('.service-item', {
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                stagger: 0.2,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: ".services-list",
-                    start: "top 75%",
-                    once: true
-                }
+            // 5. Services line slide up
+            document.querySelectorAll('.service-item').forEach(item => {
+                gsap.from(item, {
+                    opacity: 0,
+                    y: 60,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 85%",
+                        once: true
+                    }
+                });
             });
         }
     </script>
