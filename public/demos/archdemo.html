@@ -135,10 +135,6 @@
             transform: translateY(100%);
         }
 
-        /* ── Layout & Skew Wrapper ────────────────────────────────── */
-        #skew-wrapper {
-            will-change: transform;
-        }
 
         /* ── Navbar (Magnetic) ────────────────────────────────────── */
         .nav {
@@ -520,9 +516,8 @@
         </div>
     </nav>
 
-    <!-- Main Wrapper for Lenis & Skew Effect -->
+    <!-- Main Wrapper for Lenis -->
     <div id="smooth-wrapper">
-        <div id="skew-wrapper">
 
             <!-- Hero -->
             <section class="hero">
@@ -643,7 +638,6 @@
                 </div>
             </footer>
 
-        </div> <!-- end skew-wrapper -->
     </div> <!-- end smooth-wrapper -->
 
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -654,30 +648,14 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        /* ── Smooth Scroll (Lenis) + Skew on Scroll ── */
+        /* ── Smooth Scroll (Lenis) ── */
         const lenis = new Lenis({
             duration: 1.5,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
             smooth: true,
         });
 
-        // Add Skew logic
-        let proxy = { skew: 0 };
-        let skewSetter = gsap.quickSetter("#skew-wrapper", "skewY", "deg");
-        let clamp = gsap.utils.clamp(-6, 6); // Max skew degrees
-
-        lenis.on('scroll', (e) => {
-            ScrollTrigger.update();
-            // Calculate skew based on velocity
-            if (Math.abs(e.velocity) > 0.05) {
-                let skew = clamp(e.velocity * -0.5); 
-                // Animate smoothly towards the skew value
-                gsap.to(proxy, { skew: skew, duration: 0.3, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
-            } else {
-                // Return to 0
-                gsap.to(proxy, { skew: 0, duration: 0.3, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
-            }
-        });
+        lenis.on('scroll', ScrollTrigger.update);
 
         gsap.ticker.add((time)=>{
             lenis.raf(time * 1000);
