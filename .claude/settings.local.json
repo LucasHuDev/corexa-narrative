@@ -25,7 +25,8 @@
       "Bash(curl -s http://localhost:5175/src/components/Builds.jsx)",
       "Bash(curl -s http://localhost:5175/src/components/ServiceModals.jsx)",
       "Bash(node -e \"const m = require\\('./src/i18n/translations.js'\\); console.log\\('serviceAccordion tier03:', !!m.t.serviceAccordion.tier03\\); console.log\\('extensionAccordion ext01:', !!m.t.extensionAccordion.ext01\\); console.log\\('extensionAccordion ext02:', !!m.t.extensionAccordion.ext02\\); console.log\\('extensionAccordion ext03:', !!m.t.extensionAccordion.ext03\\);\")",
-      "Bash(ls src/pages/Contact* src/components/Contact*)"
+      "Bash(ls src/pages/Contact* src/components/Contact*)",
+      "Bash(node -e \"const m = require\\('./src/i18n/translations.js'\\); const P = m.t.studio.philosophySection; console.log\\('block1.label.en:', P.block1.label.en\\); console.log\\('block1.title.es starts:', P.block1.title.es.slice\\(0,20\\)\\); console.log\\('items count:', Object.keys\\(P.block2.items\\).length\\); console.log\\('i3.desc.es:', P.block2.items.i3.desc.es\\);\")"
     ]
   }
 }

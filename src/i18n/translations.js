@@ -647,6 +647,72 @@ export const t = {
         },
       },
     },
+    philosophySection: {
+      block1: {
+        label: { en: "01 — WHAT WE DO", es: "01 — LO QUE HACEMOS" },
+        title: {
+          en: "NOT JUST WEBSITES.\nSYSTEMS THAT WORK\nFOR YOU.",
+          es: "NO SOLO SITIOS WEB.\nSISTEMAS QUE TRABAJAN\nPOR VOS.",
+        },
+        copy: {
+          en: "Every business needs something different. For some it's a site that converts. For others, a custom app. For many, an automation that eliminates hours of manual work. We build exactly what your business needs — nothing more, nothing less.",
+          es: "Cada negocio necesita algo distinto. Para algunos es un sitio que convierte. Para otros, una app a medida. Para muchos, una automatización que elimina horas de trabajo manual. Construimos exactamente lo que tu negocio necesita — no más, no menos.",
+        },
+      },
+      block2: {
+        label: { en: "02 — HOW WE DO IT", es: "02 — CÓMO LO HACEMOS" },
+        items: {
+          i1: {
+            num: "01",
+            name: { en: "DESIGN", es: "DISEÑO" },
+            desc: {
+              en: "Interfaces people actually want to use.",
+              es: "Interfaces que la gente realmente quiere usar.",
+            },
+            tags: {
+              en: "FIGMA · UI SYSTEMS · BRANDING",
+              es: "FIGMA · UI SYSTEMS · BRANDING",
+            },
+          },
+          i2: {
+            num: "02",
+            name: { en: "DEVELOPMENT", es: "DESARROLLO" },
+            desc: {
+              en: "Fast, stable, built to scale.",
+              es: "Rápido, estable, construido para crecer.",
+            },
+            tags: {
+              en: "REACT · NEXT.JS · WORDPRESS",
+              es: "REACT · NEXT.JS · WORDPRESS",
+            },
+          },
+          i3: {
+            num: "03",
+            name: { en: "AUTOMATION", es: "AUTOMATIZACIÓN" },
+            desc: {
+              en: "Systems that connect, trigger and run on their own.",
+              es: "Sistemas que conectan, disparan y funcionan solos.",
+            },
+            tags: {
+              en: "APIS · ZAPIER · CUSTOM TOOLS",
+              es: "APIS · ZAPIER · CUSTOM TOOLS",
+            },
+          },
+          i4: {
+            num: "04",
+            name: { en: "MAINTENANCE", es: "MANTENIMIENTO" },
+            desc: {
+              en: "We stay involved after launch.",
+              es: "Nos quedamos después del lanzamiento.",
+            },
+            tags: {
+              en: "UPDATES · SECURITY · SUPPORT",
+              es: "UPDATES · SECURITY · SUPPORT",
+            },
+          },
+        },
+      },
+    },
   },
   contact: {
     sectionLabel: { en: "01 — Contact", es: "01 — Contacto" },
