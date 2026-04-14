@@ -24,8 +24,9 @@ export default function Globe() {
 
     let disposed = false;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+    const mobile = window.innerWidth < 768;
+    renderer.setPixelRatio(mobile ? 1 : Math.min(devicePixelRatio, 2));
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);

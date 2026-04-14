@@ -23,7 +23,7 @@
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.65);
   font-weight: 500;
   z-index: 2;
   pointer-events: none;
@@ -111,7 +111,7 @@
   font-size: 11px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.65);
   font-feature-settings: "tnum";
   white-space: nowrap;
   padding-bottom: 12px;
@@ -185,7 +185,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   font-feature-settings: "tnum";
   padding-top: 4px;
 }
@@ -551,7 +551,7 @@
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   font-feature-settings: "tnum";
 }
 
@@ -617,7 +617,7 @@
 }
 
 .field__input::placeholder {
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.50);
 }
 
 .field__input:hover {
@@ -1256,7 +1256,7 @@
 
 .btn-ghost:hover:not(:disabled) {
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.65);
   background: rgba(255, 255, 255, 0.03);
 }
 
@@ -1287,7 +1287,7 @@
 
 .btn.btn--ghost:hover {
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.65);
   background: rgba(255, 255, 255, 0.03);
 }
 
@@ -2566,7 +2566,7 @@
   gap: 8px;
   font-family: var(--font-body);
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   letter-spacing: 0.02em;
 }
 
@@ -2613,7 +2613,7 @@
 .az-loading__text {
   font-family: var(--font-body);
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.65);
   letter-spacing: 0.02em;
 }
 
@@ -2816,7 +2816,7 @@
 .az-cta__sub {
   font-family: var(--font-body);
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.65);
   margin-bottom: 40px;
 }
 
@@ -2846,7 +2846,7 @@
 }
 
 .az-cta__download:hover {
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.55);
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -3023,7 +3023,7 @@
 
 .legal-page__back-link {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
   text-decoration: none;
   transition: color 0.2s;
 }
