@@ -22,7 +22,9 @@ function Shell() {
       {!isDemo && <Cursor />}
       {!isDemo && <Navbar />}
       <ScrollToTop />
-      <AnimatedRoutes />
+      <main>
+        <AnimatedRoutes />
+      </main>
       {!isDemo && <SiteFooter />}
       {!isDemo && <CookieBanner />}
     </div>

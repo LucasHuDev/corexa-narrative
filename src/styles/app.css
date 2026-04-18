@@ -185,7 +185,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   font-feature-settings: "tnum";
   padding-top: 4px;
 }
@@ -210,7 +210,7 @@
   font-family: var(--font-body);
   font-size: 13px;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.70);
   letter-spacing: 0.01em;
 }
 
@@ -315,7 +315,7 @@
 
 .link:hover {
   opacity: 1;
-  border-bottom-color: rgba(255, 255, 255, 0.34);
+  border-bottom-color: rgba(255, 255, 255, 0.70);
 }
 
 @media (max-width: 900px) {
@@ -417,7 +417,7 @@
 
 .extensions__meta {
   margin: 0;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   font-size: 14px;
   line-height: 1.45;
 }
@@ -525,7 +525,7 @@
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   max-width: 40ch;
 }
 
@@ -551,7 +551,7 @@
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   font-feature-settings: "tnum";
 }
 
@@ -595,7 +595,7 @@
   font-size: 10px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.70);
   font-feature-settings: "tnum";
 }
 
@@ -617,7 +617,7 @@
 }
 
 .field__input::placeholder {
-  color: rgba(255, 255, 255, 0.50);
+  color: rgba(255, 255, 255, 0.70);
 }
 
 .field__input:hover {
@@ -1014,7 +1014,7 @@
   margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -2566,7 +2566,7 @@
   gap: 8px;
   font-family: var(--font-body);
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   letter-spacing: 0.02em;
 }
 
@@ -2785,7 +2785,7 @@
   font-family: var(--font-body);
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.70);
   padding-left: 14px;
   position: relative;
 }
@@ -2846,7 +2846,7 @@
 }
 
 .az-cta__download:hover {
-  border-color: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.70);
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -3004,7 +3004,7 @@
 
 .legal-page__text {
   font-size: 0.92rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   line-height: 1.8;
   margin: 0 0 32px;
 }
@@ -3023,7 +3023,7 @@
 
 .legal-page__back-link {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.70);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -3053,7 +3053,7 @@
 
 .site-footer__copy {
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .site-footer__legal {
@@ -3064,7 +3064,7 @@
 
 .site-footer__link {
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   transition: color 0.2s;
 }

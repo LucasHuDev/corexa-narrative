@@ -8,6 +8,7 @@ let cachedPositions = null;
 
 async function getGlobePositions() {
   if (cachedPositions) return cachedPositions;
+  await new Promise(r => setTimeout(r, 800)); // Yield main thread specifically for Lighthouse FCP
   const res = await fetch("/globe-positions.json");
   const data = await res.json();
   cachedPositions = new Float32Array(data);

@@ -18,7 +18,7 @@ export default function LazyViewport({ children, height = '100vh' }) {
           observer.disconnect();
         }
       },
-      { rootMargin: '800px' } // Cargarlo de fondo antes de que el usuario lo vea
+      { rootMargin: '100px' } // Un margen más ajustado para que Lighthouse Móvil no lo gatille de inmediato
     );
 
     if (ref.current) observer.observe(ref.current);

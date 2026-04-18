@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useT } from '../i18n/I18nProvider';
+import { useT, useI18n } from '../i18n/I18nProvider';
 import { t as Trans } from '../i18n/translations';
 import './IndustryDemo.css';
 
@@ -17,6 +17,376 @@ const INDUSTRY_I18N_KEYS = {
 };
 
 gsap.registerPlugin(ScrollTrigger);
+
+/* ═══════════════════════════════════════════════════
+   DASHBOARD I18N — en→es dictionary
+   ═══════════════════════════════════════════════════ */
+const DASH_ES = {
+  // ── Shared / Nav ──
+  'Overview': 'Vista general', 'Reservations': 'Reservas', 'Rooms': 'Habitaciones',
+  'Staff': 'Personal', 'Revenue': 'Ingresos', 'Schedule': 'Agenda', 'Patients': 'Pacientes',
+  'Reports': 'Reportes', 'Listings': 'Propiedades', 'Leads': 'Leads', 'Calendar': 'Calendario',
+  'Bookings': 'Reservas', 'Services': 'Servicios', 'Appointments': 'Turnos',
+  'Reminders': 'Recordatorios', 'Prescriptions': 'Recetas', 'Catalog': 'Catálogo',
+  'Cases': 'Causas', 'Clients': 'Clientes', 'Documents': 'Documentos', 'Billing': 'Facturación',
+  'Consultations': 'Consultas', 'Portfolio': 'Portfolio', 'Gallery Delivery': 'Entrega de galerías',
+  'Inventory': 'Inventario', 'Test Drives': 'Pruebas de manejo', 'Orders': 'Pedidos',
+  'Menu': 'Menú', 'Events': 'Eventos', 'Classes': 'Clases', 'Members': 'Miembros',
+  'Trainers': 'Entrenadores', 'Students': 'Estudiantes', 'Communications': 'Comunicaciones',
+  'Deadlines': 'Vencimientos', 'Promotions': 'Promociones', 'Materials': 'Materiales',
+  'Quotes': 'Presupuestos', 'Delivery': 'Entregas', 'Trade Accounts': 'Cuentas corrientes',
+  'Artists': 'Artistas', 'Pre-orders': 'Pre-pedidos', 'Daily Menu': 'Menú del día',
+  'Client Portal': 'Portal de clientes', 'In-Store': 'En tienda', 'Online': 'Online',
+  'Counter': 'Mostrador',
+
+  // ── Dashboard titles ──
+  'Hotel Dashboard': 'Panel del Hotel', 'Clinic Dashboard': 'Panel de Clínica',
+  'Real Estate CRM': 'CRM Inmobiliaria', 'Barbershop': 'Barbería',
+  'Barbershop Manager': 'Gestor de Barbería', 'Vet Clinic': 'Clínica Veterinaria',
+  'Veterinary Dashboard': 'Panel Veterinaria', 'Gym Dashboard': 'Panel del Gimnasio',
+  'Gym & Fitness': 'Gimnasio', 'Optical Store': 'Óptica',
+  'Optical Dashboard': 'Panel de Óptica', 'Law Firm': 'Estudio Jurídico',
+  'Law Firm Dashboard': 'Panel Estudio Jurídico', 'Accounting': 'Contabilidad',
+  'Accounting Studio': 'Estudio Contable', 'Hardware Dashboard': 'Panel de Ferretería',
+  'Hardware Store': 'Ferretería', 'Corralón Dashboard': 'Panel del Corralón',
+  'Building Supply': 'Corralón', 'Photo Dashboard': 'Panel de Fotografía',
+  'Photography Studio': 'Estudio Fotográfico', 'Dealer Dashboard': 'Panel de Concesionaria',
+  'Car Dealership': 'Concesionaria', 'Café Dashboard': 'Panel de Cafetería',
+  'Café & Coffee': 'Cafetería', 'School Dashboard': 'Panel de Escuela',
+  'School & Academy': 'Escuela y Academia', 'Retail Dashboard': 'Panel de Comercio',
+  'Retail & Commerce': 'Comercio Minorista', 'Bakery Dashboard': 'Panel de Panadería',
+  'Bakery & Pastry': 'Panadería y Pastelería', 'Finance Dashboard': 'Panel Financiero',
+  'Financial Services': 'Servicios Financieros', 'Tattoo Dashboard': 'Panel de Tatuajes',
+  'Tattoo Studio': 'Estudio de Tatuajes', 'Super Dashboard': 'Panel de Supermercado',
+  'Supermarket': 'Supermercado',
+
+  // ── Stat labels ──
+  'Occupied Rooms': 'Habitaciones ocupadas', 'Check-ins Today': 'Check-ins hoy',
+  'Check-outs Today': 'Check-outs hoy', 'Monthly Revenue': 'Ingresos mensuales',
+  'Appointments Today': 'Turnos hoy', 'No-shows Prevented': 'Ausencias prevenidas',
+  'Patients Waiting': 'Pacientes en espera', 'New Patients': 'Pacientes nuevos',
+  'Total Appointments': 'Total de turnos', 'Cancellation Rate': 'Tasa de cancelación',
+  'Avg. Wait Time': 'Tiempo de espera prom.', 'Active Listings': 'Propiedades activas',
+  'New Inquiries Today': 'Consultas nuevas hoy', 'Hot Leads': 'Leads calientes',
+  'Qualified Leads': 'Leads calificados', 'Walk-ins Today': 'Sin turno hoy',
+  'Top Service': 'Servicio principal', 'Bookings (month)': 'Reservas (mes)',
+  'Today\'s Appointments': 'Turnos de hoy', 'Patients Today': 'Pacientes hoy',
+  'Visits Scheduled': 'Visitas programadas', 'Surgeries Scheduled': 'Cirugías programadas',
+  'Active Members': 'Miembros activos', 'Classes Today': 'Clases hoy',
+  'Appointments (week)': 'Turnos (semana)', 'Frames Sold': 'Monturas vendidas',
+  'Active Cases': 'Causas activas',
+  'Pending Docs': 'Docs pendientes', 'Monthly Billing': 'Facturación mensual',
+  'Active Clients': 'Clientes activos', 'This Month Billed': 'Facturado este mes',
+  'Pending Payments': 'Pagos pendientes', 'Overdue': 'Vencido',
+  'Pending Quotes': 'Presupuestos pendientes', 'Active Deliveries': 'Entregas activas',
+  'Low Stock Items': 'Items con bajo stock', 'Quotes Today': 'Presupuestos hoy',
+  'Sessions This Month': 'Sesiones este mes', 'Pending Edits': 'Ediciones pendientes',
+  'Galleries Delivered': 'Galerías entregadas', 'Avg. Session': 'Sesión prom.',
+  'Cars Available': 'Autos disponibles', 'Test Drives (week)': 'Pruebas (semana)',
+  'Leads Qualified': 'Leads calificados', 'Orders Today': 'Pedidos hoy',
+  'Loyalty Members': 'Miembros fidelidad', 'Avg. Ticket': 'Ticket promedio',
+  'Enrolled Students': 'Estudiantes inscriptos', 'Pending Enrollments': 'Inscripciones pendientes',
+  'Enrollment Fees': 'Cuotas de inscripción', 'Units Sold': 'Unidades vendidas',
+  'Products Live': 'Productos activos', 'Low Stock': 'Stock bajo',
+  'Online Sales': 'Ventas online', 'In-Store Sales': 'Ventas en tienda',
+  'Pre-orders Today': 'Pre-pedidos hoy', 'Pending Pickups': 'Retiros pendientes',
+  'Avg Ticket': 'Ticket promedio', 'Walk-in': 'Sin turno',
+  'Pending Deposits': 'Señas pendientes', 'Deposits Collected': 'Señas cobradas',
+  'MRR': 'Ingresos recurrentes', 'Commissions': 'Comisiones', 'Fees': 'Honorarios',
+  'Advisory': 'Asesoramiento', 'Outstanding': 'Pendiente', 'Awaiting Review': 'En revisión',
+  'Hourly Rate': 'Tarifa/hora', 'Target Progress': 'Progreso objetivo',
+  'Avg Daily': 'Diario prom.', 'Avg. Daily': 'Diario prom.', 'Occupancy': 'Ocupación',
+  'Change': 'Variación', 'Growth': 'Crecimiento', 'vs Last Week': 'vs semana pasada',
+  'Progress': 'Progreso', 'Target': 'Objetivo', 'Last Month': 'Mes anterior',
+  'This Month': 'Este mes', 'Total Monthly': 'Total mensual', 'AOV': 'Ticket prom.',
+  'Tuition': 'Cuotas', 'Check-ins': 'Check-ins', 'Extras': 'Extras',
+
+  // ── Panel titles ──
+  "Today's Arrivals": 'Llegadas de hoy', 'Room Status': 'Estado de habitaciones',
+  'Staff Schedule Today': 'Agenda del personal hoy', 'Upcoming Deliveries': 'Entregas próximas',
+  'Room Management — 24 Rooms': 'Gestión de habitaciones — 24 habitaciones',
+  'Staff Management': 'Gestión del personal', '7-Day Revenue': 'Ingresos 7 días',
+  'Revenue Breakdown': 'Desglose de ingresos', "Today's Schedule": 'Agenda de hoy',
+  'Reminder Status': 'Estado de recordatorios', 'Full Day Schedule': 'Agenda completa',
+  'Patient Records': 'Fichas de pacientes', 'Weekly Revenue': 'Ingresos semanales',
+  'Top Procedures': 'Procedimientos principales', 'Conversion Funnel': 'Embudo de conversión',
+  'Lead Pipeline': 'Pipeline de leads',
+  'Property Listings': 'Listado de propiedades', 'Weekly Visit Calendar': 'Calendario semanal de visitas',
+  "This Week's Visits": 'Visitas de esta semana', 'Service Menu — click values to edit': 'Menú de servicios — click para editar',
+  'All Bookings': 'Todas las reservas', 'Revenue by Service': 'Ingresos por servicio',
+  'Barbers Today': 'Barberos hoy', 'Chair Status': 'Estado de sillas',
+  'Pending Reminders': 'Recordatorios pendientes',
+  'Patient Database': 'Base de pacientes', "This Week's Classes — click Book to reserve": 'Clases de esta semana — click Reservar',
+  'Active Memberships by Plan': 'Membresías activas por plan', 'Live Check-ins': 'Check-ins en vivo',
+  "Today's Classes": 'Clases de hoy', 'Recent Prescriptions': 'Recetas recientes',
+  'All Appointments Today': 'Todos los turnos de hoy', 'Top Brands by Sales': 'Marcas más vendidas',
+  'Upcoming Consultations': 'Próximas consultas', 'Recent Activity': 'Actividad reciente',
+  'Pending Documents': 'Documentos pendientes',
+  'Upcoming Deadlines': 'Próximos vencimientos', "All Deadlines — sorted by urgency": 'Todos los vencimientos — por urgencia',
+  'Pending Invoices': 'Facturas pendientes', "Top 5 Clients by Billing": 'Top 5 clientes por facturación',
+  'Revenue by Category': 'Ingresos por categoría', 'Recent Quotes': 'Presupuestos recientes',
+  'Material Categories': 'Categorías de materiales', 'Top Materials by Revenue': 'Materiales por ingresos',
+  'Scheduled Deliveries': 'Entregas programadas', 'Fleet Status': 'Estado de flota',
+  'Documents to Request': 'Documentos a solicitar',
+  'Portfolio Gallery': 'Galería de portfolio', 'Pending Galleries': 'Galerías pendientes',
+  'Upcoming Sessions': 'Próximas sesiones', 'Revenue by Package': 'Ingresos por paquete',
+  'Vehicle Inventory': 'Inventario de vehículos', "This Week's Test Drives": 'Pruebas de manejo de esta semana',
+  "Today's Test Drives": 'Pruebas de manejo de hoy', 'Channel Breakdown': 'Desglose por canal',
+  'Active Orders': 'Pedidos activos', 'Menu Items': 'Items del menú',
+  'Upcoming Events': 'Próximos eventos', 'Top Items Today': 'Items más vendidos hoy',
+  'Revenue by Time of Day': 'Ingresos por franja horaria', 'Weekly Schedule': 'Horario semanal',
+  'Recent Communications': 'Comunicaciones recientes', 'Monthly Breakdown': 'Desglose mensual',
+  "Today's Orders": 'Pedidos de hoy', "Today's Pre-orders": 'Pre-pedidos de hoy',
+  "Today's Deliveries": 'Entregas de hoy', "All Pre-orders": 'Todos los pre-pedidos',
+  'Product Catalog': 'Catálogo de productos', 'Top Products by Revenue': 'Productos por ingresos',
+  'Recent Orders': 'Pedidos recientes', 'Top 5 Products': 'Top 5 productos',
+  'Active Promotions': 'Promociones activas', 'Sales by Seller': 'Ventas por vendedor',
+  'Revenue by Artist': 'Ingresos por artista', 'Response Time': 'Tiempo de respuesta',
+  'Delivery Zones': 'Zonas de entrega', 'Live Orders': 'Pedidos en vivo',
+  "86'd Today": 'Agotados hoy', 'Top 5 Clients': 'Top 5 clientes',
+  'Received This Week': 'Recibidos esta semana', 'Table Status': 'Estado de mesas',
+  "This Week — Available Slots": 'Esta semana — Turnos disponibles',
+  'Clients — {planFilter}': 'Clientes — {planFilter}',
+  'Members — {planFilter}': 'Miembros — {planFilter}',
+  'Upcoming Appointments — {filter}': 'Próximos turnos — {filter}',
+  'All Cases — {caseFilter}': 'Todas las causas — {caseFilter}',
+
+  // ── Table headers ──
+  'Guest': 'Huésped', 'Room': 'Habitación', 'Time': 'Hora', 'Status': 'Estado',
+  'ID': 'ID', 'Check-in': 'Entrada', 'Check-out': 'Salida', 'Nights': 'Noches',
+  'Actions': 'Acciones', 'Name': 'Nombre', 'Role': 'Rol', 'Shift': 'Turno',
+  'Phone': 'Teléfono', 'Source': 'Fuente', 'Amount': 'Monto', 'Last Visit': 'Última visita',
+  'Next Appt': 'Próx. turno', 'Notes': 'Notas', 'Address': 'Dirección', 'Type': 'Tipo',
+  'Price': 'Precio', 'Beds': 'Amb.', 'Contact': 'Contacto', 'Property Interest': 'Propiedad',
+  'Property': 'Propiedad', 'Budget': 'Presupuesto', 'Stage': 'Etapa', 'Last Contact': 'Último contacto',
+  'Service': 'Servicio', 'Barber': 'Barbero', 'Client': 'Cliente', 'Date': 'Fecha',
+  'Duration': 'Duración', 'Pet': 'Mascota', 'Owner': 'Dueño', 'Species': 'Especie',
+  'Vet': 'Veterinario', 'Last Review': 'Última revisión', 'Next Visit': 'Próx. visita',
+  'Class': 'Clase', 'Trainer': 'Entrenador', 'Spots': 'Lugares', 'Plan': 'Plan',
+  'Attendance': 'Asistencia', 'Joined': 'Ingreso', 'Optometrist': 'Optometrista',
+  'OD (sph/cyl)': 'OD (esf/cil)', 'OI (sph/cyl)': 'OI (esf/cil)', 'Expires': 'Vence',
+  'Brand': 'Marca', 'Category': 'Categoría', 'Stock': 'Stock', 'Sold': 'Vendido',
+  'Case': 'Causa', 'Lawyer': 'Abogado', 'Next Action': 'Próx. acción',
+  'Next Deadline': 'Próx. vencimiento', 'Company': 'Empresa', 'Advisor': 'Asesor',
+  'Docs Pending': 'Docs pendientes', 'Deadline': 'Vencimiento', 'Days Overdue': 'Días vencidos',
+  'Spent': 'Gastado', 'Limit': 'Límite', 'Last': 'Último', 'Material': 'Material',
+  'Qty': 'Cant.', 'Unit Price': 'Precio unit.', 'Total': 'Total', 'Truck': 'Camión',
+  'Items': 'Items', 'ETA': 'ETA', 'Quote': 'Presupuesto', 'Session': 'Sesión',
+  'Package': 'Paquete', 'Photos': 'Fotos', 'Deposit': 'Seña', 'Model': 'Modelo',
+  'Year': 'Año', 'KM': 'KM', 'Available': 'Disponible', 'Day': 'Día',
+  'Order': 'Pedido', 'Item': 'Item', 'Zone': 'Zona', 'Subject': 'Materia',
+  'Teacher': 'Profesor', 'Period 1': 'Período 1', 'Period 2': 'Período 2',
+  'Period 3': 'Período 3', 'Grade': 'Nota', 'Parent': 'Padre/madre', 'Enrolled': 'Inscriptos',
+  'Product': 'Producto', 'Sales': 'Ventas', 'Seller': 'Vendedor', 'Discount': 'Descuento',
+  'Promotion': 'Promoción', 'Products': 'Productos', 'Ends': 'Termina', 'Used': 'Usados',
+  'Monthly': 'Mensual', 'Payment': 'Pago',
+  'Piece': 'Pieza', 'Artist': 'Artista', 'Style': 'Estilo', 'Likes': 'Likes',
+  'Ready': 'Listo', 'Pickup': 'Retiro', 'Recipients': 'Destinatarios', 'Event': 'Evento',
+  'Location': 'Ubicación', 'Capacity': 'Capacidad',
+  'Wait': 'Espera', 'Hours': 'Horas', 'Next': 'Próx.',
+
+  // ── Button labels ──
+  '+ New Reservation': '+ Nueva reserva', '+ Add Staff': '+ Agregar personal',
+  '+ Add Lead': '+ Agregar lead', 'Export Report': 'Exportar reporte',
+  'Edit': 'Editar', 'Cancel': 'Cancelar', 'Book': 'Reservar',
+  'Request': 'Solicitar', 'Confirm': 'Confirmar', 'Send': 'Enviar',
+  'View': 'Ver', 'Details': 'Detalles', 'Mark Delivered': 'Marcar entregado',
+  'Dispatch': 'Despachar', 'Send Link': 'Enviar link', 'Reserve': 'Reservar',
+  'Collect': 'Cobrar', '↺ Reset': '↺ Reiniciar',
+
+  // ── Status badges / labels ──
+  'Confirmed': 'Confirmado', 'Pending': 'Pendiente', 'Cancelled': 'Cancelado',
+  'Confirmed ✓': 'Confirmado ✓', 'Pending ⏳': 'Pendiente ⏳',
+  'On Duty': 'En turno', 'On Break': 'En descanso', 'Off Duty': 'Fuera de turno',
+  'Active': 'Activo', 'Inactive': 'Inactivo', 'In Chair': 'En silla', 'Done': 'Listo',
+  'Under Offer': 'En oferta', 'Open': 'Abierto', 'Closed': 'Cerrado',
+  'In Progress': 'En progreso', 'In Review': 'En revisión', 'Complete': 'Completo',
+  'Signed': 'Firmado', 'Sent': 'Enviado', 'Due': 'Vence',
+  'Booked': 'Reservado', 'Completed': 'Completado', 'Delivered': 'Entregado',
+  'Preparing': 'Preparando', 'Picked Up': 'Retirado',
+  'Starting Soon': 'Empieza pronto', 'In Transit': 'En tránsito', 'Scheduled': 'Programado',
+  'Qualified': 'Calificado', 'Offer': 'Oferta', 'Inquiry': 'Consulta',
+  'Referral': 'Referido', 'New Lead': 'Nuevo lead', 'Accepted': 'Aceptado',
+  'En Route': 'En camino', 'Loading': 'Cargando', 'On Track': 'Al día',
+  'At Risk': 'En riesgo', 'Near limit': 'Cerca del límite', 'Ordered': 'Pedido',
+  'Waiting': 'En espera', 'In Use': 'En uso', 'On-site': 'En obra',
+  'Walk-in booked': 'Turno agregado', 'Permanent': 'Permanente',
+  'Follow-up': 'Seguimiento', 'Take': 'Para llevar', 'Dine-in': 'En local',
+  'Takeaway': 'Para llevar', 'Full': 'Completo', 'All': 'Todos',
+
+  // ── Room states ──
+  'Occupied': 'Ocupado', 'Cleaning': 'Limpieza', 'Maintenance': 'Mantenimiento',
+
+  // ── Toast messages ──
+  'Room status changed': 'Estado de habitación actualizado',
+  'New reservation added': 'Nueva reserva agregada',
+  'Reservation cancelled': 'Reserva cancelada',
+  'Staff status updated': 'Estado del personal actualizado',
+  'Staff member added': 'Personal agregado',
+  'Appointment cancelled': 'Turno cancelado',
+  'Patient status updated': 'Estado del paciente actualizado',
+  'Lead status updated': 'Estado del lead actualizado',
+  'Lead added': 'Lead agregado',
+  'Listing status updated': 'Estado de propiedad actualizado',
+  'Status updated': 'Estado actualizado',
+  'Class booked': 'Clase reservada',
+  'Order marked as delivered': 'Pedido marcado como entregado',
+  'Report exported ✓': 'Reporte exportado ✓',
+  'Settings available in your live system': 'Configuraciones disponibles en tu sistema real',
+  'Event management available in your live system': 'Gestión de eventos disponible en tu sistema real',
+  'Promotion builder available in your live system': 'Constructor de promociones disponible en tu sistema real',
+  'Request sent ✓': 'Solicitud enviada ✓',
+  'Request sent via email ✓': 'Solicitud enviada por email ✓',
+  '✓ Appointment confirmed': '✓ Turno confirmado',
+  '✓ Reminder sent': '✓ Recordatorio enviado',
+  '✓ Car marked as reserved': '✓ Auto reservado',
+  '✓ Test drive confirmed': '✓ Prueba de manejo confirmada',
+  '✓ Contact logged': '✓ Contacto registrado',
+  '✓ Contract sent': '✓ Contrato enviado',
+  '✓ Deposit collected — booking confirmed': '✓ Seña cobrada — reserva confirmada',
+  '✓ Document request sent': '✓ Solicitud de documento enviada',
+  '✓ Gallery link sent to client': '✓ Link de galería enviado al cliente',
+  '✓ Order confirmed': '✓ Pedido confirmado',
+  '✓ Order placed': '✓ Pedido realizado',
+  '✓ Order ready for pickup': '✓ Pedido listo para retiro',
+  '✓ Order ready': '✓ Pedido listo',
+  '✓ Order shipped': '✓ Pedido despachado',
+  '✓ Quote sent': '✓ Presupuesto enviado',
+  '✓ Restock order sent': '✓ Pedido de reposición enviado',
+  '✓ Announcement sent to all parents': '✓ Comunicado enviado a todos los padres',
+
+  // ── Callout & shared UI ──
+  'Talk to us →': 'Hablemos →',
+  'alerts': 'alertas', 'Settings': 'Configuración',
+
+  // ── Misc stat notes ──
+  'guests arriving': 'huéspedes llegando', 'rooms freeing up': 'habitaciones liberándose',
+  'this month': 'este mes', 'this week': 'esta semana', 'today': 'hoy',
+  'avg order value': 'ticket promedio', 'per visit': 'por visita',
+  'Auto-reminded': 'Auto-recordados',
+  'no-shows prevented this week': 'ausencias prevenidas esta semana',
+  'recovered': 'recuperados',
+
+  // ── Inline texts ──
+  'available': 'disponibles', 'occupied': 'ocupadas', 'cleaning': 'en limpieza',
+  'maintenance': 'en mantenimiento', 'booked': 'reservados', 'total slots': 'turnos totales',
+  'Available — click to book': 'Disponible — click para reservar',
+  'Click to cancel': 'Click para cancelar', 'Click to book walk-in': 'Click para agendar sin turno',
+  'Click to toggle': 'Click para cambiar', 'Click to cycle': 'Click para cambiar',
+  'Click to cycle status': 'Click para cambiar estado', 'Click to edit': 'Click para editar',
+  'Click to adjust': 'Click para ajustar',
+  '✅ Reminded': '✅ Recordado', '⏳ Pending': '⏳ Pendiente',
+  'General checkup': 'Control general',
+  'New Staff': 'Nuevo empleado', 'Unassigned': 'Sin asignar',
+  'New Guest': 'Nuevo huésped',
+
+  // ── Day names ──
+  'Mon': 'Lun', 'Tue': 'Mar', 'Wed': 'Mié', 'Thu': 'Jue', 'Fri': 'Vie', 'Sat': 'Sáb', 'Sun': 'Dom',
+
+  // ── Time periods ──
+  'Morning (7-12)': 'Mañana (7-12)', 'Afternoon (12-17)': 'Tarde (12-17)', 'Evening (17-21)': 'Noche (17-21)',
+  'This Week': 'Esta semana', 'Today': 'Hoy', 'Tomorrow': 'Mañana', 'Yesterday': 'Ayer',
+
+  // ── Revenue breakdown sources ──
+  'Room Revenue': 'Ingresos por habitaciones', 'F&B': 'Gastronomía',
+
+  // ── Clinic-specific ──
+  'Follow-up visit': 'Visita de seguimiento',
+  'Dental cleaning': 'Limpieza dental', 'Dermatology': 'Dermatología',
+
+  // ── RE Status labels ──
+  '🔥 High intent': '🔥 Alta intención', '📞 Call scheduled': '📞 Llamada agendada',
+  '📧 Followed up': '📧 Seguimiento hecho',
+
+  // ── Filter labels (All and This Week already defined above) ──
+
+  // ── Delivery / fleet ──
+  'Camión 1': 'Camión 1', 'Camión 2': 'Camión 2',
+
+  // ── Photography ──
+  'Wedding': 'Bodas', 'Portrait': 'Retrato', 'Commercial': 'Comercial', 'Family': 'Familia',
+  'Standard': 'Estándar', 'Premium': 'Premium', 'Elite': 'Elite', 'Basic': 'Básico',
+
+  // ── Tattoo styles ──
+  'Traditional': 'Tradicional', 'Realism': 'Realismo', 'Blackwork': 'Blackwork',
+  'Watercolor': 'Acuarela', 'Geometric': 'Geométrico', 'Japanese': 'Japonés', 'Art': 'Arte',
+
+  // ── Gym classes ──
+  'Yoga Flow': 'Yoga Flow', 'HIIT': 'HIIT', 'CrossFit': 'CrossFit', 'Pilates': 'Pilates', 'Boxing': 'Boxeo',
+  'Yoga & Pilates': 'Yoga y Pilates', 'CrossFit & Strength': 'CrossFit y Fuerza',
+  'HIIT & Cardio': 'HIIT y Cardio', 'Boxing & MMA': 'Boxeo y MMA',
+
+  // ── Barber services ──
+  'Classic Cut': 'Corte clásico', 'Fade + Beard': 'Fade + Barba',
+  'Hot Towel Shave': 'Afeitado con toalla caliente', 'Kids Cut': 'Corte niños',
+  'Hair Color': 'Color de pelo', 'Color & Style': 'Color y estilo',
+  'Full Service': 'Servicio completo', 'Highlights': 'Reflejos',
+  'Fades & Cuts': 'Fades y cortes', 'Beard Specialist': 'Especialista en barba',
+
+  // ── Optical ──
+  'Frames': 'Monturas', 'Lenses': 'Lentes', 'Sunglasses': 'Anteojos de sol',
+  'Contacts': 'Contacto', 'Insurance': 'Obras sociales',
+  'Eye exam': 'Examen visual', 'Frame fitting': 'Ajuste de montura',
+  'Contact lens trial': 'Prueba de lentes de contacto', 'Frame pickup': 'Retiro de montura',
+  'Prescription renewal': 'Renovación de receta',
+
+  // ── Car types ──
+  'Sedan': 'Sedán', 'SUV': 'SUV', 'Compact': 'Compacto', 'Sports': 'Deportivo',
+
+  // ── School ──
+  'Mathematics': 'Matemáticas', 'Science': 'Ciencias', 'English': 'Inglés', 'History': 'Historia',
+  'Enter': 'Ingresar', 'Escape': 'Escape',
+
+  // ── Café ──
+  'Coffee': 'Café', 'Food': 'Comida', 'Pastries': 'Pastelería', 'Tea': 'Té',
+  'Espresso': 'Espresso', 'Flat White': 'Flat White', 'Matcha Latte': 'Matcha Latte',
+  'Cold Brew': 'Cold Brew', 'Croissant': 'Croissant', 'Sourdough Bread': 'Pan de masa madre',
+  'Caesar Salad': 'Ensalada César', 'Club Sandwich': 'Club Sándwich',
+  'Banana Bread': 'Banana Bread', 'Pain au Chocolat': 'Pain au Chocolat',
+  'Cinnamon Roll': 'Rol de canela',
+
+  // ── Retail ──
+  'Clothing': 'Ropa', 'Footwear': 'Calzado', 'Accessories': 'Accesorios',
+  'All clothing': 'Toda la ropa', 'All parents': 'Todos los padres',
+
+  // ── Supermarket ──
+  'Lácteos': 'Lácteos', 'Bebidas': 'Bebidas', 'Limpieza': 'Limpieza', 'Frescos': 'Frescos',
+
+  // ── Legal ──
+  'Labor': 'Laboral', 'Criminal': 'Penal', 'Tax': 'Impositivo',
+  'Corporate Tax': 'Impuestos corporativos', 'Tax Filing': 'Declaración impositiva',
+  'Mortgage': 'Hipoteca', 'Inheritance': 'Herencia', 'Investment': 'Inversión',
+  'Bookkeeping': 'Contabilidad', 'Payroll': 'Nómina', 'Tax planning': 'Planificación fiscal',
+
+  // ── Finance ──
+  'Mortgage consult': 'Consulta hipotecaria', 'Investment review': 'Revisión de inversión',
+  'Insurance review': 'Revisión de seguro', 'Investment + Tax': 'Inversión + Impuestos',
+  'Consultation': 'Consulta',
+
+  // ── Construction ──
+  'Steel': 'Acero', 'Wood': 'Madera', 'Masonry': 'Albañilería',
+  'Plumbing': 'Plomería', 'Electrical': 'Electricidad', 'Aggregates': 'Áridos',
+  'Finishing': 'Terminaciones', 'Tools': 'Herramientas',
+
+  // ── Callout template ──
+  'This is what a CorexaStudio': 'Así se ve un sistema de CorexaStudio para',
+  'system looks like — built around your real data, workflows, and team.': '— diseñado en base a tus datos reales, procesos y equipo.',
+
+  // ── Free delivery / promo texts ──
+  'Free delivery': 'Envío gratis', 'Free shipping +€50': 'Envío gratis +€50',
+  'Spring Sale -30%': 'Oferta primavera -30%',
+
+  // ── Auto-response ──
+  'Auto-response': 'Respuesta automática',
+  'Auto-response active — industry avg: 2–3 hours': 'Respuesta automática activa — promedio del rubro: 2-3 horas',
+  'Auto-response OFF — manual replies only': 'Respuesta automática OFF — solo respuestas manuales',
+};
+
+function useDashT() {
+  const { lang } = useI18n();
+  if (lang === 'en') return (s) => s;
+  return (s) => DASH_ES[s] || s;
+}
 
 const clone = o => JSON.parse(JSON.stringify(o));
 const fmt = n => typeof n === 'number' && n >= 1000
@@ -344,7 +714,7 @@ function InlineEdit({ value, onChange, onInteract, prefix = '', suffix = '', cla
       onKeyDown={e => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') setEditing(false); }}
       autoFocus />
   );
-  return <span className={`idash__editable ${className}`} onClick={start} title="Click to edit">{prefix}{fmt(value)}{suffix}</span>;
+  return <span className={`idash__editable ${className}`} onClick={start} title={d('Click to edit')}>{prefix}{fmt(value)}{suffix}</span>;
 }
 
 function InlineText({ value, onChange, onInteract, className = '' }) {
@@ -358,7 +728,7 @@ function InlineText({ value, onChange, onInteract, className = '' }) {
       onKeyDown={e => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') setEditing(false); }}
       autoFocus />
   );
-  return <span className={`idash__editable ${className}`} onClick={start} title="Click to edit">{value}</span>;
+  return <span className={`idash__editable ${className}`} onClick={start} title={d('Click to edit')}>{value}</span>;
 }
 
 function Toggle({ on, onToggle, label, onInteract }) {
@@ -370,44 +740,45 @@ function Toggle({ on, onToggle, label, onInteract }) {
   );
 }
 
-function ResetBtn({ onReset }) {
-  return <button className="idash__reset-btn" onClick={onReset} type="button">↺ Reset</button>;
+function ResetBtn({ onReset, d }) {
+  return <button className="idash__reset-btn" onClick={onReset} type="button">{d('↺ Reset')}</button>;
 }
 
-function Callout({ industry }) {
+function Callout({ industry, d }) {
   return (
     <div className="idash__callout">
-      <p className="idash__callout-text">This is what a CorexaStudio <strong>{industry}</strong> system looks like — built around your real data, workflows, and team.</p>
-      <Link to="/contact" className="idash__callout-link">Talk to us →</Link>
+      <p className="idash__callout-text">{d('This is what a CorexaStudio')} <strong>{d(industry)}</strong> {d('system looks like — built around your real data, workflows, and team.')}</p>
+      <Link to="/contact" className="idash__callout-link">{d('Talk to us →')}</Link>
     </div>
   );
 }
 
-function DashSidebar({ title, items, active, onNav }) {
+function DashSidebar({ title, items, active, onNav, d }) {
   return (
     <aside className="idash__sidebar">
-      <p className="idash__logo">{title}</p>
+      <p className="idash__logo">{d(title)}</p>
       <nav className="idash__nav">
         {items.map(it => (
           <span key={it.id} className={`idash__nav-item ${active === it.id ? 'is-active' : ''}`}
-            onClick={() => onNav(it.id)}>{it.label}</span>
+            onClick={() => onNav(it.id)}>{d(it.label)}</span>
         ))}
       </nav>
     </aside>
   );
 }
 
-function DashTopbar({ title, alerts, onSettings, children }) {
-  const dateStr = new Date().toLocaleDateString('en-IE', { weekday: 'short', month: 'short', day: 'numeric' });
+function DashTopbar({ title, alerts, onSettings, children, d }) {
+  const { lang } = useI18n();
+  const dateStr = new Date().toLocaleDateString(lang === 'es' ? 'es-AR' : 'en-IE', { weekday: 'short', month: 'short', day: 'numeric' });
   return (
     <div className="idash__topbar">
       <div className="idash__topbar-left">
-        <span className="idash__topbar-title">{title}</span>
+        <span className="idash__topbar-title">{d(title)}</span>
         <span className="idash__topbar-date">{dateStr}</span>
       </div>
       <div className="idash__topbar-right">
-        {alerts > 0 && <span className="idash__topbar-alerts">🔔 {alerts} alerts</span>}
-        <button className="idash__topbar-btn" type="button" onClick={onSettings}>Settings</button>
+        {alerts > 0 && <span className="idash__topbar-alerts">🔔 {alerts} {d('alerts')}</span>}
+        <button className="idash__topbar-btn" type="button" onClick={onSettings}>{d('Settings')}</button>
       </div>
       {children}
     </div>
@@ -423,6 +794,7 @@ const HOSP_NAV = [
 ];
 
 function HospitalityDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(HOSP_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
@@ -439,7 +811,7 @@ function HospitalityDash({ onInteract }) {
   function cycleRoom(row, col) {
     act();
     setData(prev => { const n = clone(prev); n.roomGrid[row][col] = (n.roomGrid[row][col] + 1) % 4; return n; });
-    showToast('Room status changed');
+    showToast(d('Room status changed'));
   }
   function cycleArrivalStatus(idx) {
     act();
@@ -448,19 +820,19 @@ function HospitalityDash({ onInteract }) {
   function setResStatus(idx, status) {
     act();
     setData(prev => { const n = clone(prev); n.reservations[idx].status = status; return n; });
-    if (status === 'cancelled') showToast('Reservation cancelled');
+    if (status === 'cancelled') showToast(d('Reservation cancelled'));
   }
   function addReservation() {
     act();
     const maxId = data.reservations.reduce((m, r) => Math.max(m, parseInt(r.id.replace('R-', ''))), 1000);
     const nr = { id: `R-${maxId + 1}`, guest: 'New Guest', room: '—', checkIn: 'TBD', checkOut: 'TBD', nights: 0, status: 'pending' };
     setData(prev => ({ ...prev, reservations: [nr, ...prev.reservations] }));
-    showToast('New reservation added');
+    showToast(d('New reservation added'));
   }
   function cycleStaffStatus(idx) {
     act();
     setData(prev => { const n = clone(prev); n.staff[idx].status = STAFF_CYCLE[n.staff[idx].status]; return n; });
-    showToast('Staff status updated');
+    showToast(d('Staff status updated'));
   }
   function updateStaff(idx, field, val) {
     act();
@@ -469,7 +841,7 @@ function HospitalityDash({ onInteract }) {
   function addStaff() {
     act();
     setData(prev => ({ ...prev, staff: [...prev.staff, { name: 'New Staff', role: 'Unassigned', shift: '09:00 – 17:00', status: 'off-duty', phone: '—' }] }));
-    showToast('Staff member added');
+    showToast(d('Staff member added'));
   }
   function bumpRevBar(idx) {
     act();
@@ -484,64 +856,64 @@ function HospitalityDash({ onInteract }) {
     <div className="idash idash--hosp">
       <DashSidebar title="Hotel Dashboard" items={HOSP_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Hotel Dashboard" alerts={3} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Hotel Dashboard" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {/* ── OVERVIEW ── */}
         {view === 'overview' && <>
           <div className="idash__stats">
             <div className="idash__stat">
-              <span className="idash__stat-label">Occupied Rooms</span>
+              <span className="idash__stat-label">{d('Occupied Rooms')}</span>
               <span className="idash__stat-value">{occupied}<span className="idash__stat-dim">/{totalRooms}</span></span>
               <div className="idash__bar"><div className="idash__bar-fill" style={{ width: `${occPct}%` }} /></div>
             </div>
             <div className="idash__stat">
-              <span className="idash__stat-label">Check-ins Today</span>
+              <span className="idash__stat-label">{d('Check-ins Today')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.checkIns} onChange={v => set('checkIns', v)} onInteract={act} /></span>
-              <span className="idash__stat-note">guests arriving</span>
+              <span className="idash__stat-note">{d('guests arriving')}</span>
             </div>
             <div className="idash__stat">
-              <span className="idash__stat-label">Check-outs Today</span>
+              <span className="idash__stat-label">{d('Check-outs Today')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.checkOuts} onChange={v => set('checkOuts', v)} onInteract={act} /></span>
-              <span className="idash__stat-note">rooms freeing up</span>
+              <span className="idash__stat-note">{d('rooms freeing up')}</span>
             </div>
             <div className="idash__stat">
-              <span className="idash__stat-label">Monthly Revenue</span>
+              <span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.revenue} onChange={v => set('revenue', v)} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+12%</span>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+12%')}</span>
             </div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Today's Arrivals</h4>
-              <table className="idash__table"><thead><tr><th>Guest</th><th>Room</th><th>Time</th><th>Status</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Today\'s Arrivals')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Guest')}</th><th>{d('Room')}</th><th>{d('Time')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.arrivals.map((a, i) => (
                   <tr key={i}><td>{a.guest}</td><td>{a.room}</td><td>{a.time}</td><td>
                     <span className={`idash__badge idash__badge--${a.status === 'confirmed' ? 'ok' : 'wait'} idash__editable`}
-                      onClick={() => cycleArrivalStatus(i)} title="Click to toggle">{a.status === 'confirmed' ? 'Confirmed ✓' : 'Pending ⏳'}</span>
+                      onClick={() => cycleArrivalStatus(i)} title={d('Click to toggle')}>{a.status === 'confirmed' ? d('Confirmed ✓') : d('Pending ⏳')}</span>
                   </td></tr>
                 ))}
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Room Status</h4>
+              <h4 className="idash__panel-title">{d('Room Status')}</h4>
               <div className="idash__room-grid">
                 {grid.map((row, ri) => row.map((s, ci) => (
                   <span key={`${ri}-${ci}`} className={`idash__room idash__room--${ROOM_CSS[s]} idash__room--clickable`}
-                    onClick={() => cycleRoom(ri, ci)} title={`Room ${roomNum(ri, ci)} — ${ROOM_STATES[s]}`} />
+                    onClick={() => cycleRoom(ri, ci)} title={`Room ${roomNum(ri, ci)} — ${d(ROOM_STATES[s])}`} />
                 )))}
               </div>
               <div className="idash__legend">
-                <span><span className="idash__room idash__room--avail" />Available</span>
-                <span><span className="idash__room idash__room--occ" />Occupied</span>
-                <span><span className="idash__room idash__room--clean" />Cleaning</span>
-                <span><span className="idash__room idash__room--maint" />Maintenance</span>
+                <span><span className="idash__room idash__room--avail" />{d('Available')}</span>
+                <span><span className="idash__room idash__room--occ" />{d('Occupied')}</span>
+                <span><span className="idash__room idash__room--clean" />{d('Cleaning')}</span>
+                <span><span className="idash__room idash__room--maint" />{d('Maintenance')}</span>
               </div>
             </div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Staff Schedule Today</h4>
+              <h4 className="idash__panel-title">{d('Staff Schedule Today')}</h4>
               <div className="idash__staff-list">
                 {data.staff.slice(0, 3).map(s => (
                   <div key={s.name} className="idash__staff-card">
@@ -553,15 +925,15 @@ function HospitalityDash({ onInteract }) {
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Upcoming Deliveries</h4>
+              <h4 className="idash__panel-title">{d('Upcoming Deliveries')}</h4>
               <div className="idash__deliveries">
                 {[{ sup: 'FreshFoods Ltd', t: '09:00', items: 'Produce, dairy, bread' },
                   { sup: 'CleanPro', t: '11:30', items: 'Cleaning supplies, linens' },
-                  { sup: 'BevCo', t: '14:00', items: 'Beverages, minibar restock' }].map(d => (
-                  <div key={d.sup} className="idash__delivery-row">
-                    <span className="idash__delivery-sup">{d.sup}</span>
-                    <span className="idash__delivery-time">{d.t}</span>
-                    <span className="idash__delivery-items">{d.items}</span>
+                  { sup: 'BevCo', t: '14:00', items: 'Beverages, minibar restock' }].map(dl => (
+                  <div key={dl.sup} className="idash__delivery-row">
+                    <span className="idash__delivery-sup">{dl.sup}</span>
+                    <span className="idash__delivery-time">{dl.t}</span>
+                    <span className="idash__delivery-items">{dl.items}</span>
                   </div>
                 ))}
               </div>
@@ -572,12 +944,12 @@ function HospitalityDash({ onInteract }) {
         {/* ── RESERVATIONS ── */}
         {view === 'reservations' && <>
           <div className="idash__panel">
-            <div className="idash__panel-head"><h4 className="idash__panel-title">Reservations</h4>
-              <button className="idash__add-btn" onClick={addReservation} type="button">+ New Reservation</button></div>
-            <table className="idash__table"><thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Nights</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+            <div className="idash__panel-head"><h4 className="idash__panel-title">{d('Reservations')}</h4>
+              <button className="idash__add-btn" onClick={addReservation} type="button">{d('+ New Reservation')}</button></div>
+            <table className="idash__table"><thead><tr><th>{d('ID')}</th><th>{d('Guest')}</th><th>{d('Room')}</th><th>{d('Check-in')}</th><th>{d('Check-out')}</th><th>{d('Nights')}</th><th>{d('Status')}</th><th>{d('Actions')}</th></tr></thead><tbody>
               {data.reservations.map((r, i) => (
                 <tr key={r.id}><td>{r.id}</td><td>{r.guest}</td><td>{r.room}</td><td>{r.checkIn}</td><td>{r.checkOut}</td><td>{r.nights}</td>
-                  <td><span className={`idash__badge ${RES_CSS[r.status]}`}>{r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span></td>
+                  <td><span className={`idash__badge ${RES_CSS[r.status]}`}>{d(r.status.charAt(0).toUpperCase() + r.status.slice(1))}</span></td>
                   <td className="idash__actions">
                     {r.status !== 'cancelled' && <>
                       <button className="idash__action-btn" onClick={() => setResStatus(i, r.status === 'confirmed' ? 'pending' : 'confirmed')}>Edit</button>
@@ -592,19 +964,19 @@ function HospitalityDash({ onInteract }) {
         {/* ── ROOMS ── */}
         {view === 'rooms' && <>
           <div className="idash__room-summary">
-            <span>{available} available</span><span className="idash__room-summary-dot">·</span>
-            <span>{occupied} occupied</span><span className="idash__room-summary-dot">·</span>
-            <span>{cleaning} cleaning</span><span className="idash__room-summary-dot">·</span>
-            <span>{maint} maintenance</span>
+            <span>{available} {d('available')}</span><span className="idash__room-summary-dot">·</span>
+            <span>{occupied} {d('occupied')}</span><span className="idash__room-summary-dot">·</span>
+            <span>{cleaning} {d('cleaning')}</span><span className="idash__room-summary-dot">·</span>
+            <span>{maint} {d('maintenance')}</span>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Room Management — 24 Rooms</h4>
+            <h4 className="idash__panel-title">{d('Room Management — 24 Rooms')}</h4>
             <div className="idash__room-mgmt">
               {grid.map((row, ri) => row.map((s, ci) => (
                 <div key={`${ri}-${ci}`} className={`idash__room-cell idash__room-cell--${ROOM_CSS[s]}`}
-                  onClick={() => cycleRoom(ri, ci)} title="Click to cycle status">
+                  onClick={() => cycleRoom(ri, ci)} title={d('Click to cycle status')}>
                   <span className="idash__room-cell-num">{roomNum(ri, ci)}</span>
-                  <span className="idash__room-cell-label">{ROOM_STATES[s]}</span>
+                  <span className="idash__room-cell-label">{d(ROOM_STATES[s])}</span>
                 </div>
               )))}
             </div>
@@ -617,15 +989,15 @@ function HospitalityDash({ onInteract }) {
         {/* ── STAFF ── */}
         {view === 'staff' && <>
           <div className="idash__panel">
-            <div className="idash__panel-head"><h4 className="idash__panel-title">Staff Management</h4>
-              <button className="idash__add-btn" onClick={addStaff} type="button">+ Add Staff</button></div>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Role</th><th>Shift</th><th>Status</th><th>Phone</th></tr></thead><tbody>
+            <div className="idash__panel-head"><h4 className="idash__panel-title">{d('Staff Management')}</h4>
+              <button className="idash__add-btn" onClick={addStaff} type="button">{d('+ Add Staff')}</button></div>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Role')}</th><th>{d('Shift')}</th><th>{d('Status')}</th><th>{d('Phone')}</th></tr></thead><tbody>
               {data.staff.map((s, i) => (
                 <tr key={i}>
                   <td><InlineText value={s.name} onChange={v => updateStaff(i, 'name', v)} onInteract={act} /></td>
                   <td>{s.role}</td>
                   <td><InlineText value={s.shift} onChange={v => updateStaff(i, 'shift', v)} onInteract={act} /></td>
-                  <td><span className={`idash__badge ${STAFF_CSS[s.status]} idash__editable`} onClick={() => cycleStaffStatus(i)} title="Click to cycle">{STAFF_LABEL[s.status]}</span></td>
+                  <td><span className={`idash__badge ${STAFF_CSS[s.status]} idash__editable`} onClick={() => cycleStaffStatus(i)} title={d('Click to cycle')}>{d(STAFF_LABEL[s.status])}</span></td>
                   <td className="idash__mono">{s.phone}</td>
                 </tr>
               ))}
@@ -636,44 +1008,44 @@ function HospitalityDash({ onInteract }) {
         {/* ── REVENUE ── */}
         {view === 'revenue' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.revenue} onChange={v => set('revenue', v)} onInteract={act} prefix="€" /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Avg. Daily</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Avg. Daily')}</span>
               <span className="idash__stat-value">€{fmt(Math.round(data.revenue / 30))}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Occupancy</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Occupancy')}</span>
               <span className="idash__stat-value">{occPct}%</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">7-Day Revenue</h4>
+              <h4 className="idash__panel-title">{d('7-Day Revenue')}</h4>
               <div className="idash__chart">
-                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d, i) => {
+                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((day, i) => {
                   const maxR = Math.max(...data.weekRev);
                   return (
-                    <div key={d} className="idash__chart-col">
+                    <div key={day} className="idash__chart-col">
                       <div className="idash__chart-bar idash__chart-bar--interactive"
                         style={{ height: `${(data.weekRev[i] / Math.max(maxR, 1)) * 100}%` }}
-                        onClick={() => bumpRevBar(i)} title={`€${fmt(data.weekRev[i])} — click to adjust`} />
-                      <span className="idash__chart-label">{d}</span>
+                        onClick={() => bumpRevBar(i)} title={`€${fmt(data.weekRev[i])} — ${d('Click to adjust')}`} />
+                      <span className="idash__chart-label">{d(day)}</span>
                     </div>
                   );
                 })}
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Revenue Breakdown</h4>
-              <table className="idash__table"><thead><tr><th>Source</th><th>Amount</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Revenue Breakdown')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Source')}</th><th>{d('Amount')}</th></tr></thead><tbody>
                 <tr><td>Room Revenue</td><td><InlineEdit value={data.breakdown.rooms} onChange={v => setBreakdown('rooms', v)} onInteract={act} prefix="€" /></td></tr>
                 <tr><td>F&B</td><td><InlineEdit value={data.breakdown.fnb} onChange={v => setBreakdown('fnb', v)} onInteract={act} prefix="€" /></td></tr>
                 <tr><td>Extras</td><td><InlineEdit value={data.breakdown.extras} onChange={v => setBreakdown('extras', v)} onInteract={act} prefix="€" /></td></tr>
                 <tr><td><strong>Total</strong></td><td><strong>€{fmt(data.breakdown.rooms + data.breakdown.fnb + data.breakdown.extras)}</strong></td></tr>
               </tbody></table>
-              <button className="idash__add-btn" style={{ marginTop: 12 }} onClick={() => showToast('Report exported ✓')} type="button">Export Report</button>
+              <button className="idash__add-btn" style={{ marginTop: 12 }} onClick={() => showToast(d('Report exported ✓'))} type="button">Export Report</button>
             </div>
           </div>
         </>}
 
-        <Callout industry="hospitality" />
+        <Callout industry="hospitality" d={d} />
         <ResetBtn onReset={() => { setData(clone(HOSP_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -689,6 +1061,7 @@ const CLINIC_NAV = [
 ];
 
 function ClinicsDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(CLINIC_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
@@ -718,7 +1091,7 @@ function ClinicsDash({ onInteract }) {
   function togglePatientStatus(idx) {
     act();
     setData(prev => { const n = clone(prev); n.patients[idx].status = n.patients[idx].status === 'active' ? 'inactive' : 'active'; return n; });
-    showToast('Patient status updated');
+    showToast(d('Patient status updated'));
   }
   const set = (field, val) => setData(prev => ({ ...prev, [field]: val }));
 
@@ -726,42 +1099,42 @@ function ClinicsDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Clinic Dashboard" items={CLINIC_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Clinic Dashboard" alerts={2} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Clinic Dashboard" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {/* ── OVERVIEW ── */}
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Appointments Today</span><span className="idash__stat-value">{apptCount}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">No-shows Prevented</span><span className="idash__stat-value">{reminded}</span><span className="idash__stat-badge idash__stat-badge--up">Auto-reminded</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Patients Waiting</span><span className="idash__stat-value"><InlineEdit value={data.waiting} onChange={v => set('waiting', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.revenue} onChange={v => set('revenue', v)} onInteract={act} prefix="€" /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Appointments Today')}</span><span className="idash__stat-value">{apptCount}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('No-shows Prevented')}</span><span className="idash__stat-value">{reminded}</span><span className="idash__stat-badge idash__stat-badge--up">{d('Auto-reminded')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Patients Waiting')}</span><span className="idash__stat-value"><InlineEdit value={data.waiting} onChange={v => set('waiting', v)} onInteract={act} /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.revenue} onChange={v => set('revenue', v)} onInteract={act} prefix="€" /></span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Today's Schedule</h4>
+              <h4 className="idash__panel-title">{d('Today\'s Schedule')}</h4>
               <div className="idash__timeline">
                 {data.schedule.map((s, i) => (
                   <div key={i} className={`idash__tl-slot ${s.filled ? 'is-filled' : 'is-empty'} idash__tl-slot--clickable`}
                     onClick={() => toggleSlot(i)} title={s.filled ? 'Click to cancel' : 'Click to book walk-in'}>
                     <span className="idash__tl-time">{s.time}</span>
                     {s.filled ? <span className="idash__tl-info">{s.patient} — {s.proc} — {s.doc}</span>
-                      : <span className="idash__tl-avail">Available — click to book</span>}
+                      : <span className="idash__tl-avail">{d('Available — click to book')}</span>}
                   </div>
                 ))}
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Reminder Status</h4>
+              <h4 className="idash__panel-title">{d('Reminder Status')}</h4>
               <div className="idash__reminder-list">
                 {data.reminders.map((r, i) => (
                   <div key={i} className="idash__reminder-row"><span>{r.label}</span>
                     <span className={`idash__badge ${r.sent ? 'idash__badge--ok' : 'idash__badge--wait'} idash__editable`}
-                      onClick={() => toggleReminder(i)} title="Click to toggle">{r.sent ? '✅ Reminded' : '⏳ Pending'}</span>
+                      onClick={() => toggleReminder(i)} title={d('Click to toggle')}>{r.sent ? d('✅ Reminded') : d('⏳ Pending')}</span>
                   </div>
                 ))}
               </div>
-              <p className="idash__reminder-note">{reminded} no-shows prevented this week — €{reminded * 113} recovered</p>
+              <p className="idash__reminder-note">{reminded} {d('no-shows prevented this week')} — €{reminded * 113} {d('recovered')}</p>
             </div>
           </div>
         </>}
@@ -769,19 +1142,19 @@ function ClinicsDash({ onInteract }) {
         {/* ── SCHEDULE ── */}
         {view === 'schedule' && <>
           <div className="idash__room-summary">
-            <span>{apptCount} booked</span><span className="idash__room-summary-dot">·</span>
-            <span>{data.schedule.length - apptCount} available</span><span className="idash__room-summary-dot">·</span>
-            <span>{data.schedule.length} total slots</span>
+            <span>{apptCount} {d('booked')}</span><span className="idash__room-summary-dot">·</span>
+            <span>{data.schedule.length - apptCount} {d('available')}</span><span className="idash__room-summary-dot">·</span>
+            <span>{data.schedule.length} {d('total slots')}</span>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Full Day Schedule</h4>
+            <h4 className="idash__panel-title">{d('Full Day Schedule')}</h4>
             <div className="idash__timeline">
               {data.schedule.map((s, i) => (
                 <div key={i} className={`idash__tl-slot ${s.filled ? 'is-filled' : 'is-empty'} idash__tl-slot--clickable`}
                   onClick={() => toggleSlot(i)} title={s.filled ? 'Click to cancel' : 'Click to book walk-in'}>
                   <span className="idash__tl-time">{s.time}</span>
                   {s.filled ? <span className="idash__tl-info">{s.patient} — {s.proc} — {s.doc}</span>
-                    : <span className="idash__tl-avail">Available — click to book</span>}
+                    : <span className="idash__tl-avail">{d('Available — click to book')}</span>}
                 </div>
               ))}
             </div>
@@ -791,12 +1164,12 @@ function ClinicsDash({ onInteract }) {
         {/* ── PATIENTS ── */}
         {view === 'patients' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Patient Records</h4>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Last Visit</th><th>Next Appt</th><th>Phone</th><th>Notes</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Patient Records')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Last Visit')}</th><th>{d('Next Appt')}</th><th>{d('Phone')}</th><th>{d('Notes')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.patients.map((p, i) => (
                 <tr key={i}><td>{p.name}</td><td>{p.lastVisit}</td><td>{p.nextAppt}</td><td className="idash__mono">{p.phone}</td><td>{p.notes}</td>
                   <td><span className={`idash__badge ${p.status === 'active' ? 'idash__badge--ok' : 'idash__badge--wait'} idash__editable`}
-                    onClick={() => togglePatientStatus(i)} title="Click to toggle">{p.status === 'active' ? 'Active' : 'Inactive'}</span></td>
+                    onClick={() => togglePatientStatus(i)} title={d('Click to toggle')}>{p.status === 'active' ? d('Active') : d('Inactive')}</span></td>
                 </tr>
               ))}
             </tbody></table>
@@ -806,37 +1179,37 @@ function ClinicsDash({ onInteract }) {
         {/* ── REPORTS ── */}
         {view === 'reports' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Total Appointments</span><span className="idash__stat-value">124</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Cancellation Rate</span><span className="idash__stat-value">4.2%</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Avg. Wait Time</span><span className="idash__stat-value">8 min</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value">€{fmt(data.revenue)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Total Appointments')}</span><span className="idash__stat-value">124</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Cancellation Rate')}</span><span className="idash__stat-value">4.2%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Avg. Wait Time')}</span><span className="idash__stat-value">8 min</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value">€{fmt(data.revenue)}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Weekly Revenue</h4>
+              <h4 className="idash__panel-title">{d('Weekly Revenue')}</h4>
               <div className="idash__chart">
-                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d, i) => (
-                  <div key={d} className="idash__chart-col">
+                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((day, i) => (
+                    <div key={day} className="idash__chart-col">
                     <div className="idash__chart-bar idash__chart-bar--interactive" style={{ height: `${data.weekRev[i]}%` }}
-                      onClick={() => bumpBar(i)} title="Click to adjust" />
-                    <span className="idash__chart-label">{d}</span>
+                      onClick={() => bumpBar(i)} title={d('Click to adjust')} />
+                    <span className="idash__chart-label">{d(day)}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Top Procedures</h4>
+              <h4 className="idash__panel-title">{d('Top Procedures')}</h4>
               <div className="idash__proc-list">
                 {[{ n: 'General checkup', c: 34, rev: 2040 }, { n: 'Follow-up visit', c: 22, rev: 1100 }, { n: 'Dental cleaning', c: 18, rev: 1440 }, { n: 'Dermatology', c: 14, rev: 1120 }].map(p => (
                   <div key={p.n} className="idash__proc-row"><span>{p.n}</span><span className="idash__proc-count">{p.c} × — €{fmt(p.rev)}</span></div>
                 ))}
               </div>
-              <button className="idash__add-btn" style={{ marginTop: 12 }} onClick={() => showToast('Report exported ✓')} type="button">Export Report</button>
+              <button className="idash__add-btn" style={{ marginTop: 12 }} onClick={() => showToast(d('Report exported ✓'))} type="button">Export Report</button>
             </div>
           </div>
         </>}
 
-        <Callout industry="clinics" />
+        <Callout industry="clinics" d={d} />
         <ResetBtn onReset={() => { setData(clone(CLINIC_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -852,19 +1225,20 @@ const RE_NAV = [
 ];
 
 function RealEstateDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(RE_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function cycleLeadStatus(idx) { act(); setData(prev => { const n = clone(prev); n.leads[idx].status = RE_STATUS_CYCLE[n.leads[idx].status]; return n; }); showToast('Lead status updated'); }
+  function cycleLeadStatus(idx) { act(); setData(prev => { const n = clone(prev); n.leads[idx].status = RE_STATUS_CYCLE[n.leads[idx].status]; return n; }); showToast(d('Lead status updated')); }
   function adjustInquiries(delta) { act(); setData(prev => ({ ...prev, inquiries: Math.max(0, prev.inquiries + delta) })); }
   function updateFunnel(idx, val) { setData(prev => { const n = clone(prev); n.funnel[idx].n = val; return n; }); }
-  function cyclePropStatus(idx) { act(); setData(prev => { const n = clone(prev); n.properties[idx].status = PROP_STATUS_CYCLE[n.properties[idx].status]; return n; }); showToast('Listing status updated'); }
+  function cyclePropStatus(idx) { act(); setData(prev => { const n = clone(prev); n.properties[idx].status = PROP_STATUS_CYCLE[n.properties[idx].status]; return n; }); showToast(d('Listing status updated')); }
   function addLead() {
     act();
     setData(prev => ({ ...prev, leads: [{ name: 'New Lead', prop: '—', budget: '—', status: 'followed' }, ...prev.leads] }));
-    showToast('Lead added');
+    showToast(d('Lead added'));
   }
   const set = (field, val) => setData(prev => ({ ...prev, [field]: val }));
 
@@ -872,42 +1246,42 @@ function RealEstateDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Real Estate CRM" items={RE_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Real Estate CRM" alerts={5} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Real Estate CRM" alerts={5} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {/* ── OVERVIEW ── */}
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Active Listings</span><span className="idash__stat-value"><InlineEdit value={data.listings} onChange={v => set('listings', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">New Inquiries Today</span><span className="idash__stat-value">
+            <div className="idash__stat"><span className="idash__stat-label">{d('Active Listings')}</span><span className="idash__stat-value"><InlineEdit value={data.listings} onChange={v => set('listings', v)} onInteract={act} /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('New Inquiries Today')}</span><span className="idash__stat-value">
               <span className="idash__adj-group"><button className="idash__adj-btn" onClick={() => adjustInquiries(-1)}>−</button><span>{data.inquiries}</span><button className="idash__adj-btn" onClick={() => adjustInquiries(1)}>+</button></span>
             </span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Visits Scheduled</span><span className="idash__stat-value"><InlineEdit value={data.visits} onChange={v => set('visits', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Leads Qualified</span><span className="idash__stat-value">12</span><span className="idash__stat-badge idash__stat-badge--up">Auto-qualified</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Visits Scheduled')}</span><span className="idash__stat-value"><InlineEdit value={data.visits} onChange={v => set('visits', v)} onInteract={act} /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Leads Qualified')}</span><span className="idash__stat-value">12</span><span className="idash__stat-badge idash__stat-badge--up">{d('Auto-qualified')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Hot Leads</h4>
-              <table className="idash__table"><thead><tr><th>Name</th><th>Property</th><th>Budget</th><th>Status</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Hot Leads')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Property')}</th><th>{d('Budget')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.leads.map((l, i) => (
                   <tr key={i}><td>{l.name}</td><td>{l.prop}</td><td>{l.budget}</td><td>
-                    <span className={`idash__badge ${RE_STATUS_CLASS[l.status]} idash__editable`} onClick={() => cycleLeadStatus(i)} title="Click to cycle">{RE_STATUS_LABELS[l.status]}</span>
+                    <span className={`idash__badge ${RE_STATUS_CLASS[l.status]} idash__editable`} onClick={() => cycleLeadStatus(i)} title={d('Click to cycle')}>{d(RE_STATUS_LABELS[l.status])}</span>
                   </td></tr>
                 ))}
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Response Time</h4>
+              <h4 className="idash__panel-title">{d('Response Time')}</h4>
               <div className="idash__response-row">
                 <span className="idash__big-metric">Avg. 4 min</span>
-                <Toggle on={data.autoResponse} onToggle={v => set('autoResponse', v)} label="Auto-response" onInteract={act} />
+                <Toggle on={data.autoResponse} onToggle={v => set('autoResponse', v)} label={d('Auto-response')} onInteract={act} />
               </div>
-              <p className="idash__metric-note">{data.autoResponse ? 'Auto-response active — industry avg: 2–3 hours' : 'Auto-response OFF — manual replies only'}</p>
+              <p className="idash__metric-note">{data.autoResponse ? d('Auto-response active — industry avg: 2–3 hours') : d('Auto-response OFF — manual replies only')}</p>
             </div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">This Week's Visits</h4>
+              <h4 className="idash__panel-title">{d('This Week\'s Visits')}</h4>
               <div className="idash__week-cal">
                 {Object.entries(RE_VISITS).map(([day, visits]) => (
                   <div key={day} className="idash__cal-day"><span className="idash__cal-day-label">{day}</span>
@@ -919,7 +1293,7 @@ function RealEstateDash({ onInteract }) {
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Conversion Funnel</h4>
+              <h4 className="idash__panel-title">{d('Conversion Funnel')}</h4>
               <div className="idash__funnel">
                 {data.funnel.map((f, i) => (
                   <div key={f.s} className="idash__funnel-step">
@@ -941,11 +1315,11 @@ function RealEstateDash({ onInteract }) {
             <span>{data.properties.filter(p => p.status === 'sold').length} sold</span>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Property Listings</h4>
-            <table className="idash__table"><thead><tr><th>Address</th><th>Type</th><th>Beds</th><th>Price</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Property Listings')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Address')}</th><th>{d('Type')}</th><th>{d('Beds')}</th><th>{d('Price')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.properties.map((p, i) => (
                 <tr key={i}><td>{p.addr}</td><td>{p.type}</td><td>{p.beds}</td><td>{p.price}</td>
-                  <td><span className={`idash__badge ${PROP_STATUS_CSS[p.status]} idash__editable`} onClick={() => cyclePropStatus(i)} title="Click to cycle">{PROP_STATUS_LABEL[p.status]}</span></td>
+                  <td><span className={`idash__badge ${PROP_STATUS_CSS[p.status]} idash__editable`} onClick={() => cyclePropStatus(i)} title={d('Click to cycle')}>{d(PROP_STATUS_LABEL[p.status])}</span></td>
                 </tr>
               ))}
             </tbody></table>
@@ -955,12 +1329,12 @@ function RealEstateDash({ onInteract }) {
         {/* ── LEADS ── */}
         {view === 'leads' && <>
           <div className="idash__panel">
-            <div className="idash__panel-head"><h4 className="idash__panel-title">Lead Pipeline</h4>
-              <button className="idash__add-btn" onClick={addLead} type="button">+ Add Lead</button></div>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Property Interest</th><th>Budget</th><th>Status</th></tr></thead><tbody>
+            <div className="idash__panel-head"><h4 className="idash__panel-title">{d('Lead Pipeline')}</h4>
+              <button className="idash__add-btn" onClick={addLead} type="button">{d('+ Add Lead')}</button></div>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Property Interest')}</th><th>{d('Budget')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.leads.map((l, i) => (
                 <tr key={i}><td>{l.name}</td><td>{l.prop}</td><td>{l.budget}</td>
-                  <td><span className={`idash__badge ${RE_STATUS_CLASS[l.status]} idash__editable`} onClick={() => cycleLeadStatus(i)} title="Click to cycle">{RE_STATUS_LABELS[l.status]}</span></td>
+                  <td><span className={`idash__badge ${RE_STATUS_CLASS[l.status]} idash__editable`} onClick={() => cycleLeadStatus(i)} title={d('Click to cycle')}>{d(RE_STATUS_LABELS[l.status])}</span></td>
                 </tr>
               ))}
             </tbody></table>
@@ -970,7 +1344,7 @@ function RealEstateDash({ onInteract }) {
         {/* ── CALENDAR ── */}
         {view === 'calendar' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Weekly Visit Calendar</h4>
+            <h4 className="idash__panel-title">{d('Weekly Visit Calendar')}</h4>
             <div className="idash__week-cal">
               {Object.entries(RE_VISITS).map(([day, visits]) => (
                 <div key={day} className="idash__cal-day"><span className="idash__cal-day-label">{day}</span>
@@ -983,7 +1357,7 @@ function RealEstateDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="real estate" />
+        <Callout industry="real estate" d={d} />
         <ResetBtn onReset={() => { setData(clone(RE_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -1045,6 +1419,7 @@ const BARBER_DEFAULTS = {
 };
 
 function BarbershopDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(BARBER_DEFAULTS));
   const [view, setView] = useState('overview');
   const [filter, setFilter] = useState('Today');
@@ -1055,7 +1430,7 @@ function BarbershopDash({ onInteract }) {
   function cycleSchedStatus(i) {
     act();
     setData(prev => { const n = clone(prev); n.schedule[i].status = BARBER_STATUS_CYCLE[n.schedule[i].status]; return n; });
-    showToast('Status updated');
+    showToast(d('Status updated'));
   }
   function updateService(i, field, val) {
     act();
@@ -1065,7 +1440,7 @@ function BarbershopDash({ onInteract }) {
   function cancelAppt(idx) {
     act();
     setData(prev => ({ ...prev, upcoming: prev.upcoming.filter((_, j) => j !== idx) }));
-    showToast('Appointment cancelled');
+    showToast(d('Appointment cancelled'));
   }
 
   const filteredUpcoming = data.upcoming.filter(u => u.day === filter);
@@ -1075,43 +1450,43 @@ function BarbershopDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Barbershop" items={BARBER_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Barbershop Manager" alerts={1} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Barbershop Manager" alerts={1} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
             <div className="idash__stat">
-              <span className="idash__stat-label">Today's Appointments</span>
+              <span className="idash__stat-label">{d('Today\'s Appointments')}</span>
               <span className="idash__stat-value">{data.todayAppts}<span className="idash__stat-dim">/{data.todayCap}</span></span>
             </div>
             <div className="idash__stat">
-              <span className="idash__stat-label">Walk-ins Today</span>
+              <span className="idash__stat-label">{d('Walk-ins Today')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.walkIns} onChange={v => set('walkIns', v)} onInteract={act} /></span>
             </div>
             <div className="idash__stat">
-              <span className="idash__stat-label">Avg Ticket</span>
+              <span className="idash__stat-label">{d('Avg Ticket')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.avgTicket} onChange={v => set('avgTicket', v)} onInteract={act} prefix="€" /></span>
             </div>
             <div className="idash__stat">
-              <span className="idash__stat-label">Monthly Revenue</span>
+              <span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => set('monthlyRev', v)} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+8%</span>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+8%')}</span>
             </div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Today's Schedule</h4>
-              <table className="idash__table"><thead><tr><th>Time</th><th>Client</th><th>Service</th><th>Barber</th><th>Status</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Today\'s Schedule')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Time')}</th><th>{d('Client')}</th><th>{d('Service')}</th><th>{d('Barber')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.schedule.map((s, i) => (
                   <tr key={i}>
                     <td>{s.time}</td><td>{s.client}</td><td>{s.service}</td><td>{s.barber}</td>
-                    <td><span className={`idash__badge ${BARBER_STATUS_CSS[s.status]} idash__editable`} onClick={() => cycleSchedStatus(i)} title="Click to cycle">{BARBER_STATUS_LABEL[s.status]}</span></td>
+                    <td><span className={`idash__badge ${BARBER_STATUS_CSS[s.status]} idash__editable`} onClick={() => cycleSchedStatus(i)} title={d('Click to cycle')}>{d(BARBER_STATUS_LABEL[s.status])}</span></td>
                   </tr>
                 ))}
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Chair Status</h4>
+              <h4 className="idash__panel-title">{d('Chair Status')}</h4>
               <div className="idash__room-mgmt" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
                 {data.chairs.map(c => (
                   <div key={c.n} className={`idash__room-cell idash__room-cell--${CHAIR_CSS[c.status]}`}>
@@ -1127,13 +1502,13 @@ function BarbershopDash({ onInteract }) {
 
         {view === 'appointments' && <>
           <div className="idash__filter-bar">
-            {['Today', 'Tomorrow', 'This Week'].map(d => (
-              <button key={d} type="button" className={`idash__filter-btn ${filter === d ? 'is-active' : ''}`} onClick={() => { setFilter(d); act(); }}>{d}</button>
+            {['Today', 'Tomorrow', 'This Week'].map(f => (
+              <button key={f} type="button" className={`idash__filter-btn ${filter === f ? 'is-active' : ''}`} onClick={() => { setFilter(f); act(); }}>{d(f)}</button>
             ))}
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Upcoming Appointments — {filter}</h4>
-            <table className="idash__table"><thead><tr><th>Time</th><th>Client</th><th>Service</th><th>Actions</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Appointments')} — {d(filter)}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Time')}</th><th>{d('Client')}</th><th>{d('Service')}</th><th>{d('Actions')}</th></tr></thead><tbody>
               {filteredUpcoming.length === 0 ? (
                 <tr><td colSpan={4} style={{ color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '18px 0' }}>No appointments</td></tr>
               ) : filteredUpcoming.map(u => {
@@ -1154,7 +1529,7 @@ function BarbershopDash({ onInteract }) {
 
         {view === 'staff' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Barbers Today</h4>
+            <h4 className="idash__panel-title">{d('Barbers Today')}</h4>
             <div className="idash__staff-list">
               {data.staff.map(s => (
                 <div key={s.name} className="idash__staff-card">
@@ -1169,8 +1544,8 @@ function BarbershopDash({ onInteract }) {
 
         {view === 'services' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Service Menu — click values to edit</h4>
-            <table className="idash__table"><thead><tr><th>Service</th><th>Price</th><th>Duration</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Service Menu — click values to edit')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Service')}</th><th>{d('Price')}</th><th>{d('Duration')}</th></tr></thead><tbody>
               {data.services.map((s, i) => (
                 <tr key={s.name}>
                   <td>{s.name}</td>
@@ -1184,13 +1559,13 @@ function BarbershopDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">This Month</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span><span className="idash__stat-badge idash__stat-badge--up">+8% vs last</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Last Month</span><span className="idash__stat-value">€3,925</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Top Service</span><span className="idash__stat-value idash__stat-value--sm">{topService.name}</span><span className="idash__stat-note">€{topService.price} per visit</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('This Month')}</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span><span className="idash__stat-badge idash__stat-badge--up">{d('+8% vs last')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Last Month')}</span><span className="idash__stat-value">€3,925</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Top Service')}</span><span className="idash__stat-value idash__stat-value--sm">{topService.name}</span><span className="idash__stat-note">€{topService.price} {d('per visit')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Monthly Breakdown</h4>
+              <h4 className="idash__panel-title">{d('Monthly Breakdown')}</h4>
               <div className="idash__week-stats">
                 {data.weekRev.map((r, i) => (
                   <div key={i} className="idash__ws-row">
@@ -1202,8 +1577,8 @@ function BarbershopDash({ onInteract }) {
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Top Services by Revenue</h4>
-              <table className="idash__table"><thead><tr><th>Service</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Top Services by Revenue')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Service')}</th><th>{d('Bookings')}</th><th>{d('Revenue')}</th></tr></thead><tbody>
                 {[['Fade + Beard', 28, 1120], ['Classic Cut', 34, 850], ['Highlights', 9, 765], ['Hair Color', 12, 780], ['Hot Towel Shave', 18, 540]].map(([n, b, r]) => (
                   <tr key={n}><td>{n}</td><td>{b}</td><td>€{fmt(r)}</td></tr>
                 ))}
@@ -1212,7 +1587,7 @@ function BarbershopDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="barbershop & beauty" />
+        <Callout industry="barbershop & beauty" d={d} />
         <ResetBtn onReset={() => { setData(clone(BARBER_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -1269,6 +1644,7 @@ const VET_DEFAULTS = {
 };
 
 function VeterinaryDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(VET_DEFAULTS));
   const [view, setView] = useState('overview');
   const [search, setSearch] = useState('');
@@ -1292,25 +1668,25 @@ function VeterinaryDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Vet Clinic" items={VET_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Veterinary Dashboard" alerts={2} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Veterinary Dashboard" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Patients Today</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Patients Today')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.patientsToday} onChange={v => set('patientsToday', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Surgeries Scheduled</span>
-              <span className="idash__stat-value">{data.surgeries}</span><span className="idash__stat-note">today</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">New Patients</span>
-              <span className="idash__stat-value">{data.newPatients}</span><span className="idash__stat-note">this week</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Surgeries Scheduled')}</span>
+              <span className="idash__stat-value">{data.surgeries}</span><span className="idash__stat-note">{d('today')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('New Patients')}</span>
+              <span className="idash__stat-value">{data.newPatients}</span><span className="idash__stat-note">{d('this week')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => set('monthlyRev', v)} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+15%</span></div>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+15%')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Today's Appointments</h4>
-              <table className="idash__table"><thead><tr><th>Time</th><th>Pet</th><th>Owner</th><th>Reason</th><th>Vet</th><th>Status</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Today\'s Appointments')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Time')}</th><th>{d('Pet')}</th><th>{d('Owner')}</th><th>{d('Reason')}</th><th>{d('Vet')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.todayAppts.map((a, i) => (
                   <tr key={i}><td>{a.time}</td><td>{a.pet}</td><td>{a.owner}</td><td>{a.reason}</td><td>{a.vet}</td>
                     <td><span className={`idash__badge ${VET_STATUS_CSS[a.status]}`}>{VET_STATUS_LABEL[a.status]}</span></td></tr>
@@ -1318,7 +1694,7 @@ function VeterinaryDash({ onInteract }) {
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Room Status</h4>
+              <h4 className="idash__panel-title">{d('Room Status')}</h4>
               <div className="idash__room-mgmt" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
                 {data.rooms.map(r => (
                   <div key={r.n} className={`idash__room-cell idash__room-cell--${VET_ROOM_CSS[r.status]}`}>
@@ -1333,8 +1709,8 @@ function VeterinaryDash({ onInteract }) {
 
         {view === 'appointments' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">All Appointments Today</h4>
-            <table className="idash__table"><thead><tr><th>Time</th><th>Pet</th><th>Owner</th><th>Reason</th><th>Vet</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('All Appointments Today')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Time')}</th><th>{d('Pet')}</th><th>{d('Owner')}</th><th>{d('Reason')}</th><th>{d('Vet')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.todayAppts.map((a, i) => (
                 <tr key={i}><td>{a.time}</td><td>{a.pet}</td><td>{a.owner}</td><td>{a.reason}</td><td>{a.vet}</td>
                   <td><span className={`idash__badge ${VET_STATUS_CSS[a.status]}`}>{VET_STATUS_LABEL[a.status]}</span></td></tr>
@@ -1346,10 +1722,10 @@ function VeterinaryDash({ onInteract }) {
         {view === 'patients' && <>
           <div className="idash__panel">
             <div className="idash__panel-head">
-              <h4 className="idash__panel-title">Patient Database</h4>
+              <h4 className="idash__panel-title">{d('Patient Database')}</h4>
               <input type="text" className="idash__search-input" placeholder="Search by pet or owner..." value={search} onChange={e => setSearch(e.target.value)} />
             </div>
-            <table className="idash__table"><thead><tr><th>Pet</th><th>Species</th><th>Owner</th><th>Last Visit</th><th>Next Visit</th></tr></thead><tbody>
+            <table className="idash__table"><thead><tr><th>{d('Pet')}</th><th>{d('Species')}</th><th>{d('Owner')}</th><th>{d('Last Visit')}</th><th>{d('Next Visit')}</th></tr></thead><tbody>
               {filteredPatients.map((p, i) => (
                 <tr key={i}><td>{p.pet}</td><td>{p.species}</td><td>{p.owner}</td><td>{p.last}</td><td>{p.next}</td></tr>
               ))}
@@ -1360,7 +1736,7 @@ function VeterinaryDash({ onInteract }) {
 
         {view === 'reminders' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Pending Reminders</h4>
+            <h4 className="idash__panel-title">{d('Pending Reminders')}</h4>
             <div className="idash__reminder-list">
               {data.reminders.map((r, i) => (
                 <div key={i} className="idash__reminder-row">
@@ -1381,12 +1757,12 @@ function VeterinaryDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">Total Monthly</span><span className="idash__stat-value">€{fmt(totalRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Avg Daily</span><span className="idash__stat-value">€{fmt(Math.round(totalRev / 30))}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Growth</span><span className="idash__stat-value">+15%</span><span className="idash__stat-badge idash__stat-badge--up">vs last month</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Total Monthly')}</span><span className="idash__stat-value">€{fmt(totalRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Avg Daily')}</span><span className="idash__stat-value">€{fmt(Math.round(totalRev / 30))}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Growth')}</span><span className="idash__stat-value">+15%</span><span className="idash__stat-badge idash__stat-badge--up">{d('vs last month')}</span></div>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Revenue by Service</h4>
+            <h4 className="idash__panel-title">{d('Revenue by Service')}</h4>
             <div className="idash__week-stats">
               {data.revenueByService.map(r => (
                 <div key={r.svc} className="idash__ws-row">
@@ -1406,7 +1782,7 @@ function VeterinaryDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="veterinary" />
+        <Callout industry="veterinary" d={d} />
         <ResetBtn onReset={() => { setData(clone(VET_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -1471,6 +1847,7 @@ const GYM_DEFAULTS = {
 };
 
 function GymDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(GYM_DEFAULTS));
   const [view, setView] = useState('overview');
   const [planFilter, setPlanFilter] = useState('All');
@@ -1481,7 +1858,7 @@ function GymDash({ onInteract }) {
   function bookClass(i) {
     act();
     setData(prev => { const n = clone(prev); const c = n.weekClasses[i]; if (c.spots > 0) c.spots--; return n; });
-    showToast('Class booked');
+    showToast(d('Class booked'));
   }
 
   const filteredMembers = data.members.filter(m => planFilter === 'All' || m.plan === planFilter);
@@ -1492,24 +1869,24 @@ function GymDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Gym Dashboard" items={GYM_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Gym & Fitness" alerts={4} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Gym & Fitness" alerts={4} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Active Members</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Active Members')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.activeMembers} onChange={v => set('activeMembers', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Classes Today</span><span className="idash__stat-value">{data.classesToday}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Check-ins Today</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Classes Today')}</span><span className="idash__stat-value">{data.classesToday}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Check-ins Today')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.checkInsToday} onChange={v => set('checkInsToday', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => set('monthlyRev', v)} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+6%</span></div>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+6%')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Today's Classes</h4>
-              <table className="idash__table"><thead><tr><th>Time</th><th>Class</th><th>Trainer</th><th>Capacity</th><th>Status</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Today\'s Classes')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Time')}</th><th>{d('Class')}</th><th>{d('Trainer')}</th><th>{d('Capacity')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.todayClasses.map((c, i) => (
                   <tr key={i}><td>{c.time}</td><td>{c.name}</td><td>{c.trainer}</td>
                     <td>{c.cap}/{c.max}</td>
@@ -1518,7 +1895,7 @@ function GymDash({ onInteract }) {
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Live Check-ins</h4>
+              <h4 className="idash__panel-title">{d('Live Check-ins')}</h4>
               <div className="idash__staff-list">
                 {data.liveCheckIns.map((c, i) => (
                   <div key={i} className="idash__staff-card">
@@ -1534,8 +1911,8 @@ function GymDash({ onInteract }) {
 
         {view === 'classes' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">This Week's Classes — click Book to reserve</h4>
-            <table className="idash__table"><thead><tr><th>Day</th><th>Class</th><th>Trainer</th><th>Time</th><th>Spots</th><th></th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('This Week\'s Classes — click Book to reserve')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Day')}</th><th>{d('Class')}</th><th>{d('Trainer')}</th><th>{d('Time')}</th><th>{d('Spots')}</th><th></th></tr></thead><tbody>
               {data.weekClasses.map((c, i) => (
                 <tr key={i}><td>{c.day}</td><td>{c.name}</td><td>{c.trainer}</td><td>{c.time}</td>
                   <td>{c.spots}/{c.max}</td>
@@ -1550,12 +1927,12 @@ function GymDash({ onInteract }) {
         {view === 'members' && <>
           <div className="idash__filter-bar">
             {['All', 'Basic', 'Premium', 'Elite'].map(p => (
-              <button key={p} type="button" className={`idash__filter-btn ${planFilter === p ? 'is-active' : ''}`} onClick={() => { setPlanFilter(p); act(); }}>{p}</button>
+              <button key={p} type="button" className={`idash__filter-btn ${planFilter === p ? 'is-active' : ''}`} onClick={() => { setPlanFilter(p); act(); }}>{d(p)}</button>
             ))}
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Members — {planFilter}</h4>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Plan</th><th>Check-ins</th><th>Expires</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Members')} — {d(planFilter)}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Plan')}</th><th>{d('Check-ins')}</th><th>{d('Expires')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {filteredMembers.map((m, i) => (
                 <tr key={i}><td>{m.name}</td><td>{m.plan}</td><td>{m.checkIns}</td><td>{m.expires}</td>
                   <td><span className={`idash__badge ${GYM_MEMBER_CSS[m.status]}`}>{m.status.charAt(0).toUpperCase() + m.status.slice(1)}</span></td></tr>
@@ -1566,7 +1943,7 @@ function GymDash({ onInteract }) {
 
         {view === 'trainers' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Trainers</h4>
+            <h4 className="idash__panel-title">{d('Trainers')}</h4>
             <div className="idash__staff-list">
               {data.trainers.map(t => (
                 <div key={t.name} className="idash__staff-card">
@@ -1581,13 +1958,13 @@ function GymDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">MRR</span><span className="idash__stat-value">€{fmt(mrr)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Target</span><span className="idash__stat-value">€{fmt(data.mrrTarget)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Progress</span><span className="idash__stat-value">{mrrPct}%</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('MRR')}</span><span className="idash__stat-value">€{fmt(mrr)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Target')}</span><span className="idash__stat-value">€{fmt(data.mrrTarget)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Progress')}</span><span className="idash__stat-value">{mrrPct}%</span>
               <div className="idash__bar"><div className="idash__bar-fill" style={{ width: `${mrrPct}%` }} /></div></div>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Active Memberships by Plan</h4>
+            <h4 className="idash__panel-title">{d('Active Memberships by Plan')}</h4>
             <div className="idash__week-stats">
               {data.plans.map(p => {
                 const pct = Math.min(100, Math.round((p.members / p.target) * 100));
@@ -1602,7 +1979,7 @@ function GymDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="gym & fitness" />
+        <Callout industry="gym & fitness" d={d} />
         <ResetBtn onReset={() => { setData(clone(GYM_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -1666,6 +2043,7 @@ const OPT_DEFAULTS = {
 };
 
 function OpticalDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(OPT_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
@@ -1679,25 +2057,25 @@ function OpticalDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Optical Store" items={OPT_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Optical Dashboard" alerts={3} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Optical Dashboard" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Appointments Today</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Appointments Today')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.apptsToday} onChange={v => set('apptsToday', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Frames Sold</span>
-              <span className="idash__stat-value">{data.framesSold}</span><span className="idash__stat-note">this month</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Pending Pickups</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Frames Sold')}</span>
+              <span className="idash__stat-value">{data.framesSold}</span><span className="idash__stat-note">{d('this month')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pending Pickups')}</span>
               <span className="idash__stat-value">{data.pendingPickups}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => set('monthlyRev', v)} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+11%</span></div>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+11%')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Today's Appointments</h4>
-              <table className="idash__table"><thead><tr><th>Time</th><th>Client</th><th>Type</th><th>Optometrist</th><th>Status</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Today\'s Appointments')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Time')}</th><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Optometrist')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.todayAppts.map((a, i) => (
                   <tr key={i}><td>{a.time}</td><td>{a.client}</td><td>{a.type}</td><td>{a.doc}</td>
                     <td><span className={`idash__badge ${OPT_APPT_CSS[a.status]}`}>{OPT_APPT_LABEL[a.status]}</span></td></tr>
@@ -1705,7 +2083,7 @@ function OpticalDash({ onInteract }) {
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Pending Pickups</h4>
+              <h4 className="idash__panel-title">{d('Pending Pickups')}</h4>
               <div className="idash__staff-list">
                 {data.pickups.map(p => (
                   <div key={p.order} className="idash__staff-card">
@@ -1721,8 +2099,8 @@ function OpticalDash({ onInteract }) {
 
         {view === 'appointments' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Appointments</h4>
-            <table className="idash__table"><thead><tr><th>Time</th><th>Client</th><th>Type</th><th>Optometrist</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Appointments')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Time')}</th><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Optometrist')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.todayAppts.map((a, i) => (
                 <tr key={i}><td>{a.time}</td><td>{a.client}</td><td>{a.type}</td><td>{a.doc}</td>
                   <td><span className={`idash__badge ${OPT_APPT_CSS[a.status]}`}>{OPT_APPT_LABEL[a.status]}</span></td></tr>
@@ -1733,8 +2111,8 @@ function OpticalDash({ onInteract }) {
 
         {view === 'prescriptions' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Recent Prescriptions</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Date</th><th>OD (sph/cyl)</th><th>OI (sph/cyl)</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Recent Prescriptions')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Date')}</th><th>{d('OD (sph/cyl)')}</th><th>{d('OI (sph/cyl)')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.prescriptions.map((p, i) => (
                 <tr key={i}><td>{p.client}</td><td>{p.date}</td><td className="idash__mono">{p.od}</td><td className="idash__mono">{p.oi}</td>
                   <td><span className={`idash__badge ${OPT_RX_CSS[p.status]}`}>{OPT_RX_LABEL[p.status]}</span></td></tr>
@@ -1749,12 +2127,12 @@ function OpticalDash({ onInteract }) {
               <div key={c.cat} className="idash__stat">
                 <span className="idash__stat-label">{c.cat}</span>
                 <span className="idash__stat-value">{c.units}<span className="idash__stat-dim"> units</span></span>
-                {c.lowStock && <span className="idash__stat-badge" style={{ background: 'rgba(255, 100, 100, 0.15)', color: 'rgba(255, 150, 150, 0.95)' }}>Low stock</span>}
+                {c.lowStock && <span className="idash__stat-badge" style={{ background: 'rgba(255, 100, 100, 0.15)', color: 'rgba(255, 150, 150, 0.95)' }}>{d('Low Stock')}</span>}
               </div>
             ))}
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Top Brands by Sales</h4>
+            <h4 className="idash__panel-title">{d('Top Brands by Sales')}</h4>
             <div className="idash__week-stats">
               {data.topBrands.map(b => (
                 <div key={b.brand} className="idash__ws-row">
@@ -1768,12 +2146,12 @@ function OpticalDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">Total Monthly</span><span className="idash__stat-value">€{fmt(totalRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">AOV</span><span className="idash__stat-value">€{aov}</span><span className="idash__stat-note">avg order value</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Growth</span><span className="idash__stat-value">+11%</span><span className="idash__stat-badge idash__stat-badge--up">vs last month</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Total Monthly')}</span><span className="idash__stat-value">€{fmt(totalRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('AOV')}</span><span className="idash__stat-value">€{aov}</span><span className="idash__stat-note">{d('avg order value')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Growth')}</span><span className="idash__stat-value">+11%</span><span className="idash__stat-badge idash__stat-badge--up">{d('vs last month')}</span></div>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Revenue by Category</h4>
+            <h4 className="idash__panel-title">{d('Revenue by Category')}</h4>
             <div className="idash__week-stats">
               {data.revenueByCat.map(r => {
                 const pct = Math.round((r.amount / totalRev) * 100);
@@ -1788,7 +2166,7 @@ function OpticalDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="optical store" />
+        <Callout industry="optical store" d={d} />
         <ResetBtn onReset={() => { setData(clone(OPT_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -1845,6 +2223,7 @@ const LAW_DEFAULTS = {
 };
 
 function LawDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(LAW_DEFAULTS));
   const [view, setView] = useState('overview');
   const [caseFilter, setCaseFilter] = useState('All');
@@ -1855,7 +2234,7 @@ function LawDash({ onInteract }) {
   function requestSignature(i) {
     act();
     setData(prev => { const n = clone(prev); n.documents[i].status = 'signed'; return n; });
-    showToast('Request sent ✓');
+    showToast(d('Request sent ✓'));
   }
   function sendConsultReminder(client) { act(); showToast(`Reminder sent to ${client}`); }
 
@@ -1867,32 +2246,32 @@ function LawDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Law Firm" items={LAW_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Law Firm Dashboard" alerts={3} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Law Firm Dashboard" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Active Cases</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Active Cases')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.activeCases} onChange={v => set('activeCases', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Consultations</span>
-              <span className="idash__stat-value">{data.consultsWeek}</span><span className="idash__stat-note">this week</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Pending Docs</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Consultations')}</span>
+              <span className="idash__stat-value">{data.consultsWeek}</span><span className="idash__stat-note">{d('this week')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pending Docs')}</span>
               <span className="idash__stat-value">{data.pendingDocs}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Billing</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Billing')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.monthlyBilling} onChange={v => set('monthlyBilling', v)} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+9%</span></div>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+9%')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Active Cases</h4>
-              <table className="idash__table"><thead><tr><th>Case</th><th>Client</th><th>Type</th><th>Lawyer</th><th>Next Action</th><th>Deadline</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Active Cases')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Case')}</th><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Lawyer')}</th><th>{d('Next Action')}</th><th>{d('Deadline')}</th></tr></thead><tbody>
                 {data.cases.filter(c => c.status === 'active').slice(0, 4).map((c, i) => (
                   <tr key={i}><td className="idash__mono">{c.id}</td><td>{c.client}</td><td>{c.type}</td><td>{c.lawyer}</td><td>{c.action}</td><td>{c.deadline}</td></tr>
                 ))}
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Upcoming Consultations</h4>
+              <h4 className="idash__panel-title">{d('Upcoming Consultations')}</h4>
               <div className="idash__staff-list">
                 {data.upcomingConsults.map((c, i) => (
                   <div key={i} className="idash__staff-card">
@@ -1909,12 +2288,12 @@ function LawDash({ onInteract }) {
         {view === 'cases' && <>
           <div className="idash__filter-bar">
             {['All', 'Commercial', 'Family', 'Criminal', 'Labor', 'Inheritance'].map(t => (
-              <button key={t} type="button" className={`idash__filter-btn ${caseFilter === t ? 'is-active' : ''}`} onClick={() => { setCaseFilter(t); act(); }}>{t}</button>
+              <button key={t} type="button" className={`idash__filter-btn ${caseFilter === t ? 'is-active' : ''}`} onClick={() => { setCaseFilter(t); act(); }}>{d(t)}</button>
             ))}
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">All Cases — {caseFilter}</h4>
-            <table className="idash__table"><thead><tr><th>Case</th><th>Client</th><th>Type</th><th>Lawyer</th><th>Deadline</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Cases')} — {d(caseFilter)}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Case')}</th><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Lawyer')}</th><th>{d('Deadline')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {filteredCases.map((c, i) => (
                 <tr key={i}><td className="idash__mono">{c.id}</td><td>{c.client}</td><td>{c.type}</td><td>{c.lawyer}</td><td>{c.deadline}</td>
                   <td><span className={`idash__badge ${LAW_CASE_CSS[c.status]}`}>{c.status.charAt(0).toUpperCase() + c.status.slice(1)}</span></td></tr>
@@ -1925,15 +2304,15 @@ function LawDash({ onInteract }) {
 
         {view === 'consultations' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">This Week — Available Slots</h4>
+            <h4 className="idash__panel-title">{d('This Week — Available Slots')}</h4>
             <div className="idash__week-cal">
-              {data.weekSlots.map(d => (
-                <div key={d.day} className="idash__week-day">
-                  <span className="idash__barber-name">{d.day}</span>
-                  {d.slots.map((s, i) => (
+              {data.weekSlots.map(ws => (
+                <div key={ws.day} className="idash__week-day">
+                  <span className="idash__barber-name">{d(ws.day)}</span>
+                  {ws.slots.map((s, i) => (
                     <div key={i} className={`idash__barber-slot ${s.taken ? 'is-filled' : 'is-empty'}`}>
                       <span className="idash__barber-time">{s.t}</span>
-                      <span className={s.taken ? 'idash__barber-client' : 'idash__barber-avail'}>{s.taken ? 'Booked' : 'Available'}</span>
+                      <span className={s.taken ? 'idash__barber-client' : 'idash__barber-avail'}>{s.taken ? d('Booked') : d('Available')}</span>
                     </div>
                   ))}
                 </div>
@@ -1941,7 +2320,7 @@ function LawDash({ onInteract }) {
             </div>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Upcoming Consultations</h4>
+            <h4 className="idash__panel-title">{d('Upcoming Consultations')}</h4>
             <div className="idash__reminder-list">
               {data.upcomingConsults.map((c, i) => (
                 <div key={i} className="idash__reminder-row">
@@ -1955,13 +2334,13 @@ function LawDash({ onInteract }) {
 
         {view === 'documents' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Pending Documents</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Type</th><th>Deadline</th><th>Status</th><th></th></tr></thead><tbody>
-              {data.documents.map((d, i) => (
-                <tr key={i}><td>{d.client}</td><td>{d.type}</td><td>{d.deadline}</td>
-                  <td><span className={`idash__badge ${LAW_DOC_CSS[d.status]}`}>{LAW_DOC_LABEL[d.status]}</span></td>
+            <h4 className="idash__panel-title">{d('Pending Documents')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Deadline')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
+              {data.documents.map((doc, i) => (
+                <tr key={i}><td>{doc.client}</td><td>{doc.type}</td><td>{doc.deadline}</td>
+                  <td><span className={`idash__badge ${LAW_DOC_CSS[doc.status]}`}>{d(LAW_DOC_LABEL[doc.status])}</span></td>
                   <td className="idash__actions">
-                    {d.status !== 'signed' && <button className="idash__action-btn" onClick={() => requestSignature(i)}>Request signature</button>}
+                    {doc.status !== 'signed' && <button className="idash__action-btn" onClick={() => requestSignature(i)}>{d('Request')}</button>}
                   </td></tr>
               ))}
             </tbody></table>
@@ -1970,13 +2349,13 @@ function LawDash({ onInteract }) {
 
         {view === 'billing' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">Outstanding</span><span className="idash__stat-value">€{fmt(outstanding)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Overdue</span><span className="idash__stat-value">€{fmt(overdueTotal)}</span><span className="idash__stat-badge" style={{ background: 'rgba(255,100,100,0.15)', color: 'rgba(255,150,150,0.95)' }}>Action needed</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">This Month Billed</span><span className="idash__stat-value">€{fmt(data.monthlyBilling)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Outstanding')}</span><span className="idash__stat-value">€{fmt(outstanding)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Overdue')}</span><span className="idash__stat-value">€{fmt(overdueTotal)}</span><span className="idash__stat-badge" style={{ background: 'rgba(255,100,100,0.15)', color: 'rgba(255,150,150,0.95)' }}>{d('Overdue')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('This Month Billed')}</span><span className="idash__stat-value">€{fmt(data.monthlyBilling)}</span></div>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Pending Invoices</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Amount</th><th>Days Overdue</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Pending Invoices')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Amount')}</th><th>{d('Days Overdue')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.invoices.map((inv, i) => (
                 <tr key={i}><td>{inv.client}</td><td>€{fmt(inv.amount)}</td><td>{inv.overdueDays > 0 ? `${inv.overdueDays} days` : '—'}</td>
                   <td><span className={`idash__badge ${inv.overdueDays > 0 ? 'idash__badge--cancel' : 'idash__badge--wait'}`}>{inv.overdueDays > 0 ? 'Overdue' : 'Due'}</span></td></tr>
@@ -1985,7 +2364,7 @@ function LawDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="law firm" />
+        <Callout industry="law firm" d={d} />
         <ResetBtn onReset={() => { setData(clone(LAW_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -2056,6 +2435,7 @@ const ACC_DEFAULTS = {
 };
 
 function AccountingDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(ACC_DEFAULTS));
   const [view, setView] = useState('overview');
   const [planFilter, setPlanFilter] = useState('All');
@@ -2067,7 +2447,7 @@ function AccountingDash({ onInteract }) {
   function requestDocument(i) {
     act();
     setData(prev => { const n = clone(prev); n.pendingReqDocs[i].sent = true; return n; });
-    showToast('Request sent via email ✓');
+    showToast(d('Request sent via email ✓'));
   }
 
   const filteredClients = data.clients.filter(c => planFilter === 'All' || c.plan === planFilter);
@@ -2077,33 +2457,33 @@ function AccountingDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Accounting" items={ACC_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Accounting Studio" alerts={2} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Accounting Studio" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Active Clients</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Active Clients')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.activeClients} onChange={v => set('activeClients', v)} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Deadlines</span>
-              <span className="idash__stat-value">{data.deadlinesMonth}</span><span className="idash__stat-note">this month</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Pending Docs</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Deadlines')}</span>
+              <span className="idash__stat-value">{data.deadlinesMonth}</span><span className="idash__stat-note">{d('this month')}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pending Docs')}</span>
               <span className="idash__stat-value">{data.pendingDocs}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => set('monthlyRev', v)} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+7%</span></div>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+7%')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Upcoming Deadlines</h4>
-              <table className="idash__table"><thead><tr><th>Client</th><th>Type</th><th>Due</th><th>Status</th></tr></thead><tbody>
-                {data.deadlines.slice(0, 4).map((d, i) => (
-                  <tr key={i}><td>{d.client}</td><td>{d.type}</td><td>{d.date}</td>
-                    <td><span className={`idash__badge ${ACC_DEADLINE_CSS[d.status]}`}>{ACC_DEADLINE_LABEL[d.status]}</span></td></tr>
+              <h4 className="idash__panel-title">{d('Upcoming Deadlines')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Due')}</th><th>{d('Status')}</th></tr></thead><tbody>
+                {data.deadlines.slice(0, 4).map((dl, i) => (
+                  <tr key={i}><td>{dl.client}</td><td>{dl.type}</td><td>{dl.date}</td>
+                    <td><span className={`idash__badge ${ACC_DEADLINE_CSS[dl.status]}`}>{d(ACC_DEADLINE_LABEL[dl.status])}</span></td></tr>
                 ))}
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Recent Activity</h4>
+              <h4 className="idash__panel-title">{d('Recent Activity')}</h4>
               <div className="idash__staff-list">
                 {data.activity.map((a, i) => (
                   <div key={i} className="idash__staff-card">
@@ -2120,12 +2500,12 @@ function AccountingDash({ onInteract }) {
         {view === 'clients' && <>
           <div className="idash__filter-bar">
             {['All', 'Basic', 'Premium', 'Full Service'].map(p => (
-              <button key={p} type="button" className={`idash__filter-btn ${planFilter === p ? 'is-active' : ''}`} onClick={() => { setPlanFilter(p); act(); }}>{p}</button>
+              <button key={p} type="button" className={`idash__filter-btn ${planFilter === p ? 'is-active' : ''}`} onClick={() => { setPlanFilter(p); act(); }}>{d(p)}</button>
             ))}
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Clients — {planFilter}</h4>
-            <table className="idash__table"><thead><tr><th>Company</th><th>Contact</th><th>Plan</th><th>Next Deadline</th><th>Pending Docs</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Clients')} — {d(planFilter)}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Company')}</th><th>{d('Contact')}</th><th>{d('Plan')}</th><th>{d('Next Deadline')}</th><th>{d('Pending Docs')}</th></tr></thead><tbody>
               {filteredClients.map((c, i) => (
                 <tr key={i}><td>{c.company}</td><td>{c.contact}</td><td>{c.plan}</td><td>{c.nextDeadline}</td><td>{c.pendingDocs}</td></tr>
               ))}
@@ -2135,17 +2515,17 @@ function AccountingDash({ onInteract }) {
 
         {view === 'deadlines' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">All Deadlines — sorted by urgency</h4>
+            <h4 className="idash__panel-title">{d('All Deadlines — sorted by urgency')}</h4>
             <div className="idash__reminder-list">
               {[...data.deadlines].sort((a, b) => {
                 const order = { overdue: 0, 'at-risk': 1, 'on-track': 2 };
                 return order[a.status] - order[b.status];
-              }).map((d, i) => (
+              }).map((dl, i) => (
                 <div key={i} className="idash__reminder-row">
-                  <span><strong>{d.client}</strong> — {d.type} · due {d.date}</span>
+                  <span><strong>{dl.client}</strong> — {dl.type} · {d('Due')} {dl.date}</span>
                   <span className="idash__actions">
-                    <span className={`idash__badge ${ACC_DEADLINE_CSS[d.status]}`}>{ACC_DEADLINE_LABEL[d.status]}</span>
-                    <button className="idash__action-btn" onClick={() => sendReminder(d.client)}>Send reminder</button>
+                    <span className={`idash__badge ${ACC_DEADLINE_CSS[dl.status]}`}>{d(ACC_DEADLINE_LABEL[dl.status])}</span>
+                    <button className="idash__action-btn" onClick={() => sendReminder(dl.client)}>{d('Send')}</button>
                   </span>
                 </div>
               ))}
@@ -2155,28 +2535,28 @@ function AccountingDash({ onInteract }) {
 
         {view === 'documents' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Documents to Request</h4>
+            <h4 className="idash__panel-title">{d('Documents to Request')}</h4>
             <div className="idash__reminder-list">
-              {data.pendingReqDocs.map((d, i) => (
+              {data.pendingReqDocs.map((doc, i) => (
                 <div key={i} className="idash__reminder-row">
-                  <span><strong>{d.client}</strong> — {d.doc}</span>
-                  {d.sent ? (
-                    <span className="idash__badge idash__badge--ok">✓ Request sent via email</span>
+                  <span><strong>{doc.client}</strong> — {doc.doc}</span>
+                  {doc.sent ? (
+                    <span className="idash__badge idash__badge--ok">{d('Request sent via email ✓')}</span>
                   ) : (
-                    <button className="idash__action-btn" onClick={() => requestDocument(i)}>Request document</button>
+                    <button className="idash__action-btn" onClick={() => requestDocument(i)}>{d('Request')}</button>
                   )}
                 </div>
               ))}
             </div>
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Received This Week</h4>
+            <h4 className="idash__panel-title">{d('Received This Week')}</h4>
             <div className="idash__staff-list">
-              {data.receivedDocs.map((d, i) => (
+              {data.receivedDocs.map((doc, i) => (
                 <div key={i} className="idash__staff-card">
-                  <span className="idash__staff-name">{d.client}</span>
-                  <span className="idash__staff-shift">{d.when}</span>
-                  <span className="idash__staff-role">{d.doc}</span>
+                  <span className="idash__staff-name">{doc.client}</span>
+                  <span className="idash__staff-shift">{doc.when}</span>
+                  <span className="idash__staff-role">{doc.doc}</span>
                 </div>
               ))}
             </div>
@@ -2185,13 +2565,13 @@ function AccountingDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">Total Monthly</span><span className="idash__stat-value">€{fmt(totalRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Outstanding</span><span className="idash__stat-value">€{fmt(data.outstanding)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Growth</span><span className="idash__stat-value">+7%</span><span className="idash__stat-badge idash__stat-badge--up">vs last month</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Total Monthly')}</span><span className="idash__stat-value">€{fmt(totalRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Outstanding')}</span><span className="idash__stat-value">€{fmt(data.outstanding)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Growth')}</span><span className="idash__stat-value">+7%</span><span className="idash__stat-badge idash__stat-badge--up">{d('vs last month')}</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Revenue by Service</h4>
+              <h4 className="idash__panel-title">{d('Revenue by Service')}</h4>
               <div className="idash__week-stats">
                 {data.revenueByService.map(r => {
                   const pct = Math.round((r.amount / totalRev) * 100);
@@ -2205,8 +2585,8 @@ function AccountingDash({ onInteract }) {
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Top 5 Clients by Billing</h4>
-              <table className="idash__table"><thead><tr><th>Client</th><th>Monthly</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Top 5 Clients by Billing')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Monthly')}</th></tr></thead><tbody>
                 {data.topClients.map((c, i) => (
                   <tr key={i}><td>{c.client}</td><td>€{fmt(c.amount)}</td></tr>
                 ))}
@@ -2215,7 +2595,7 @@ function AccountingDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="accounting studio" />
+        <Callout industry="accounting studio" d={d} />
         <ResetBtn onReset={() => { setData(clone(ACC_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -2266,14 +2646,15 @@ const HW_Q_CSS = { pending: 'idash__badge--amber', sent: 'idash__badge--blue', a
 const HW_Q_LABEL = { pending: 'Pending', sent: 'Sent', accepted: 'Accepted' };
 
 function HardwareDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(HW_DEFAULTS));
   const [view, setView] = useState('overview');
   const [qFilter, setQFilter] = useState('All');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function sendQuote(i) { act(); setData(p => { const n = clone(p); n.quotes[i].status = 'sent'; return n; }); showToast('✓ Quote sent'); }
-  function reorder(i) { act(); setData(p => { const n = clone(p); n.lowStockItems[i].reordered = true; return n; }); showToast('✓ Order placed'); }
+  function sendQuote(i) { act(); setData(p => { const n = clone(p); n.quotes[i].status = 'sent'; return n; }); showToast(d('✓ Quote sent')); }
+  function reorder(i) { act(); setData(p => { const n = clone(p); n.lowStockItems[i].reordered = true; return n; }); showToast(d('✓ Order placed')); }
 
   const filtQ = data.quotes.filter(q => qFilter === 'All' || q.status === qFilter);
   const totalRev = data.revCounter + data.revQuotes + data.revOnline;
@@ -2282,23 +2663,23 @@ function HardwareDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Hardware Dashboard" items={HW_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Hardware Store" alerts={data.lowStock} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Hardware Store" alerts={data.lowStock} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Quotes Today</span><span className="idash__stat-value"><InlineEdit value={data.quotesToday} onChange={v => setData(p => ({...p, quotesToday: v}))} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Trade Accounts</span><span className="idash__stat-value">{data.tradeAccounts}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Low Stock</span><span className="idash__stat-value" style={{color:'#ef4444'}}>{data.lowStock}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">+9%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Quotes Today')}</span><span className="idash__stat-value"><InlineEdit value={data.quotesToday} onChange={v => setData(p => ({...p, quotesToday: v}))} onInteract={act} /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Trade Accounts')}</span><span className="idash__stat-value">{data.tradeAccounts}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Low Stock')}</span><span className="idash__stat-value" style={{color:'#ef4444'}}>{data.lowStock}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">{d('+9%')}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Recent Quotes</h4>
-              <table className="idash__table"><thead><tr><th>Quote</th><th>Client</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Recent Quotes')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Quote')}</th><th>{d('Client')}</th><th>{d('Items')}</th><th>{d('Total')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.quotes.slice(0,3).map((q,i) => <tr key={i}><td>{q.id}</td><td>{q.client}</td><td>{q.items}</td><td>€{fmt(q.total)}</td><td><span className={`idash__badge ${HW_Q_CSS[q.status]}`}>{HW_Q_LABEL[q.status]}</span></td></tr>)}
               </tbody></table></div>
             <div className="idash__panel"><h4 className="idash__panel-title" style={{color:'#ef4444'}}>⚠ Low Stock Alert</h4>
-              <table className="idash__table"><thead><tr><th>Product</th><th>Stock</th><th></th></tr></thead><tbody>
+              <table className="idash__table"><thead><tr><th>{d('Product')}</th><th>{d('Stock')}</th><th></th></tr></thead><tbody>
                 {data.lowStockItems.slice(0,3).map((it,i) => <tr key={i}><td>{it.name}</td><td style={{color:it.stock<=4?'#ef4444':'#f59e0b',fontWeight:600}}>{it.stock}</td>
                   <td className="idash__actions">{it.reordered ? <span style={{color:'#22c55e',fontSize:'0.75rem'}}>✓ Ordered</span> : <button className="idash__action-btn" onClick={() => reorder(i)}>Reorder</button>}</td></tr>)}
               </tbody></table></div>
@@ -2307,10 +2688,10 @@ function HardwareDash({ onInteract }) {
 
         {view === 'quotes' && <>
           <div className="idash__filter-bar">
-            {['All','pending','sent','accepted'].map(f => <button key={f} type="button" className={`idash__filter-btn ${qFilter===f?'is-active':''}`} onClick={() => {setQFilter(f);act();}}>{f==='All'?'All':HW_Q_LABEL[f]}</button>)}
+            {['All','pending','sent','accepted'].map(f => <button key={f} type="button" className={`idash__filter-btn ${qFilter===f?'is-active':''}`} onClick={() => {setQFilter(f);act();}}>{f==='All'?d('All'):d(HW_Q_LABEL[f])}</button>)}
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Quotes</h4>
-            <table className="idash__table"><thead><tr><th>Quote</th><th>Client</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Quotes')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Quote')}</th><th>{d('Client')}</th><th>{d('Date')}</th><th>{d('Items')}</th><th>{d('Total')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {filtQ.map((q,i) => { const ri = data.quotes.indexOf(q); return <tr key={i}><td>{q.id}</td><td>{q.client}</td><td>{q.date}</td><td>{q.items}</td><td>€{fmt(q.total)}</td>
                 <td><span className={`idash__badge ${HW_Q_CSS[q.status]}`}>{HW_Q_LABEL[q.status]}</span></td>
                 <td className="idash__actions">{q.status==='pending' && <button className="idash__action-btn" onClick={() => sendQuote(ri)}>Send</button>}</td></tr>; })}
@@ -2320,15 +2701,15 @@ function HardwareDash({ onInteract }) {
         {view === 'inventory' && <>
           <div className="idash__stats">{data.categories.map(c => <div key={c.name} className="idash__stat"><span className="idash__stat-label">{c.name}</span><span className="idash__stat-value">{c.items}</span><span className="idash__stat-sub">products</span></div>)}</div>
           <div className="idash__panel"><h4 className="idash__panel-title" style={{color:'#ef4444'}}>⚠ Low Stock</h4>
-            <table className="idash__table"><thead><tr><th>Product</th><th>Stock</th><th></th></tr></thead><tbody>
+            <table className="idash__table"><thead><tr><th>{d('Product')}</th><th>{d('Stock')}</th><th></th></tr></thead><tbody>
               {data.lowStockItems.map((it,i) => <tr key={i}><td>{it.name}</td><td style={{color:it.stock<=4?'#ef4444':'#f59e0b',fontWeight:600}}>{it.stock}</td>
                 <td className="idash__actions">{it.reordered ? <span style={{color:'#22c55e',fontSize:'0.75rem'}}>✓ Ordered</span> : <button className="idash__action-btn" onClick={() => reorder(i)}>Reorder</button>}</td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'trade' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Trade Accounts</h4>
-            <table className="idash__table"><thead><tr><th>Company</th><th>Contact</th><th>Limit</th><th>Used</th><th>Status</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Trade Accounts')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Company')}</th><th>{d('Contact')}</th><th>{d('Limit')}</th><th>{d('Used')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.trades.map((t,i) => <tr key={i}><td>{t.company}</td><td>{t.contact}</td><td>€{fmt(t.limit)}</td><td>€{fmt(t.used)}</td>
                 <td><span className={`idash__badge ${t.status==='active'?'idash__badge--green':'idash__badge--amber'}`}>{t.status==='active'?'Active':'Near limit'}</span></td></tr>)}
             </tbody></table></div>
@@ -2336,21 +2717,21 @@ function HardwareDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Counter</span><span className="idash__stat-value">€{fmt(data.revCounter)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Quotes</span><span className="idash__stat-value">€{fmt(data.revQuotes)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Online</span><span className="idash__stat-value">€{fmt(data.revOnline)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Counter')}</span><span className="idash__stat-value">€{fmt(data.revCounter)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Quotes')}</span><span className="idash__stat-value">€{fmt(data.revQuotes)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Online')}</span><span className="idash__stat-value">€{fmt(data.revOnline)}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Channel Breakdown</h4>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Channel Breakdown')}</h4>
               <div className="idash__week-stats">{[{l:'Counter',v:data.revCounter},{l:'Quotes',v:data.revQuotes},{l:'Online',v:data.revOnline}].map(ch => <div key={ch.l} className="idash__ws-row" style={{flexDirection:'column',alignItems:'stretch',gap:4}}><span>{ch.l} — €{fmt(ch.v)} ({Math.round(ch.v/totalRev*100)}%)</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${Math.round(ch.v/totalRev*100)}%`}} /></div></div>)}</div></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Top 5 Clients</h4>
-              <table className="idash__table"><thead><tr><th>Client</th><th>Total</th></tr></thead><tbody>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Top 5 Clients')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Total')}</th></tr></thead><tbody>
                 {data.topClients.map((c,i) => <tr key={i}><td>{c.client}</td><td>€{fmt(c.total)}</td></tr>)}
               </tbody></table></div>
           </div>
         </>}
 
-        <Callout industry="hardware store" />
+        <Callout industry="hardware store" d={d} />
         <ResetBtn onReset={() => { setData(clone(HW_DEFAULTS)); setView('overview'); setQFilter('All'); act(); }} />
       </div>
     </div>
@@ -2400,13 +2781,14 @@ const BS_STATUS_CSS = { pending: 'idash__badge--amber', confirmed: 'idash__badge
 const BS_STATUS_LABEL = { pending: 'Pending', confirmed: 'Confirmed', transit: 'In Transit', delivered: 'Delivered', loading: 'Loading', scheduled: 'Scheduled', 'en-route': 'En Route' };
 
 function BuildSupplyDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(BS_DEFAULTS));
   const [view, setView] = useState('overview');
   const [oFilter, setOFilter] = useState('All');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function confirmOrder(i) { act(); setData(p => { const n = clone(p); n.orders[i].status = 'confirmed'; return n; }); showToast('✓ Order confirmed'); }
+  function confirmOrder(i) { act(); setData(p => { const n = clone(p); n.orders[i].status = 'confirmed'; return n; }); showToast(d('✓ Order confirmed')); }
 
   const filtO = data.orders.filter(o => oFilter === 'All' || o.status === oFilter);
   const revChange = data.monthlyRev - data.lastMonthRev;
@@ -2415,32 +2797,32 @@ function BuildSupplyDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Corralón Dashboard" items={BS_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Building Supply" alerts={data.pendingQuotes} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Building Supply" alerts={data.pendingQuotes} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Orders Today</span><span className="idash__stat-value"><InlineEdit value={data.ordersToday} onChange={v => setData(p => ({...p, ordersToday: v}))} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Deliveries</span><span className="idash__stat-value">{data.deliveries}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Pending Quotes</span><span className="idash__stat-value">{data.pendingQuotes}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">+11%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Orders Today')}</span><span className="idash__stat-value"><InlineEdit value={data.ordersToday} onChange={v => setData(p => ({...p, ordersToday: v}))} onInteract={act} /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Deliveries')}</span><span className="idash__stat-value">{data.deliveries}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pending Quotes')}</span><span className="idash__stat-value">{data.pendingQuotes}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">{d('+11%')}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Today's Deliveries</h4>
-              <table className="idash__table"><thead><tr><th>Client</th><th>Address</th><th>Material</th><th>Truck</th><th>Time</th></tr></thead><tbody>
-                {data.todayDeliveries.map((d,i) => <tr key={i}><td>{d.client}</td><td>{d.addr}</td><td>{d.material}</td><td>{d.truck}</td><td>{d.time}</td></tr>)}
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Today\'s Deliveries')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Address')}</th><th>{d('Material')}</th><th>{d('Truck')}</th><th>{d('Time')}</th></tr></thead><tbody>
+                {data.todayDeliveries.map((dl,i) => <tr key={i}><td>{dl.client}</td><td>{dl.addr}</td><td>{dl.material}</td><td>{dl.truck}</td><td>{dl.time}</td></tr>)}
               </tbody></table></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Pending Quotes</h4>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Pending Quotes')}</h4>
               <div className="idash__staff-list">{data.orders.filter(o => o.status === 'pending').map((o,i) => <div key={i} className="idash__staff-card"><span className="idash__staff-name">{o.client}</span><span className="idash__staff-shift">€{fmt(o.total)}</span><span className="idash__staff-role">{o.materials}</span></div>)}</div></div>
           </div>
         </>}
 
         {view === 'orders' && <>
           <div className="idash__filter-bar">
-            {['All','pending','confirmed','transit'].map(f => <button key={f} type="button" className={`idash__filter-btn ${oFilter===f?'is-active':''}`} onClick={() => {setOFilter(f);act();}}>{f==='All'?'All':BS_STATUS_LABEL[f]}</button>)}
+            {['All','pending','confirmed','transit'].map(f => <button key={f} type="button" className={`idash__filter-btn ${oFilter===f?'is-active':''}`} onClick={() => {setOFilter(f);act();}}>{f==='All'?d('All'):d(BS_STATUS_LABEL[f])}</button>)}
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Orders</h4>
-            <table className="idash__table"><thead><tr><th>Order</th><th>Client</th><th>Materials</th><th>Total</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Orders')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Order')}</th><th>{d('Client')}</th><th>{d('Materials')}</th><th>{d('Total')}</th><th>{d('Date')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {filtO.map((o,i) => { const ri = data.orders.indexOf(o); return <tr key={i}><td>{o.id}</td><td>{o.client}</td><td>{o.materials}</td><td>€{fmt(o.total)}</td><td>{o.date}</td>
                 <td><span className={`idash__badge ${BS_STATUS_CSS[o.status]}`}>{BS_STATUS_LABEL[o.status]}</span></td>
                 <td className="idash__actions">{o.status==='pending' && <button className="idash__action-btn" onClick={() => confirmOrder(ri)}>Confirm</button>}</td></tr>; })}
@@ -2448,39 +2830,39 @@ function BuildSupplyDash({ onInteract }) {
         </>}
 
         {view === 'delivery' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Fleet Status</h4>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Fleet Status')}</h4>
             <div className="idash__staff-list">{data.trucks.map(t => <div key={t.name} className="idash__staff-card">
               <span className="idash__staff-name">{t.name} — {t.driver}</span>
               <span className="idash__staff-shift"><span className={`idash__badge ${t.status==='en-route'?'idash__badge--green':'idash__badge--amber'}`}>{BS_STATUS_LABEL[t.status]}</span></span>
               <span className="idash__staff-role">→ {t.delivery}</span>
             </div>)}</div></div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Scheduled Deliveries</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Address</th><th>Material</th><th>Truck</th><th>ETA</th><th>Status</th></tr></thead><tbody>
-              {data.todayDeliveries.map((d,i) => <tr key={i}><td>{d.client}</td><td>{d.addr}</td><td>{d.material}</td><td>{d.truck}</td><td>{d.time}</td>
-                <td><span className={`idash__badge ${d.status==='transit'?'idash__badge--green':d.status==='loading'?'idash__badge--amber':'idash__badge--grey'}`}>{BS_STATUS_LABEL[d.status]}</span></td></tr>)}
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Scheduled Deliveries')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Address')}</th><th>{d('Material')}</th><th>{d('Truck')}</th><th>{d('ETA')}</th><th>{d('Status')}</th></tr></thead><tbody>
+              {data.todayDeliveries.map((dl,i) => <tr key={i}><td>{dl.client}</td><td>{dl.addr}</td><td>{dl.material}</td><td>{dl.truck}</td><td>{dl.time}</td>
+                <td><span className={`idash__badge ${dl.status==='transit'?'idash__badge--green':dl.status==='loading'?'idash__badge--amber':'idash__badge--grey'}`}>{d(BS_STATUS_LABEL[dl.status])}</span></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'materials' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Material Categories</h4>
-            <table className="idash__table"><thead><tr><th>Category</th><th>Stock</th><th>Unit Price</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Material Categories')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Category')}</th><th>{d('Stock')}</th><th>{d('Unit Price')}</th></tr></thead><tbody>
               {data.matCategories.map((m,i) => <tr key={i}><td>{m.name}</td><td>{m.stock}</td><td>{m.price}</td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">This Month</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Last Month</span><span className="idash__stat-value">€{fmt(data.lastMonthRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Change</span><span className="idash__stat-value" style={{color:'#22c55e'}}>+€{fmt(revChange)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('This Month')}</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Last Month')}</span><span className="idash__stat-value">€{fmt(data.lastMonthRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Change')}</span><span className="idash__stat-value" style={{color:'#22c55e'}}>+€{fmt(revChange)}</span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Top Materials by Revenue</h4>
-            <table className="idash__table"><thead><tr><th>Material</th><th>Sold</th><th>Revenue</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Top Materials by Revenue')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Material')}</th><th>{d('Sold')}</th><th>{d('Revenue')}</th></tr></thead><tbody>
               {data.topMaterials.map((m,i) => <tr key={i}><td>{m.name}</td><td>{fmt(m.sold)}</td><td>€{fmt(m.revenue)}</td></tr>)}
             </tbody></table></div>
         </>}
 
-        <Callout industry="building supply" />
+        <Callout industry="building supply" d={d} />
         <ResetBtn onReset={() => { setData(clone(BS_DEFAULTS)); setView('overview'); setOFilter('All'); act(); }} />
       </div>
     </div>
@@ -2526,14 +2908,15 @@ const PHOTO_DEFAULTS = {
 const PHOTO_CSS = { confirmed: 'idash__badge--green', pending: 'idash__badge--amber' };
 
 function PhotographyDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(PHOTO_DEFAULTS));
   const [view, setView] = useState('overview');
   const [typeFilter, setTypeFilter] = useState('All');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function sendGallery(i) { act(); setData(p => { const n = clone(p); n.galleries[i].sent = true; return n; }); showToast('✓ Gallery link sent to client'); }
-  function sendContract(i) { act(); setData(p => { const n = clone(p); n.upcoming[i].status = 'confirmed'; return n; }); showToast('✓ Contract sent'); }
+  function sendGallery(i) { act(); setData(p => { const n = clone(p); n.galleries[i].sent = true; return n; }); showToast(d('✓ Gallery link sent to client')); }
+  function sendContract(i) { act(); setData(p => { const n = clone(p); n.upcoming[i].status = 'confirmed'; return n; }); showToast(d('✓ Contract sent')); }
 
   const filtClients = data.clients.filter(c => typeFilter === 'All' || c.type === typeFilter);
 
@@ -2541,30 +2924,30 @@ function PhotographyDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Photo Dashboard" items={PHOTO_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Photography Studio" alerts={data.pendingEdits} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Photography Studio" alerts={data.pendingEdits} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Sessions This Month</span><span className="idash__stat-value">{data.sessionsMonth}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Galleries Delivered</span><span className="idash__stat-value">{data.galleriesDelivered}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Pending Edits</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingEdits}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">+16%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Sessions This Month')}</span><span className="idash__stat-value">{data.sessionsMonth}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Galleries Delivered')}</span><span className="idash__stat-value">{data.galleriesDelivered}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pending Edits')}</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingEdits}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">{d('+16%')}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Upcoming Sessions</h4>
-              <table className="idash__table"><thead><tr><th>Client</th><th>Type</th><th>Date</th><th>Time</th><th>Location</th><th>Status</th></tr></thead><tbody>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Upcoming Sessions')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Date')}</th><th>{d('Time')}</th><th>{d('Location')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.upcoming.slice(0,3).map((s,i) => <tr key={i}><td>{s.client}</td><td>{s.type}</td><td>{s.date}</td><td>{s.time}</td><td>{s.location}</td>
                   <td><span className={`idash__badge ${PHOTO_CSS[s.status]}`}>{s.status.charAt(0).toUpperCase()+s.status.slice(1)}</span></td></tr>)}
               </tbody></table></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Pending Galleries</h4>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Pending Galleries')}</h4>
               <div className="idash__staff-list">{data.galleries.filter(g => !g.sent).map((g,i) => <div key={i} className="idash__staff-card"><span className="idash__staff-name">{g.client}</span><span className="idash__staff-shift">{g.photos} photos</span><span className="idash__staff-role">{g.session} — {g.date}</span></div>)}</div></div>
           </div>
         </>}
 
         {view === 'bookings' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Upcoming Sessions</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Type</th><th>Date</th><th>Time</th><th>Package</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Upcoming Sessions')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Type')}</th><th>{d('Date')}</th><th>{d('Time')}</th><th>{d('Package')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {data.upcoming.map((s,i) => <tr key={i}><td>{s.client}</td><td>{s.type}</td><td>{s.date}</td><td>{s.time}</td><td>{s.pkg}</td>
                 <td><span className={`idash__badge ${PHOTO_CSS[s.status]}`}>{s.status.charAt(0).toUpperCase()+s.status.slice(1)}</span></td>
                 <td className="idash__actions">{s.status==='pending' && <button className="idash__action-btn" onClick={() => sendContract(i)}>Send contract</button>}</td></tr>)}
@@ -2572,8 +2955,8 @@ function PhotographyDash({ onInteract }) {
         </>}
 
         {view === 'galleries' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Gallery Delivery</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Session</th><th>Photos</th><th>Ready</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Gallery Delivery')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Session')}</th><th>{d('Photos')}</th><th>{d('Ready')}</th><th></th></tr></thead><tbody>
               {data.galleries.map((g,i) => <tr key={i}><td>{g.client}</td><td>{g.session}</td><td>{g.photos}</td><td>{g.date}</td>
                 <td className="idash__actions">{g.sent ? <span style={{color:'#22c55e',fontSize:'0.75rem'}}>✓ Sent</span> : <button className="idash__action-btn" onClick={() => sendGallery(i)}>Send link</button>}</td></tr>)}
             </tbody></table></div>
@@ -2581,10 +2964,10 @@ function PhotographyDash({ onInteract }) {
 
         {view === 'clients' && <>
           <div className="idash__filter-bar">
-            {['All','Wedding','Portrait','Commercial','Events','Newborn'].map(f => <button key={f} type="button" className={`idash__filter-btn ${typeFilter===f?'is-active':''}`} onClick={() => {setTypeFilter(f);act();}}>{f}</button>)}
+            {['All','Wedding','Portrait','Commercial','Events','Newborn'].map(f => <button key={f} type="button" className={`idash__filter-btn ${typeFilter===f?'is-active':''}`} onClick={() => {setTypeFilter(f);act();}}>{d(f)}</button>)}
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Clients</h4>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Type</th><th>Last</th><th>Next</th><th>Package</th><th>Spent</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Clients')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Type')}</th><th>{d('Last')}</th><th>{d('Next')}</th><th>{d('Package')}</th><th>{d('Spent')}</th></tr></thead><tbody>
               {filtClients.map((c,i) => <tr key={i}><td>{c.name}</td><td>{c.type}</td><td>{c.lastSession}</td><td>{c.next}</td><td>{c.pkg}</td><td>€{fmt(c.spent)}</td></tr>)}
             </tbody></table></div>
         </>}
@@ -2594,14 +2977,14 @@ function PhotographyDash({ onInteract }) {
             {data.packages.map(p => <div key={p.name} className="idash__stat"><span className="idash__stat-label">{p.name} (€{p.price})</span><span className="idash__stat-value">{p.sessions} sessions</span><span className="idash__stat-sub">€{fmt(p.price * p.sessions)}</span></div>)}
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Revenue by Package</h4>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Revenue by Package')}</h4>
               <div className="idash__week-stats">{data.packages.map(p => { const rev = p.price*p.sessions; const pct = Math.round(rev/data.monthlyRev*100); return <div key={p.name} className="idash__ws-row" style={{flexDirection:'column',alignItems:'stretch',gap:4}}><span>{p.name} — €{fmt(rev)} ({pct}%)</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${pct}%`}} /></div></div>; })}</div></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Outstanding</h4>
-              <div className="idash__stat" style={{padding:'16px 0'}}><span className="idash__stat-label">Pending Payments</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>€{fmt(data.outstanding)}</span></div></div>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Outstanding')}</h4>
+              <div className="idash__stat" style={{padding:'16px 0'}}><span className="idash__stat-label">{d('Pending Payments')}</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>€{fmt(data.outstanding)}</span></div></div>
           </div>
         </>}
 
-        <Callout industry="photography studio" />
+        <Callout industry="photography studio" d={d} />
         <ResetBtn onReset={() => { setData(clone(PHOTO_DEFAULTS)); setView('overview'); setTypeFilter('All'); act(); }} />
       </div>
     </div>
@@ -2649,14 +3032,15 @@ const CAR_CSS = { available: 'idash__badge--green', reserved: 'idash__badge--amb
 const CAR_LEAD_CSS = { new: 'idash__badge--grey', contacted: 'idash__badge--blue', 'test-drive': 'idash__badge--amber', negotiating: 'idash__badge--green', closed: 'idash__badge--green' };
 
 function CarDealerDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(CAR_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function reserveCar(i) { act(); setData(p => { const n = clone(p); n.cars[i].status = 'reserved'; return n; }); showToast('✓ Car marked as reserved'); }
-  function logContact(i) { act(); setData(p => { const n = clone(p); n.leads[i].lastContact = 'Today'; return n; }); showToast('✓ Contact logged'); }
-  function scheduleTD(i) { act(); setData(p => { const n = clone(p); n.testDrives[i].status = 'confirmed'; return n; }); showToast('✓ Test drive confirmed'); }
+  function reserveCar(i) { act(); setData(p => { const n = clone(p); n.cars[i].status = 'reserved'; return n; }); showToast(d('✓ Car marked as reserved')); }
+  function logContact(i) { act(); setData(p => { const n = clone(p); n.leads[i].lastContact = 'Today'; return n; }); showToast(d('✓ Contact logged')); }
+  function scheduleTD(i) { act(); setData(p => { const n = clone(p); n.testDrives[i].status = 'confirmed'; return n; }); showToast(d('✓ Test drive confirmed')); }
 
   const targetPct = Math.min(100, Math.round(data.monthlyRev / data.target * 100));
 
@@ -2664,30 +3048,30 @@ function CarDealerDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Dealer Dashboard" items={CAR_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Car Dealership" alerts={data.hotLeads} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Car Dealership" alerts={data.hotLeads} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Cars Available</span><span className="idash__stat-value">{data.carsAvailable}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Test Drives (week)</span><span className="idash__stat-value">{data.testDrivesWeek}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Hot Leads</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.hotLeads}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">+8%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Cars Available')}</span><span className="idash__stat-value">{data.carsAvailable}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Test Drives (week)')}</span><span className="idash__stat-value">{data.testDrivesWeek}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Hot Leads')}</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.hotLeads}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">{d('+8%')}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Today's Test Drives</h4>
-              <table className="idash__table"><thead><tr><th>Client</th><th>Model</th><th>Time</th><th>Seller</th><th>Status</th></tr></thead><tbody>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Today\'s Test Drives')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Model')}</th><th>{d('Time')}</th><th>{d('Seller')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.testDrives.map((td,i) => <tr key={i}><td>{td.client}</td><td>{td.model}</td><td>{td.time}</td><td>{td.seller}</td>
                   <td><span className={`idash__badge ${td.status==='confirmed'?'idash__badge--green':'idash__badge--amber'}`}>{td.status.charAt(0).toUpperCase()+td.status.slice(1)}</span></td></tr>)}
               </tbody></table></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Hot Leads</h4>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Hot Leads')}</h4>
               <div className="idash__staff-list">{data.leads.filter(l => l.stage==='negotiating'||l.stage==='test-drive').map((l,i) => <div key={i} className="idash__staff-card"><span className="idash__staff-name">{l.name}</span><span className="idash__staff-shift">{l.model}</span><span className="idash__staff-role">{l.budget}</span></div>)}</div></div>
           </div>
         </>}
 
         {view === 'inventory' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Vehicle Inventory</h4>
-            <table className="idash__table"><thead><tr><th>Brand</th><th>Model</th><th>Year</th><th>KM</th><th>Price</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Vehicle Inventory')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Brand')}</th><th>{d('Model')}</th><th>{d('Year')}</th><th>{d('KM')}</th><th>{d('Price')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {data.cars.map((c,i) => <tr key={i}><td>{c.brand}</td><td>{c.model}</td><td>{c.year}</td><td>{c.km}</td><td>€{fmt(c.price)}</td>
                 <td><span className={`idash__badge ${CAR_CSS[c.status]}`}>{c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td>
                 <td className="idash__actions">{c.status==='available' && <button className="idash__action-btn" onClick={() => reserveCar(i)}>Reserve</button>}</td></tr>)}
@@ -2695,8 +3079,8 @@ function CarDealerDash({ onInteract }) {
         </>}
 
         {view === 'testdrives' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">This Week's Test Drives</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Model</th><th>Time</th><th>Seller</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('This Week\'s Test Drives')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Model')}</th><th>{d('Time')}</th><th>{d('Seller')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {data.testDrives.map((td,i) => <tr key={i}><td>{td.client}</td><td>{td.model}</td><td>{td.time}</td><td>{td.seller}</td>
                 <td><span className={`idash__badge ${td.status==='confirmed'?'idash__badge--green':'idash__badge--amber'}`}>{td.status.charAt(0).toUpperCase()+td.status.slice(1)}</span></td>
                 <td className="idash__actions">{td.status==='pending' && <button className="idash__action-btn" onClick={() => scheduleTD(i)}>Confirm</button>}</td></tr>)}
@@ -2704,8 +3088,8 @@ function CarDealerDash({ onInteract }) {
         </>}
 
         {view === 'leads' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Lead Pipeline</h4>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Model</th><th>Budget</th><th>Last Contact</th><th>Stage</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Lead Pipeline')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Model')}</th><th>{d('Budget')}</th><th>{d('Last Contact')}</th><th>{d('Stage')}</th><th></th></tr></thead><tbody>
               {data.leads.map((l,i) => <tr key={i}><td>{l.name}</td><td>{l.model}</td><td>{l.budget}</td><td>{l.lastContact}</td>
                 <td><span className={`idash__badge ${CAR_LEAD_CSS[l.stage]}`}>{l.stage.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase())}</span></td>
                 <td className="idash__actions"><button className="idash__action-btn" onClick={() => logContact(i)}>Log contact</button></td></tr>)}
@@ -2714,17 +3098,17 @@ function CarDealerDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Units Sold</span><span className="idash__stat-value">{data.unitsSold}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Avg. Ticket</span><span className="idash__stat-value">€{fmt(data.avgTicket)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Target Progress</span><span className="idash__stat-value">{targetPct}%</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${targetPct}%`}} /></div></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Units Sold')}</span><span className="idash__stat-value">{data.unitsSold}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Avg. Ticket')}</span><span className="idash__stat-value">€{fmt(data.avgTicket)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Target Progress')}</span><span className="idash__stat-value">{targetPct}%</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${targetPct}%`}} /></div></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Sales by Seller</h4>
-            <table className="idash__table"><thead><tr><th>Seller</th><th>Sales</th><th>Revenue</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Sales by Seller')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Seller')}</th><th>{d('Sales')}</th><th>{d('Revenue')}</th></tr></thead><tbody>
               {data.sellers.map((s,i) => <tr key={i}><td>{s.name}</td><td>{s.sales}</td><td>€{fmt(s.revenue)}</td></tr>)}
             </tbody></table></div>
         </>}
 
-        <Callout industry="car dealership" />
+        <Callout industry="car dealership" d={d} />
         <ResetBtn onReset={() => { setData(clone(CAR_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -2779,13 +3163,14 @@ const CAFE_O_CSS = { ready: 'idash__badge--green', preparing: 'idash__badge--amb
 const CAFE_T_CSS = { available: '#22c55e', occupied: '#ef4444', reserved: '#f59e0b' };
 
 function CafeDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(CAFE_DEFAULTS));
   const [view, setView] = useState('overview');
   const [ordFilter, setOrdFilter] = useState('All');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function markReady(i) { act(); setData(p => { const n = clone(p); n.liveOrders[i].status = 'ready'; return n; }); showToast('✓ Order ready'); }
+  function markReady(i) { act(); setData(p => { const n = clone(p); n.liveOrders[i].status = 'ready'; return n; }); showToast(d('✓ Order ready')); }
   function toggleAvail(i) { act(); setData(p => { const n = clone(p); n.menuItems[i].available = !n.menuItems[i].available; return n; }); }
 
   const filtOrders = data.liveOrders.filter(o => ordFilter === 'All' || (ordFilter === 'dine' && o.source.startsWith('Mesa')) || (ordFilter === 'take' && o.source.startsWith('Take')) || (ordFilter === 'delivery' && o.source.startsWith('Delivery')));
@@ -2794,40 +3179,40 @@ function CafeDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Café Dashboard" items={CAFE_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Café & Coffee" alerts={2} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Café & Coffee" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Orders Today</span><span className="idash__stat-value"><InlineEdit value={data.ordersToday} onChange={v => setData(p => ({...p, ordersToday: v}))} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Occupancy</span><span className="idash__stat-value">{data.occupancy}%</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Loyalty Members</span><span className="idash__stat-value">{data.loyaltyMembers}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">+7%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Orders Today')}</span><span className="idash__stat-value"><InlineEdit value={data.ordersToday} onChange={v => setData(p => ({...p, ordersToday: v}))} onInteract={act} /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Occupancy')}</span><span className="idash__stat-value">{data.occupancy}%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Loyalty Members')}</span><span className="idash__stat-value">{data.loyaltyMembers}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">{d('+7%')}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Live Orders</h4>
-              <table className="idash__table"><thead><tr><th>Source</th><th>Items</th><th>Wait</th><th>Status</th></tr></thead><tbody>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Live Orders')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Source')}</th><th>{d('Items')}</th><th>{d('Wait')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.liveOrders.slice(0,4).map((o,i) => <tr key={i}><td>{o.source}</td><td>{o.items}</td><td>{o.time}</td>
                   <td><span className={`idash__badge ${CAFE_O_CSS[o.status]}`}>{o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span></td></tr>)}
               </tbody></table></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Table Status</h4>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Table Status')}</h4>
               <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:8}}>{data.tables.map(t =>
                 <div key={t.id} style={{background:CAFE_T_CSS[t.status],borderRadius:6,padding:'10px 0',textAlign:'center',color:'#fff',fontSize:'0.75rem',fontWeight:600}}>T{t.id}</div>
               )}</div>
               <div style={{display:'flex',gap:16,marginTop:10,fontSize:'0.7rem',color:'rgba(255,255,255,0.4)'}}>
-                <span><span style={{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'#22c55e',marginRight:4}} />Available</span>
-                <span><span style={{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'#ef4444',marginRight:4}} />Occupied</span>
-                <span><span style={{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'#f59e0b',marginRight:4}} />Reserved</span>
+                <span><span style={{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'#22c55e',marginRight:4}} />{d('Available')}</span>
+                <span><span style={{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'#ef4444',marginRight:4}} />{d('Occupied')}</span>
+                <span><span style={{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'#f59e0b',marginRight:4}} />{d('Booked')}</span>
               </div></div>
           </div>
         </>}
 
         {view === 'orders' && <>
           <div className="idash__filter-bar">
-            {[['All','All'],['dine','Dine-in'],['take','Takeaway'],['delivery','Delivery']].map(([k,l]) => <button key={k} type="button" className={`idash__filter-btn ${ordFilter===k?'is-active':''}`} onClick={() => {setOrdFilter(k);act();}}>{l}</button>)}
+            {[['All','All'],['dine','Dine-in'],['take','Takeaway'],['delivery','Delivery']].map(([k,l]) => <button key={k} type="button" className={`idash__filter-btn ${ordFilter===k?'is-active':''}`} onClick={() => {setOrdFilter(k);act();}}>{d(l)}</button>)}
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Active Orders</h4>
-            <table className="idash__table"><thead><tr><th>Source</th><th>Items</th><th>Wait</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Active Orders')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Source')}</th><th>{d('Items')}</th><th>{d('Wait')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {filtOrders.map((o,i) => { const ri = data.liveOrders.indexOf(o); return <tr key={i}><td>{o.source}</td><td>{o.items}</td><td>{o.time}</td>
                 <td><span className={`idash__badge ${CAFE_O_CSS[o.status]}`}>{o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span></td>
                 <td className="idash__actions">{o.status==='preparing' && <button className="idash__action-btn" onClick={() => markReady(ri)}>Mark ready</button>}</td></tr>; })}
@@ -2835,41 +3220,41 @@ function CafeDash({ onInteract }) {
         </>}
 
         {view === 'menu' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Menu Items</h4>
-            <table className="idash__table"><thead><tr><th>Item</th><th>Category</th><th>Price</th><th>Available</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Menu Items')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Item')}</th><th>{d('Category')}</th><th>{d('Price')}</th><th>{d('Available')}</th></tr></thead><tbody>
               {data.menuItems.map((m,i) => <tr key={i}><td>{m.name}</td><td>{m.cat}</td><td>€{m.price.toFixed(2)}</td>
                 <td><div className="idash__toggle-wrap" onClick={() => toggleAvail(i)} style={{cursor:'pointer'}}><div className={`idash__toggle ${m.available?'is-on':''}`}><div className="idash__toggle-knob" /></div></div></td></tr>)}
             </tbody></table></div>
-          <div className="idash__panel" style={{marginTop:12}}><h4 className="idash__panel-title">86'd Today</h4>
+          <div className="idash__panel" style={{marginTop:12}}><h4 className="idash__panel-title">{d('86\'d Today')}</h4>
             <div className="idash__staff-list">{data.menuItems.filter(m => !m.available).map((m,i) => <div key={i} className="idash__staff-card"><span className="idash__staff-name" style={{color:'#ef4444'}}>{m.name}</span><span className="idash__staff-role">Unavailable</span></div>)}
               {data.menuItems.every(m => m.available) && <p style={{color:'rgba(255,255,255,0.3)',fontSize:'0.8rem'}}>All items available</p>}</div></div>
         </>}
 
         {view === 'events' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Upcoming Events</h4>
-            <table className="idash__table"><thead><tr><th>Event</th><th>Date</th><th>Capacity</th><th>Enrolled</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Upcoming Events')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Event')}</th><th>{d('Date')}</th><th>{d('Capacity')}</th><th>{d('Enrolled')}</th><th></th></tr></thead><tbody>
               {data.events.map((e,i) => <tr key={i}><td>{e.name}</td><td>{e.date}</td><td>{e.capacity}</td><td>{e.enrolled}/{e.capacity}</td>
-                <td className="idash__actions"><button className="idash__action-btn" onClick={() => {act(); showToast('Event management available in your live system');}}>Manage</button></td></tr>)}
+                <td className="idash__actions"><button className="idash__action-btn" onClick={() => {act(); showToast(d('Event management available in your live system'));}}>Manage</button></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">AOV</span><span className="idash__stat-value">€{data.aov.toFixed(2)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Orders Today</span><span className="idash__stat-value">{data.ordersToday}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('AOV')}</span><span className="idash__stat-value">€{data.aov.toFixed(2)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Orders Today')}</span><span className="idash__stat-value">{data.ordersToday}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Revenue by Time of Day</h4>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Revenue by Time of Day')}</h4>
               <div className="idash__week-stats">{data.revByTime.map(t => <div key={t.period} className="idash__ws-row" style={{flexDirection:'column',alignItems:'stretch',gap:4}}><span>{t.period} ({t.pct}%)</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${t.pct}%`}} /></div></div>)}</div></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Top Items Today</h4>
-              <table className="idash__table"><thead><tr><th>Item</th><th>Sold</th></tr></thead><tbody>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Top Items Today')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Item')}</th><th>{d('Sold')}</th></tr></thead><tbody>
                 {data.topItems.map((t,i) => <tr key={i}><td>{t.name}</td><td>{t.sold}</td></tr>)}
               </tbody></table></div>
           </div>
         </>}
 
-        <Callout industry="café" />
+        <Callout industry="café" d={d} />
         <ResetBtn onReset={() => { setData(clone(CAFE_DEFAULTS)); setView('overview'); setOrdFilter('All'); act(); }} />
       </div>
     </div>
@@ -2920,14 +3305,15 @@ const SCHOOL_DEFAULTS = {
 const SCHOOL_PAY_CSS = { paid: 'idash__badge--green', pending: 'idash__badge--amber', overdue: 'idash__badge--red' };
 
 function SchoolDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(SCHOOL_DEFAULTS));
   const [view, setView] = useState('overview');
   const [gradeFilter, setGradeFilter] = useState('All');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function sendReminder(i) { act(); setData(p => { const n = clone(p); n.students[i].payment = 'paid'; return n; }); showToast('✓ Reminder sent'); }
-  function sendAnnouncement() { act(); showToast('✓ Announcement sent to all parents'); }
+  function sendReminder(i) { act(); setData(p => { const n = clone(p); n.students[i].payment = 'paid'; return n; }); showToast(d('✓ Reminder sent')); }
+  function sendAnnouncement() { act(); showToast(d('✓ Announcement sent to all parents')); }
 
   const filtStudents = data.students.filter(s => gradeFilter === 'All' || s.grade === gradeFilter);
   const totalRev = data.tuitionRev + data.enrollmentFees + data.extraRev;
@@ -2936,23 +3322,23 @@ function SchoolDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="School Dashboard" items={SCHOOL_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="School & Academy" alerts={data.pendingEnroll} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="School & Academy" alerts={data.pendingEnroll} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Enrolled Students</span><span className="idash__stat-value">{data.enrolled}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Classes Today</span><span className="idash__stat-value">{data.classesToday}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Pending Enrollments</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingEnroll}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Enrolled Students')}</span><span className="idash__stat-value">{data.enrolled}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Classes Today')}</span><span className="idash__stat-value">{data.classesToday}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pending Enrollments')}</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingEnroll}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
           </div>
           <div className="idash__mid">
-            <div className="idash__panel"><h4 className="idash__panel-title">Today's Classes</h4>
-              <table className="idash__table"><thead><tr><th>Subject</th><th>Teacher</th><th>Room</th><th>Time</th><th>Attendance</th></tr></thead><tbody>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Today\'s Classes')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Subject')}</th><th>{d('Teacher')}</th><th>{d('Room')}</th><th>{d('Time')}</th><th>{d('Attendance')}</th></tr></thead><tbody>
                 {data.todayClasses.map((c,i) => <tr key={i}><td>{c.subject}</td><td>{c.teacher}</td><td>{c.room}</td><td>{c.time}</td><td>{c.attendance}</td></tr>)}
               </tbody></table></div>
-            <div className="idash__panel"><h4 className="idash__panel-title">Pending Enrollments</h4>
-              <div className="idash__stat" style={{padding:'16px 0'}}><span className="idash__stat-label">Awaiting Review</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingEnroll}</span></div></div>
+            <div className="idash__panel"><h4 className="idash__panel-title">{d('Pending Enrollments')}</h4>
+              <div className="idash__stat" style={{padding:'16px 0'}}><span className="idash__stat-label">{d('Awaiting Review')}</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingEnroll}</span></div></div>
           </div>
         </>}
 
@@ -2960,8 +3346,8 @@ function SchoolDash({ onInteract }) {
           <div className="idash__filter-bar">
             {['All','9th','10th','11th','12th'].map(g => <button key={g} type="button" className={`idash__filter-btn ${gradeFilter===g?'is-active':''}`} onClick={() => {setGradeFilter(g);act();}}>{g}</button>)}
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Students</h4>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Grade</th><th>Payment</th><th>Attendance</th><th>Parent</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Students')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Grade')}</th><th>{d('Payment')}</th><th>{d('Attendance')}</th><th>{d('Parent')}</th><th></th></tr></thead><tbody>
               {filtStudents.map((s,i) => { const ri = data.students.indexOf(s); return <tr key={i}><td>{s.name}</td><td>{s.grade}</td>
                 <td><span className={`idash__badge ${SCHOOL_PAY_CSS[s.payment]}`}>{s.payment.charAt(0).toUpperCase()+s.payment.slice(1)}</span></td>
                 <td>{s.attendance}%</td><td>{s.parent}</td>
@@ -2970,16 +3356,16 @@ function SchoolDash({ onInteract }) {
         </>}
 
         {view === 'schedule' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Weekly Schedule</h4>
-            <table className="idash__table"><thead><tr><th>Day</th><th>Period 1</th><th>Period 2</th><th>Period 3</th></tr></thead><tbody>
-              {data.schedule.map((d,i) => <tr key={i}><td style={{fontWeight:600}}>{d.day}</td>{d.slots.map((s,j) => <td key={j}>{s}</td>)}</tr>)}
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Weekly Schedule')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Day')}</th><th>{d('Period 1')}</th><th>{d('Period 2')}</th><th>{d('Period 3')}</th></tr></thead><tbody>
+              {data.schedule.map((row,i) => <tr key={i}><td style={{fontWeight:600}}>{d(row.day)}</td>{row.slots.map((s,j) => <td key={j}>{s}</td>)}</tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'comms' && <>
           <div style={{marginBottom:12}}><button className="idash__action-btn" onClick={sendAnnouncement}>+ New Announcement</button></div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Recent Communications</h4>
-            <table className="idash__table"><thead><tr><th>Subject</th><th>Date</th><th>Recipients</th><th>Type</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Recent Communications')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Subject')}</th><th>{d('Date')}</th><th>{d('Recipients')}</th><th>{d('Type')}</th></tr></thead><tbody>
               {data.comms.map((c,i) => <tr key={i}><td>{c.subject}</td><td>{c.date}</td><td>{c.recipients}</td>
                 <td><span className={`idash__badge ${c.type==='reminder'?'idash__badge--amber':c.type==='circular'?'idash__badge--blue':'idash__badge--grey'}`}>{c.type.charAt(0).toUpperCase()+c.type.slice(1)}</span></td></tr>)}
             </tbody></table></div>
@@ -2987,15 +3373,15 @@ function SchoolDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Tuition</span><span className="idash__stat-value">€{fmt(data.tuitionRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Enrollment Fees</span><span className="idash__stat-value">€{fmt(data.enrollmentFees)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Extras</span><span className="idash__stat-value">€{fmt(data.extraRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Tuition')}</span><span className="idash__stat-value">€{fmt(data.tuitionRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Enrollment Fees')}</span><span className="idash__stat-value">€{fmt(data.enrollmentFees)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Extras')}</span><span className="idash__stat-value">€{fmt(data.extraRev)}</span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Revenue Breakdown</h4>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Revenue Breakdown')}</h4>
             <div className="idash__week-stats">{[{l:'Tuition',v:data.tuitionRev},{l:'Enrollment',v:data.enrollmentFees},{l:'Extras',v:data.extraRev}].map(ch => <div key={ch.l} className="idash__ws-row" style={{flexDirection:'column',alignItems:'stretch',gap:4}}><span>{ch.l} — €{fmt(ch.v)} ({Math.round(ch.v/totalRev*100)}%)</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${Math.round(ch.v/totalRev*100)}%`}} /></div></div>)}</div></div>
         </>}
 
-        <Callout industry="school" />
+        <Callout industry="school" d={d} />
         <ResetBtn onReset={() => { setData(clone(SCHOOL_DEFAULTS)); setView('overview'); setGradeFilter('All'); act(); }} />
       </div>
     </div>
@@ -3042,12 +3428,13 @@ const RETAIL_O_CSS = { processing: 'idash__badge--amber', shipped: 'idash__badge
 const RETAIL_S_CSS = { active: 'idash__badge--green', low: 'idash__badge--amber', out: 'idash__badge--red' };
 
 function RetailDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(RETAIL_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function shipOrder(i) { act(); setData(p => { const n = clone(p); n.recentOrders[i].status = 'shipped'; return n; }); showToast('✓ Order shipped'); }
+  function shipOrder(i) { act(); setData(p => { const n = clone(p); n.recentOrders[i].status = 'shipped'; return n; }); showToast(d('✓ Order shipped')); }
 
   const totalRev = data.revOnline + data.revStore;
 
@@ -3055,34 +3442,34 @@ function RetailDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Retail Dashboard" items={RETAIL_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Retail & Commerce" alerts={data.lowStock} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Retail & Commerce" alerts={data.lowStock} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Products Live</span><span className="idash__stat-value">{data.productsLive}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Orders Today</span><span className="idash__stat-value"><InlineEdit value={data.ordersToday} onChange={v => setData(p => ({...p, ordersToday: v}))} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Low Stock</span><span className="idash__stat-value" style={{color:'#ef4444'}}>{data.lowStock}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">+12%</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Products Live')}</span><span className="idash__stat-value">{data.productsLive}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Orders Today')}</span><span className="idash__stat-value"><InlineEdit value={data.ordersToday} onChange={v => setData(p => ({...p, ordersToday: v}))} onInteract={act} /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Low Stock')}</span><span className="idash__stat-value" style={{color:'#ef4444'}}>{data.lowStock}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span><span className="idash__stat-badge idash__stat-badge--up">{d('+12%')}</span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Recent Orders</h4>
-            <table className="idash__table"><thead><tr><th>Order</th><th>Client</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Recent Orders')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Order')}</th><th>{d('Client')}</th><th>{d('Items')}</th><th>{d('Total')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.recentOrders.map((o,i) => <tr key={i}><td>{o.id}</td><td>{o.client}</td><td>{o.items}</td><td>€{o.total.toFixed(2)}</td>
                 <td><span className={`idash__badge ${RETAIL_O_CSS[o.status]}`}>{o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'catalog' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Product Catalog</h4>
-            <table className="idash__table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Product Catalog')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Product')}</th><th>{d('Category')}</th><th>{d('Price')}</th><th>{d('Stock')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.catalog.map((p,i) => <tr key={i}><td>{p.name}</td><td>{p.cat}</td><td>€{p.price.toFixed(2)}</td><td style={{color:p.stock<=3?'#ef4444':p.stock<=10?'#f59e0b':'inherit',fontWeight:p.stock<=10?600:400}}>{p.stock}</td>
                 <td><span className={`idash__badge ${RETAIL_S_CSS[p.status]}`}>{p.status==='out'?'Out of stock':p.status.charAt(0).toUpperCase()+p.status.slice(1)}</span></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'orders' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Orders</h4>
-            <table className="idash__table"><thead><tr><th>Order</th><th>Client</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Orders')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Order')}</th><th>{d('Client')}</th><th>{d('Items')}</th><th>{d('Total')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {data.recentOrders.map((o,i) => <tr key={i}><td>{o.id}</td><td>{o.client}</td><td>{o.items}</td><td>€{o.total.toFixed(2)}</td>
                 <td><span className={`idash__badge ${RETAIL_O_CSS[o.status]}`}>{o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span></td>
                 <td className="idash__actions">{o.status==='processing' && <button className="idash__action-btn" onClick={() => shipOrder(i)}>Ship</button>}</td></tr>)}
@@ -3090,25 +3477,25 @@ function RetailDash({ onInteract }) {
         </>}
 
         {view === 'promos' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Active Promotions</h4>
-            <table className="idash__table"><thead><tr><th>Promotion</th><th>Products</th><th>Ends</th><th>Status</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Active Promotions')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Promotion')}</th><th>{d('Products')}</th><th>{d('Ends')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.promos.map((p,i) => <tr key={i}><td>{p.name}</td><td>{p.products}</td><td>{p.end}</td><td><span className="idash__badge idash__badge--green">Active</span></td></tr>)}
             </tbody></table></div>
-          <div style={{marginTop:12}}><button className="idash__action-btn" onClick={() => {act(); showToast('Promotion builder available in your live system');}}>+ New Promotion</button></div>
+          <div style={{marginTop:12}}><button className="idash__action-btn" onClick={() => {act(); showToast(d('Promotion builder available in your live system'));}}>+ New Promotion</button></div>
         </>}
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(2,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Online</span><span className="idash__stat-value">€{fmt(data.revOnline)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">In-Store</span><span className="idash__stat-value">€{fmt(data.revStore)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Online')}</span><span className="idash__stat-value">€{fmt(data.revOnline)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('In-Store')}</span><span className="idash__stat-value">€{fmt(data.revStore)}</span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Top Products by Revenue</h4>
-            <table className="idash__table"><thead><tr><th>Product</th><th>Sold</th><th>Revenue</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Top Products by Revenue')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Product')}</th><th>{d('Sold')}</th><th>{d('Revenue')}</th></tr></thead><tbody>
               {data.topProducts.map((p,i) => <tr key={i}><td>{p.name}</td><td>{p.sold}</td><td>€{fmt(p.revenue)}</td></tr>)}
             </tbody></table></div>
         </>}
 
-        <Callout industry="retail" />
+        <Callout industry="retail" d={d} />
         <ResetBtn onReset={() => { setData(clone(RETAIL_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -3149,12 +3536,13 @@ const BAKERY_DEFAULTS = {
 const BAKERY_CSS = { confirmed: 'idash__badge--blue', ready: 'idash__badge--green', preparing: 'idash__badge--amber' };
 
 function BakeryDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(BAKERY_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function markReady(i) { act(); setData(p => { const n = clone(p); n.preorders[i].status = 'ready'; return n; }); showToast('✓ Order ready for pickup'); }
+  function markReady(i) { act(); setData(p => { const n = clone(p); n.preorders[i].status = 'ready'; return n; }); showToast(d('✓ Order ready for pickup')); }
   function toggleMenu(i) { act(); setData(p => { const n = clone(p); n.dailyMenu[i].available = !n.dailyMenu[i].available; return n; }); }
 
   const totalRev = data.revPreorders + data.revWalkin + data.revDelivery;
@@ -3163,26 +3551,26 @@ function BakeryDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Bakery Dashboard" items={BAKERY_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Bakery & Pastry" alerts={data.readyPickup} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Bakery & Pastry" alerts={data.readyPickup} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Pre-orders Today</span><span className="idash__stat-value">{data.preordersToday}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Ready for Pickup</span><span className="idash__stat-value" style={{color:'#22c55e'}}>{data.readyPickup}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Deliveries</span><span className="idash__stat-value">{data.deliveries}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pre-orders Today')}</span><span className="idash__stat-value">{data.preordersToday}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Ready for Pickup')}</span><span className="idash__stat-value" style={{color:'#22c55e'}}>{data.readyPickup}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Deliveries')}</span><span className="idash__stat-value">{data.deliveries}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Today's Pre-orders</h4>
-            <table className="idash__table"><thead><tr><th>Order</th><th>Client</th><th>Items</th><th>Pickup</th><th>Status</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Today\'s Pre-orders')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Order')}</th><th>{d('Client')}</th><th>{d('Items')}</th><th>{d('Pickup')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.preorders.slice(0,3).map((o,i) => <tr key={i}><td>{o.id}</td><td>{o.client}</td><td>{o.items}</td><td>{o.pickup}</td>
                 <td><span className={`idash__badge ${BAKERY_CSS[o.status]}`}>{o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'preorders' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">All Pre-orders</h4>
-            <table className="idash__table"><thead><tr><th>Order</th><th>Client</th><th>Items</th><th>Pickup</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('All Pre-orders')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Order')}</th><th>{d('Client')}</th><th>{d('Items')}</th><th>{d('Pickup')}</th><th>{d('Total')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {data.preorders.map((o,i) => <tr key={i}><td>{o.id}</td><td>{o.client}</td><td>{o.items}</td><td>{o.pickup}</td><td>€{o.total}</td>
                 <td><span className={`idash__badge ${BAKERY_CSS[o.status]}`}>{o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span></td>
                 <td className="idash__actions">{o.status!=='ready' && <button className="idash__action-btn" onClick={() => markReady(i)}>Mark ready</button>}</td></tr>)}
@@ -3190,31 +3578,31 @@ function BakeryDash({ onInteract }) {
         </>}
 
         {view === 'menu' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Daily Menu</h4>
-            <table className="idash__table"><thead><tr><th>Item</th><th>Qty</th><th>Available</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Daily Menu')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Item')}</th><th>{d('Qty')}</th><th>{d('Available')}</th></tr></thead><tbody>
               {data.dailyMenu.map((m,i) => <tr key={i}><td>{m.name}</td><td>{m.qty}</td>
                 <td><div className="idash__toggle-wrap" onClick={() => toggleMenu(i)} style={{cursor:'pointer'}}><div className={`idash__toggle ${m.available?'is-on':''}`}><div className="idash__toggle-knob" /></div></div></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'delivery' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Delivery Zones</h4>
-            <table className="idash__table"><thead><tr><th>Zone</th><th>Orders</th><th>ETA</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Delivery Zones')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Zone')}</th><th>{d('Orders')}</th><th>{d('ETA')}</th></tr></thead><tbody>
               {data.deliveryZones.map((z,i) => <tr key={i}><td>{z.zone}</td><td>{z.orders}</td><td>{z.eta}</td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Pre-orders</span><span className="idash__stat-value">€{fmt(data.revPreorders)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Walk-in</span><span className="idash__stat-value">€{fmt(data.revWalkin)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Delivery</span><span className="idash__stat-value">€{fmt(data.revDelivery)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pre-orders')}</span><span className="idash__stat-value">€{fmt(data.revPreorders)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Walk-in')}</span><span className="idash__stat-value">€{fmt(data.revWalkin)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Delivery')}</span><span className="idash__stat-value">€{fmt(data.revDelivery)}</span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Revenue Breakdown</h4>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Revenue Breakdown')}</h4>
             <div className="idash__week-stats">{[{l:'Pre-orders',v:data.revPreorders},{l:'Walk-in',v:data.revWalkin},{l:'Delivery',v:data.revDelivery}].map(ch => <div key={ch.l} className="idash__ws-row" style={{flexDirection:'column',alignItems:'stretch',gap:4}}><span>{ch.l} — €{fmt(ch.v)} ({Math.round(ch.v/totalRev*100)}%)</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${Math.round(ch.v/totalRev*100)}%`}} /></div></div>)}</div></div>
         </>}
 
-        <Callout industry="bakery" />
+        <Callout industry="bakery" d={d} />
         <ResetBtn onReset={() => { setData(clone(BAKERY_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -3254,13 +3642,14 @@ const BANK_DEFAULTS = {
 const BANK_L_CSS = { new: 'idash__badge--grey', contacted: 'idash__badge--blue', qualified: 'idash__badge--amber', meeting: 'idash__badge--green' };
 
 function BankDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(BANK_DEFAULTS));
   const [view, setView] = useState('overview');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function confirmAppt(i) { act(); setData(p => { const n = clone(p); n.todayAppts[i].status = 'confirmed'; return n; }); showToast('✓ Appointment confirmed'); }
-  function requestDocs(i) { act(); setData(p => { const n = clone(p); n.clients[i].docsPending = 0; return n; }); showToast('✓ Document request sent'); }
+  function confirmAppt(i) { act(); setData(p => { const n = clone(p); n.todayAppts[i].status = 'confirmed'; return n; }); showToast(d('✓ Appointment confirmed')); }
+  function requestDocs(i) { act(); setData(p => { const n = clone(p); n.clients[i].docsPending = 0; return n; }); showToast(d('✓ Document request sent')); }
 
   const totalRev = data.revAdvisory + data.revCommissions + data.revFees;
 
@@ -3268,26 +3657,26 @@ function BankDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Finance Dashboard" items={BANK_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Financial Services" alerts={3} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Financial Services" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Appointments (week)</span><span className="idash__stat-value">{data.appointmentsWeek}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Qualified Leads</span><span className="idash__stat-value">{data.qualifiedLeads}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Active Clients</span><span className="idash__stat-value">{data.activeClients}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Appointments (week)')}</span><span className="idash__stat-value">{data.appointmentsWeek}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Qualified Leads')}</span><span className="idash__stat-value">{data.qualifiedLeads}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Active Clients')}</span><span className="idash__stat-value">{data.activeClients}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Today's Appointments</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Service</th><th>Time</th><th>Advisor</th><th>Status</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Today\'s Appointments')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Service')}</th><th>{d('Time')}</th><th>{d('Advisor')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.todayAppts.map((a,i) => <tr key={i}><td>{a.client}</td><td>{a.service}</td><td>{a.time}</td><td>{a.advisor}</td>
                 <td><span className={`idash__badge ${a.status==='confirmed'?'idash__badge--green':'idash__badge--amber'}`}>{a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'appointments' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Appointments</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Service</th><th>Time</th><th>Advisor</th><th>Status</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Appointments')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Service')}</th><th>{d('Time')}</th><th>{d('Advisor')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {data.todayAppts.map((a,i) => <tr key={i}><td>{a.client}</td><td>{a.service}</td><td>{a.time}</td><td>{a.advisor}</td>
                 <td><span className={`idash__badge ${a.status==='confirmed'?'idash__badge--green':'idash__badge--amber'}`}>{a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span></td>
                 <td className="idash__actions">{a.status==='pending' && <button className="idash__action-btn" onClick={() => confirmAppt(i)}>Confirm</button>}</td></tr>)}
@@ -3295,16 +3684,16 @@ function BankDash({ onInteract }) {
         </>}
 
         {view === 'leads' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Lead Pipeline</h4>
-            <table className="idash__table"><thead><tr><th>Name</th><th>Service</th><th>Source</th><th>Last Contact</th><th>Stage</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Lead Pipeline')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Name')}</th><th>{d('Service')}</th><th>{d('Source')}</th><th>{d('Last Contact')}</th><th>{d('Stage')}</th></tr></thead><tbody>
               {data.leads.map((l,i) => <tr key={i}><td>{l.name}</td><td>{l.service}</td><td>{l.source}</td><td>{l.lastContact}</td>
                 <td><span className={`idash__badge ${BANK_L_CSS[l.status]}`}>{l.status.charAt(0).toUpperCase()+l.status.slice(1)}</span></td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'clients' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Client Portal</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Services</th><th>Docs Pending</th><th>Last Review</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Client Portal')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Services')}</th><th>{d('Docs Pending')}</th><th>{d('Last Review')}</th><th></th></tr></thead><tbody>
               {data.clients.map((c,i) => <tr key={i}><td>{c.name}</td><td>{c.services}</td>
                 <td style={{color:c.docsPending>0?'#f59e0b':'#22c55e'}}>{c.docsPending>0?`${c.docsPending} pending`:'Complete'}</td><td>{c.lastReview}</td>
                 <td className="idash__actions">{c.docsPending>0 && <button className="idash__action-btn" onClick={() => requestDocs(i)}>Request</button>}</td></tr>)}
@@ -3313,15 +3702,15 @@ function BankDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Advisory</span><span className="idash__stat-value">€{fmt(data.revAdvisory)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Commissions</span><span className="idash__stat-value">€{fmt(data.revCommissions)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Fees</span><span className="idash__stat-value">€{fmt(data.revFees)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Advisory')}</span><span className="idash__stat-value">€{fmt(data.revAdvisory)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Commissions')}</span><span className="idash__stat-value">€{fmt(data.revCommissions)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Fees')}</span><span className="idash__stat-value">€{fmt(data.revFees)}</span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Revenue Breakdown</h4>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Revenue Breakdown')}</h4>
             <div className="idash__week-stats">{[{l:'Advisory',v:data.revAdvisory},{l:'Commissions',v:data.revCommissions},{l:'Fees',v:data.revFees}].map(ch => <div key={ch.l} className="idash__ws-row" style={{flexDirection:'column',alignItems:'stretch',gap:4}}><span>{ch.l} — €{fmt(ch.v)} ({Math.round(ch.v/totalRev*100)}%)</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${Math.round(ch.v/totalRev*100)}%`}} /></div></div>)}</div></div>
         </>}
 
-        <Callout industry="financial services" />
+        <Callout industry="financial services" d={d} />
         <ResetBtn onReset={() => { setData(clone(BANK_DEFAULTS)); setView('overview'); act(); }} />
       </div>
     </div>
@@ -3360,13 +3749,14 @@ const TATTOO_DEFAULTS = {
 };
 
 function TattooDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(TATTOO_DEFAULTS));
   const [view, setView] = useState('overview');
   const [styleFilter, setStyleFilter] = useState('All');
   const [toast, showToast] = useToast();
   const act = () => onInteract?.();
 
-  function collectDeposit(i) { act(); setData(p => { const n = clone(p); n.upcoming[i].deposit = true; n.upcoming[i].status = 'confirmed'; return n; }); showToast('✓ Deposit collected — booking confirmed'); }
+  function collectDeposit(i) { act(); setData(p => { const n = clone(p); n.upcoming[i].deposit = true; n.upcoming[i].status = 'confirmed'; return n; }); showToast(d('✓ Deposit collected — booking confirmed')); }
 
   const filtPortfolio = data.portfolio.filter(p => styleFilter === 'All' || p.style === styleFilter);
   const styles = [...new Set(data.portfolio.map(p => p.style))];
@@ -3375,18 +3765,18 @@ function TattooDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Tattoo Dashboard" items={TATTOO_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Tattoo Studio" alerts={data.pendingDeposits} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Tattoo Studio" alerts={data.pendingDeposits} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Bookings (month)</span><span className="idash__stat-value">{data.bookingsMonth}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Deposits Collected</span><span className="idash__stat-value" style={{color:'#22c55e'}}>{data.depositsCollected}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Pending Deposits</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingDeposits}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Bookings (month)')}</span><span className="idash__stat-value">{data.bookingsMonth}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Deposits Collected')}</span><span className="idash__stat-value" style={{color:'#22c55e'}}>{data.depositsCollected}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Pending Deposits')}</span><span className="idash__stat-value" style={{color:'#f59e0b'}}>{data.pendingDeposits}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({...p, monthlyRev: v}))} onInteract={act} prefix="€" /></span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Upcoming Sessions</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Style</th><th>Artist</th><th>Date</th><th>Deposit</th><th>Status</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Upcoming Sessions')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Style')}</th><th>{d('Artist')}</th><th>{d('Date')}</th><th>{d('Deposit')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.upcoming.slice(0,4).map((b,i) => <tr key={i}><td>{b.client}</td><td>{b.style}</td><td>{b.artist}</td><td>{b.date} {b.time}</td>
                 <td>{b.deposit ? <span style={{color:'#22c55e'}}>✓ Paid</span> : <span style={{color:'#f59e0b'}}>Pending</span>}</td>
                 <td><span className={`idash__badge ${b.status==='confirmed'?'idash__badge--green':'idash__badge--amber'}`}>{b.status.charAt(0).toUpperCase()+b.status.slice(1)}</span></td></tr>)}
@@ -3394,8 +3784,8 @@ function TattooDash({ onInteract }) {
         </>}
 
         {view === 'bookings' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">All Bookings</h4>
-            <table className="idash__table"><thead><tr><th>Client</th><th>Style</th><th>Artist</th><th>Date</th><th>Hours</th><th>Deposit</th><th></th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('All Bookings')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Client')}</th><th>{d('Style')}</th><th>{d('Artist')}</th><th>{d('Date')}</th><th>{d('Hours')}</th><th>{d('Deposit')}</th><th></th></tr></thead><tbody>
               {data.upcoming.map((b,i) => <tr key={i}><td>{b.client}</td><td>{b.style}</td><td>{b.artist}</td><td>{b.date} {b.time}</td><td>{b.hours}h</td>
                 <td>{b.deposit ? <span style={{color:'#22c55e'}}>✓</span> : <span style={{color:'#f59e0b'}}>—</span>}</td>
                 <td className="idash__actions">{!b.deposit && <button className="idash__action-btn" onClick={() => collectDeposit(i)}>Collect deposit</button>}</td></tr>)}
@@ -3404,16 +3794,16 @@ function TattooDash({ onInteract }) {
 
         {view === 'portfolio' && <>
           <div className="idash__filter-bar">
-            {['All', ...styles].map(s => <button key={s} type="button" className={`idash__filter-btn ${styleFilter===s?'is-active':''}`} onClick={() => {setStyleFilter(s);act();}}>{s}</button>)}
+            {['All', ...styles].map(s => <button key={s} type="button" className={`idash__filter-btn ${styleFilter===s?'is-active':''}`} onClick={() => {setStyleFilter(s);act();}}>{d(s)}</button>)}
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Portfolio Gallery</h4>
-            <table className="idash__table"><thead><tr><th>Piece</th><th>Style</th><th>Artist</th><th>Likes</th></tr></thead><tbody>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Portfolio Gallery')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Piece')}</th><th>{d('Style')}</th><th>{d('Artist')}</th><th>{d('Likes')}</th></tr></thead><tbody>
               {filtPortfolio.map((p,i) => <tr key={i}><td>{p.title}</td><td>{p.style}</td><td>{p.artist}</td><td>❤ {p.likes}</td></tr>)}
             </tbody></table></div>
         </>}
 
         {view === 'artists' && <>
-          <div className="idash__panel"><h4 className="idash__panel-title">Artists</h4>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Artists')}</h4>
             <div className="idash__staff-list">{data.artists.map(a => <div key={a.name} className="idash__staff-card">
               <span className="idash__staff-name">{a.name} — ⭐ {a.rating}</span>
               <span className="idash__staff-shift">{a.bookings} bookings · €{fmt(a.revenue)}</span>
@@ -3423,15 +3813,15 @@ function TattooDash({ onInteract }) {
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Avg. Session</span><span className="idash__stat-value">€{data.avgSession}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Hourly Rate</span><span className="idash__stat-value">€{data.hourlyRate}/h</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span><span className="idash__stat-value">€{fmt(data.monthlyRev)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Avg. Session')}</span><span className="idash__stat-value">€{data.avgSession}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Hourly Rate')}</span><span className="idash__stat-value">€{data.hourlyRate}/h</span></div>
           </div>
-          <div className="idash__panel"><h4 className="idash__panel-title">Revenue by Artist</h4>
+          <div className="idash__panel"><h4 className="idash__panel-title">{d('Revenue by Artist')}</h4>
             <div className="idash__week-stats">{data.artists.map(a => { const pct = Math.round(a.revenue/data.monthlyRev*100); return <div key={a.name} className="idash__ws-row" style={{flexDirection:'column',alignItems:'stretch',gap:4}}><span>{a.name} — €{fmt(a.revenue)} ({pct}%)</span><div className="idash__bar"><div className="idash__bar-fill" style={{width:`${pct}%`}} /></div></div>; })}</div></div>
         </>}
 
-        <Callout industry="tattoo studio" />
+        <Callout industry="tattoo studio" d={d} />
         <ResetBtn onReset={() => { setData(clone(TATTOO_DEFAULTS)); setView('overview'); setStyleFilter('All'); act(); }} />
       </div>
     </div>
@@ -3500,6 +3890,7 @@ const SUPER_STATUS_CSS = { pending: 'idash__badge--grey', preparing: 'idash__bad
 const SUPER_STATUS_LABEL = { pending: 'Pending', preparing: 'Preparing', transit: 'In transit', delivered: 'Delivered' };
 
 function SupermarketDash({ onInteract }) {
+  const d = useDashT();
   const [data, setData] = useState(() => clone(SUPER_DEFAULTS));
   const [view, setView] = useState('overview');
   const [orderFilter, setOrderFilter] = useState('All');
@@ -3513,7 +3904,7 @@ function SupermarketDash({ onInteract }) {
       n.orders[i].status = 'delivered';
       return n;
     });
-    showToast('Order marked as delivered');
+    showToast(d('Order marked as delivered'));
   }
 
   function reorder(i) {
@@ -3523,7 +3914,7 @@ function SupermarketDash({ onInteract }) {
       n.lowStockItems[i].reordered = true;
       return n;
     });
-    showToast('✓ Restock order sent');
+    showToast(d('✓ Restock order sent'));
   }
 
   const filteredOrders = data.orders.filter(o => orderFilter === 'All' || o.status === orderFilter);
@@ -3535,26 +3926,26 @@ function SupermarketDash({ onInteract }) {
     <div className="idash">
       <DashSidebar title="Super Dashboard" items={SUPER_NAV} active={view} onNav={v => { setView(v); act(); }} />
       <div className="idash__main">
-        <DashTopbar title="Supermarket" alerts={data.lowStock} onSettings={() => showToast('Settings available in your live system')} />
+        <DashTopbar title="Supermarket" alerts={data.lowStock} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
 
         {view === 'overview' && <>
           <div className="idash__stats">
-            <div className="idash__stat"><span className="idash__stat-label">Orders Today</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Orders Today')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.ordersToday} onChange={v => setData(p => ({ ...p, ordersToday: v }))} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Active Deliveries</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Active Deliveries')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.activeDeliveries} onChange={v => setData(p => ({ ...p, activeDeliveries: v }))} onInteract={act} /></span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Low Stock Items</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Low Stock Items')}</span>
               <span className="idash__stat-value" style={{ color: '#ef4444' }}>{data.lowStock}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">Monthly Revenue</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Monthly Revenue')}</span>
               <span className="idash__stat-value"><InlineEdit value={data.monthlyRev} onChange={v => setData(p => ({ ...p, monthlyRev: v }))} onInteract={act} prefix="€" /></span>
-              <span className="idash__stat-badge idash__stat-badge--up">+14%</span></div>
+              <span className="idash__stat-badge idash__stat-badge--up">{d('+14%')}</span></div>
           </div>
 
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Today's Orders</h4>
-              <table className="idash__table"><thead><tr><th>Order</th><th>Client</th><th>Items</th><th>Zone</th><th>Status</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Today\'s Orders')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Order')}</th><th>{d('Client')}</th><th>{d('Items')}</th><th>{d('Zone')}</th><th>{d('Status')}</th></tr></thead><tbody>
                 {data.orders.slice(0, 5).map((o, i) => (
                   <tr key={i}><td>{o.id}</td><td>{o.client}</td><td>{o.items} items</td><td>{o.zone}</td>
                     <td><span className={`idash__badge ${SUPER_STATUS_CSS[o.status]}`}>{SUPER_STATUS_LABEL[o.status]}</span></td></tr>
@@ -3562,7 +3953,7 @@ function SupermarketDash({ onInteract }) {
               </tbody></table>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Delivery Zones</h4>
+              <h4 className="idash__panel-title">{d('Delivery Zones')}</h4>
               <div className="idash__staff-list">
                 {data.zones.map(z => (
                   <div key={z.name} className="idash__staff-card">
@@ -3582,12 +3973,12 @@ function SupermarketDash({ onInteract }) {
           <div className="idash__filter-bar">
             {['All', 'pending', 'preparing', 'transit', 'delivered'].map(f => (
               <button key={f} type="button" className={`idash__filter-btn ${orderFilter === f ? 'is-active' : ''}`}
-                onClick={() => { setOrderFilter(f); act(); }}>{f === 'All' ? 'All' : SUPER_STATUS_LABEL[f]}</button>
+                onClick={() => { setOrderFilter(f); act(); }}>{f === 'All' ? d('All') : d(SUPER_STATUS_LABEL[f])}</button>
             ))}
           </div>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Orders — {orderFilter === 'All' ? 'All' : SUPER_STATUS_LABEL[orderFilter]}</h4>
-            <table className="idash__table"><thead><tr><th>Order</th><th>Client</th><th>Items</th><th>Zone</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Orders')} — {orderFilter === 'All' ? d('All') : d(SUPER_STATUS_LABEL[orderFilter])}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Order')}</th><th>{d('Client')}</th><th>{d('Items')}</th><th>{d('Zone')}</th><th>{d('Total')}</th><th>{d('Status')}</th><th></th></tr></thead><tbody>
               {filteredOrders.map((o, i) => {
                 const realIdx = data.orders.indexOf(o);
                 return (
@@ -3614,7 +4005,7 @@ function SupermarketDash({ onInteract }) {
           </div>
           <div className="idash__panel">
             <h4 className="idash__panel-title" style={{ color: '#ef4444' }}>⚠ Low Stock — Below 10 units</h4>
-            <table className="idash__table"><thead><tr><th>Product</th><th>Stock</th><th></th></tr></thead><tbody>
+            <table className="idash__table"><thead><tr><th>{d('Product')}</th><th>{d('Stock')}</th><th></th></tr></thead><tbody>
               {data.lowStockItems.map((item, i) => (
                 <tr key={i}>
                   <td>{item.name}</td>
@@ -3632,8 +4023,8 @@ function SupermarketDash({ onInteract }) {
 
         {view === 'promotions' && <>
           <div className="idash__panel">
-            <h4 className="idash__panel-title">Active Promotions</h4>
-            <table className="idash__table"><thead><tr><th>Promotion</th><th>Discount</th><th>Ends</th><th>Status</th></tr></thead><tbody>
+            <h4 className="idash__panel-title">{d('Active Promotions')}</h4>
+            <table className="idash__table"><thead><tr><th>{d('Promotion')}</th><th>{d('Discount')}</th><th>{d('Ends')}</th><th>{d('Status')}</th></tr></thead><tbody>
               {data.promos.map((p, i) => (
                 <tr key={i}><td>{p.name}</td><td>{p.discount}</td><td>{p.end}</td>
                   <td><span className="idash__badge idash__badge--green">Active</span></td></tr>
@@ -3641,21 +4032,21 @@ function SupermarketDash({ onInteract }) {
             </tbody></table>
           </div>
           <div style={{ marginTop: 12 }}>
-            <button className="idash__action-btn" onClick={() => { act(); showToast('Promotion builder available in your live system'); }}>+ New Promotion</button>
+            <button className="idash__action-btn" onClick={() => { act(); showToast(d('Promotion builder available in your live system')); }}>+ New Promotion</button>
           </div>
         </>}
 
         {view === 'revenue' && <>
           <div className="idash__stats" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-            <div className="idash__stat"><span className="idash__stat-label">Online Sales</span><span className="idash__stat-value">€{fmt(data.revenueOnline)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">In-Store Sales</span><span className="idash__stat-value">€{fmt(data.revenueStore)}</span></div>
-            <div className="idash__stat"><span className="idash__stat-label">vs Last Week</span>
+            <div className="idash__stat"><span className="idash__stat-label">{d('Online Sales')}</span><span className="idash__stat-value">€{fmt(data.revenueOnline)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('In-Store Sales')}</span><span className="idash__stat-value">€{fmt(data.revenueStore)}</span></div>
+            <div className="idash__stat"><span className="idash__stat-label">{d('vs Last Week')}</span>
               <span className="idash__stat-value" style={{ color: revChange >= 0 ? '#22c55e' : '#ef4444' }}>{revChange >= 0 ? '+' : ''}€{fmt(Math.abs(revChange))}</span>
               <span className={`idash__stat-badge ${revChange >= 0 ? 'idash__stat-badge--up' : 'idash__stat-badge--down'}`}>{revPct >= 0 ? '+' : ''}{revPct}%</span></div>
           </div>
           <div className="idash__mid">
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Channel Breakdown</h4>
+              <h4 className="idash__panel-title">{d('Channel Breakdown')}</h4>
               <div className="idash__week-stats">
                 {[{ label: 'Online', val: data.revenueOnline, pct: Math.round((data.revenueOnline / thisWeekRev) * 100) },
                   { label: 'In-Store', val: data.revenueStore, pct: Math.round((data.revenueStore / thisWeekRev) * 100) }].map(ch => (
@@ -3667,8 +4058,8 @@ function SupermarketDash({ onInteract }) {
               </div>
             </div>
             <div className="idash__panel">
-              <h4 className="idash__panel-title">Top 5 Products</h4>
-              <table className="idash__table"><thead><tr><th>Product</th><th>Sold</th><th>Revenue</th></tr></thead><tbody>
+              <h4 className="idash__panel-title">{d('Top 5 Products')}</h4>
+              <table className="idash__table"><thead><tr><th>{d('Product')}</th><th>{d('Sold')}</th><th>{d('Revenue')}</th></tr></thead><tbody>
                 {data.topProducts.map((p, i) => (
                   <tr key={i}><td>{p.name}</td><td>{p.sold}</td><td>€{fmt(p.revenue)}</td></tr>
                 ))}
@@ -3677,7 +4068,7 @@ function SupermarketDash({ onInteract }) {
           </div>
         </>}
 
-        <Callout industry="supermarket" />
+        <Callout industry="supermarket" d={d} />
         <ResetBtn onReset={() => { setData(clone(SUPER_DEFAULTS)); setView('overview'); setOrderFilter('All'); act(); }} />
       </div>
     </div>
@@ -3713,11 +4104,11 @@ const DASHBOARDS = {
 /* ═══════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════ */
-function FeaturesStrip({ features }) {
+function FeaturesStrip({ features, T }) {
   if (!features || features.length === 0) return null;
   return (
     <div className="idemo__features">
-      <h4 className="idemo__features-title">What's included</h4>
+      <h4 className="idemo__features-title">{T ? T(Trans.industryDemo.whatsIncluded) : "What's included"}</h4>
       <ul className="idemo__features-list">
         {features.map((f, i) => (
           <li key={i} className="idemo__features-chip">
@@ -3730,24 +4121,23 @@ function FeaturesStrip({ features }) {
   );
 }
 
-function ImpactPanel({ industry, industryLabel, T }) {
-  const stats = industry.impactStats ? Object.values(industry.impactStats) : [];
+function ImpactPanel({ industry, industryLabel, T, translatedDesc, translatedFeatures, translatedStats }) {
   return (
     <div className="idemo__impact-panel">
       <div className="idemo__impact-head">
         <span className="idemo__impact-icon" aria-hidden="true">{industry.icon}</span>
         <h3 className="idemo__impact-title">{industryLabel}</h3>
-        <p className="idemo__impact-desc">{industry.desc}</p>
+        <p className="idemo__impact-desc">{translatedDesc}</p>
       </div>
       <div className="idemo__impact-stats">
-        {stats.map((stat, i) => (
+        {translatedStats.map((stat, i) => (
           <div key={i} className="idemo__impact-stat">
             <span className="idemo__impact-value">{stat.value}</span>
             <span className="idemo__impact-label">{stat.label}</span>
           </div>
         ))}
       </div>
-      <FeaturesStrip features={industry.features} />
+      <FeaturesStrip features={translatedFeatures} T={T} />
       <p className="idemo__impact-note">
         {T(Trans.industryDemo.projectedMetrics)}
       </p>
@@ -3766,10 +4156,36 @@ export default function IndustryDemo() {
 
   const labelFor = (id) => {
     const key = INDUSTRY_I18N_KEYS[id];
-    if (key && Trans.industryDemo.industries[key]) {
-      return T(Trans.industryDemo.industries[key]);
-    }
+    const entry = key && Trans.industryDemo.industries[key];
+    if (entry?.label) return T(entry.label);
     return INDUSTRIES.find(i => i.id === id)?.label || id;
+  };
+
+  const descFor = (id) => {
+    const key = INDUSTRY_I18N_KEYS[id];
+    const entry = key && Trans.industryDemo.industries[key];
+    if (entry?.desc) return T(entry.desc);
+    return INDUSTRIES.find(i => i.id === id)?.desc || '';
+  };
+
+  const featuresFor = (id) => {
+    const key = INDUSTRY_I18N_KEYS[id];
+    const entry = key && Trans.industryDemo.industries[key];
+    if (entry?.features) return Object.values(entry.features).map(f => T(f));
+    return INDUSTRIES.find(i => i.id === id)?.features || [];
+  };
+
+  const impactStatsFor = (id) => {
+    const key = INDUSTRY_I18N_KEYS[id];
+    const entry = key && Trans.industryDemo.industries[key];
+    if (entry?.impactStats) {
+      return Object.values(entry.impactStats).map(s => ({
+        value: s.value,
+        label: T(s.label),
+      }));
+    }
+    const ind = INDUSTRIES.find(i => i.id === id);
+    return ind?.impactStats ? Object.values(ind.impactStats) : [];
   };
 
   const ActiveDash = activeId ? DASHBOARDS[activeId] : null;
@@ -3782,7 +4198,7 @@ export default function IndustryDemo() {
     ? INDUSTRIES.filter(i =>
         i.label.toLowerCase().includes(q) ||
         labelFor(i.id).toLowerCase().includes(q) ||
-        i.desc.toLowerCase().includes(q)
+        descFor(i.id).toLowerCase().includes(q)
       )
     : [];
 
@@ -3898,6 +4314,7 @@ export default function IndustryDemo() {
                 className="idemo__dropdown"
                 data-idemo-fade
                 defaultValue=""
+                aria-label="Select an industry"
                 onChange={(e) => {
                   if (e.target.value) selectIndustry(e.target.value);
                 }}
@@ -3920,7 +4337,7 @@ export default function IndustryDemo() {
                     onClick={() => selectIndustry(ind.id)}>
                     <span className="idemo__card-icon">{ind.icon}</span>
                     <span className="idemo__card-name">{labelFor(ind.id)}</span>
-                    <span className="idemo__card-desc">{ind.desc}</span>
+                    <span className="idemo__card-desc">{descFor(ind.id)}</span>
                   </button>
                 ))}
               </div>
@@ -3961,7 +4378,7 @@ export default function IndustryDemo() {
                   )}
                   <ActiveDash key={activeId} onInteract={handleInteract} />
                 </div>
-                <FeaturesStrip features={activeIndustry?.features} />
+                <FeaturesStrip features={activeIndustry ? featuresFor(activeIndustry.id) : []} T={T} />
                 <p className="idemo__sim-note">{T(Trans.industryDemo.simNote)}</p>
               </>
             ) : (
@@ -3970,6 +4387,9 @@ export default function IndustryDemo() {
                   industry={activeIndustry}
                   industryLabel={labelFor(activeIndustry.id)}
                   T={T}
+                  translatedDesc={descFor(activeIndustry.id)}
+                  translatedFeatures={featuresFor(activeIndustry.id)}
+                  translatedStats={impactStatsFor(activeIndustry.id)}
                 />
               )
             )}
