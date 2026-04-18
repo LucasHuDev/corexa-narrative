@@ -270,3 +270,34 @@
   }
 }
 
+.mobile-overlay-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 101;
+}
+
+.mobile-overlay-close,
+.mobile-overlay-search {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-overlay-close:hover,
+.mobile-overlay-search:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
