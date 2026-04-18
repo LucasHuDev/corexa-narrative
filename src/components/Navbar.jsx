@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang, useT } from '../i18n/I18nProvider';
 import { t } from '../i18n/translations';
+import CommandPalette from './CommandPalette';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -23,6 +24,17 @@ export default function Navbar() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
   }, []);
 
   useEffect(() => {
@@ -196,6 +208,11 @@ export default function Navbar() {
         </a>
       </div>
     </div>
+
+    <CommandPalette 
+      isOpen={isCommandOpen} 
+      onClose={() => setIsCommandOpen(false)} 
+    />
   </>
   );
 }
