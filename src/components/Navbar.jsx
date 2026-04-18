@@ -153,7 +153,7 @@ export default function Navbar() {
     {/* Mobile overlay — rendered outside <nav> to avoid stacking context
         issues caused by backdrop-filter on the fixed navbar */}
     <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={closeMobileMenu}>
-      <div className="mobile-nav-links" onClick={(e) => e.stopPropagation()}>
+      <div className="mobile-nav-links">
         <Link to="/" className="mobile-nav-link" onClick={closeMobileMenu}>{T(t.nav.home)}</Link>
         <Link to="/services" className="mobile-nav-link" onClick={closeMobileMenu}>{T(t.nav.services)}</Link>
         <Link to="/studio" className="mobile-nav-link" onClick={closeMobileMenu}>{T(t.nav.studio)}</Link>
@@ -162,7 +162,10 @@ export default function Navbar() {
 
         <button
           type="button"
-          onClick={toggleLang}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleLang();
+          }}
           className="mobile-lang-toggle"
           aria-label={`Switch language to ${lang === 'en' ? 'Spanish' : 'English'}`}
           style={{
@@ -182,7 +185,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      <div className="mobile-socials" onClick={(e) => e.stopPropagation()}>
+      <div className="mobile-socials">
         <a href="https://contra.com/corexastudio" target="_blank" rel="noopener noreferrer" className="mobile-social-icon" aria-label="Contra">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <polygon points="12,2 14,10 12,9 10,10" />
