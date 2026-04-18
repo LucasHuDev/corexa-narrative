@@ -183,6 +183,7 @@
   pointer-events: none;
   transform: translateY(-20px);
   transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
 }
 
 .mobile-menu-overlay.open {
