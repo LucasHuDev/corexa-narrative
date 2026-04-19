@@ -700,6 +700,7 @@ function Toast({ message }) {
 }
 
 function InlineEdit({ value, onChange, onInteract, prefix = '', suffix = '', className = '' }) {
+  const d = useDashT();
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState('');
   function start() { setDraft(String(value)); setEditing(true); onInteract?.(); }
@@ -718,6 +719,7 @@ function InlineEdit({ value, onChange, onInteract, prefix = '', suffix = '', cla
 }
 
 function InlineText({ value, onChange, onInteract, className = '' }) {
+  const d = useDashT();
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState('');
   function start() { setDraft(value); setEditing(true); onInteract?.(); }
