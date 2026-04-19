@@ -1597,6 +1597,17 @@
     width: 100%;
     box-sizing: border-box;
   }
+  .idash__panel {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .idash__table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 @media (max-width: 560px) {
