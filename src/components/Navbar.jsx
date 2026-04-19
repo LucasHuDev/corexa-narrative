@@ -2,39 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang, useT } from '../i18n/I18nProvider';
 import { t } from '../i18n/translations';
-import CommandPalette from './CommandPalette';
 import './Navbar.css';
 
 export default function Navbar() {
-  const [isCommandOpen, setIsCommandOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [commandKey, setCommandKey] = useState('⌘ K');
   const [scrolled, setScrolled] = useState(false);
   const { lang, toggleLang } = useLang();
   const T = useT();
-
-  useEffect(() => {
-    const platform = navigator.platform || navigator.userAgent;
-    const isMac = platform.toLowerCase().indexOf('mac') !== -1 || platform.toLowerCase().indexOf('iphone') !== -1 || platform.toLowerCase().indexOf('ipad') !== -1;
-    setCommandKey(isMac ? '⌘ K' : 'Ctrl K');
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleGlobalKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setIsCommandOpen((prev) => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleGlobalKeyDown);
-    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
   }, []);
 
   useEffect(() => {
@@ -47,10 +27,6 @@ export default function Navbar() {
       document.body.style.overflow = '';
     };
   }, [isMobileMenuOpen]);
-
-  const handleCommandClick = () => {
-    setIsCommandOpen(!isCommandOpen);
-  };
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
@@ -131,15 +107,6 @@ export default function Navbar() {
 
           <div className="nav-command-separator desktop-only" aria-hidden="true"></div>
 
-          <button className="nav-command-btn" onClick={handleCommandClick} aria-label="Search">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-search-icon">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <span className="nav-command-text desktop-only">{T(t.nav.search)}</span>
-            <span className="nav-command-key desktop-only">{commandKey}</span>
-          </button>
-
           {/* Hamburger (Mobile Only) */}
           <button className={`nav-hamburger ${isMobileMenuOpen ? 'active' : ''}`} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle Navigation">
             <div className="hamburger-line"></div>
@@ -154,12 +121,6 @@ export default function Navbar() {
         issues caused by backdrop-filter on the fixed navbar */}
     <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={closeMobileMenu}>
       <div className="mobile-overlay-header" onClick={(e) => e.stopPropagation()}>
-        <button className="mobile-overlay-search" onClick={() => { closeMobileMenu(); setTimeout(handleCommandClick, 100); }} aria-label="Search">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button>
         <button className="mobile-overlay-close" onClick={closeMobileMenu} aria-label="Close menu">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -226,11 +187,6 @@ export default function Navbar() {
         </a>
       </div>
     </div>
-
-    <CommandPalette 
-      isOpen={isCommandOpen} 
-      onClose={() => setIsCommandOpen(false)} 
-    />
   </>
   );
 }
