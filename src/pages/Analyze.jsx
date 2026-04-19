@@ -274,7 +274,7 @@ export default function Analyze() {
     setLoadingStep(0);
     const iv = setInterval(() => {
       setLoadingStep((s) => (s + 1) % LOADING_STEPS.length);
-    }, 2000);
+    }, 1500);
     return () => clearInterval(iv);
   }, [phase]);
 

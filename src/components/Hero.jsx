@@ -39,7 +39,7 @@ export default function Hero() {
           <Link to="/contact" className="hero-globe__btn-primary" data-cursor="cta">
             {T(t.hero.cta1)}
           </Link>
-          <Link to="/services" className="hero-globe__btn-ghost">
+          <Link to="/analyze" className="hero-globe__btn-ghost">
             {T(t.hero.cta2)}
           </Link>
         </div>

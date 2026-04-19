@@ -418,7 +418,7 @@ export const t = {
       es: "Diseñamos y construimos sitios web de alto rendimiento.",
     },
     cta1: { en: "Start a Project", es: "Iniciar Proyecto" },
-    cta2: { en: "View Work", es: "Ver Trabajo" },
+    cta2: { en: "Free Audit", es: "Auditoría Gratis" },
     scroll: { en: "Scroll to explore", es: "Desplazá para explorar" },
   },
   industryDemo: {
