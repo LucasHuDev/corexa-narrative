@@ -1,19 +1,21 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Home from '../pages/Home.jsx';
-import Services from '../pages/Services.jsx';
-import Studio from '../pages/Studio.jsx';
-import ContactPage from '../pages/ContactPage.jsx';
-import AnalyzerPage from '../pages/AnalyzerPage.jsx';
-import Analyze from '../pages/Analyze.jsx';
-import BarberDemo from '../pages/demos/BarberDemo.jsx';
-import CafeDemo from '../pages/demos/CafeDemo.jsx';
-import ArchDemo from '../pages/demos/ArchDemo.jsx';
-import Privacy from '../pages/Privacy.jsx';
-import Terms from '../pages/Terms.jsx';
+
+// Every non-home page is code-split so the initial bundle only ships Home + Hero.
+const Services = lazy(() => import('../pages/Services.jsx'));
+const Studio = lazy(() => import('../pages/Studio.jsx'));
+const ContactPage = lazy(() => import('../pages/ContactPage.jsx'));
+const AnalyzerPage = lazy(() => import('../pages/AnalyzerPage.jsx'));
+const Analyze = lazy(() => import('../pages/Analyze.jsx'));
+const BarberDemo = lazy(() => import('../pages/demos/BarberDemo.jsx'));
+const CafeDemo = lazy(() => import('../pages/demos/CafeDemo.jsx'));
+const ArchDemo = lazy(() => import('../pages/demos/ArchDemo.jsx'));
+const Privacy = lazy(() => import('../pages/Privacy.jsx'));
+const Terms = lazy(() => import('../pages/Terms.jsx'));
 
 /**
  * GSAP-driven page transitions.
@@ -98,20 +100,22 @@ export default function AnimatedRoutes() {
 
   return (
     <div ref={elRef} className="route-stage">
-      <Routes location={displayLocation}>
-        <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/studio" element={<Studio />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/analyze" element={<Analyze />} />
-        <Route path="/analyzer" element={<AnalyzerPage />} />
-        <Route path="/demos/barbershop" element={<BarberDemo />} />
-        <Route path="/demos/cafe" element={<CafeDemo />} />
-        <Route path="/demos/arch" element={<ArchDemo />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
+      <Suspense fallback={<div style={{ minHeight: '100vh', background: '#020202' }} />}>
+        <Routes location={displayLocation}>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/studio" element={<Studio />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/analyze" element={<Analyze />} />
+          <Route path="/analyzer" element={<AnalyzerPage />} />
+          <Route path="/demos/barbershop" element={<BarberDemo />} />
+          <Route path="/demos/cafe" element={<CafeDemo />} />
+          <Route path="/demos/arch" element={<ArchDemo />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }

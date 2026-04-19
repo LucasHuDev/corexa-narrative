@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { jsPDF } from "jspdf";
 import useH2Reveal from "../utils/useH2Reveal.js";
 import { useT } from "../i18n/I18nProvider";
 import { t as Trans } from "../i18n/translations";
@@ -86,7 +85,10 @@ function ScoreRing({ score, size = 140 }) {
 }
 
 /* ── PDF Generator ── */
-function generatePDF(report) {
+// jsPDF (~380 KB with html2canvas/dompurify deps) is dynamically imported so
+// it only ships when the user actually clicks "Download PDF".
+async function generatePDF(report) {
+  const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const W = 210;
   const H = 297;
