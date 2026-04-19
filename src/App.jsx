@@ -11,6 +11,7 @@ import AnimatedRoutes from "./components/AnimatedRoutes.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import CookieBanner from "./components/CookieBanner.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
+import PageLoader from "./components/PageLoader.jsx";
 
 function Shell() {
   const { pathname } = useLocation();
@@ -34,6 +35,7 @@ function Shell() {
 export default function App() {
   return (
     <BrowserRouter>
+      <PageLoader />
       <Shell />
     </BrowserRouter>
   );
