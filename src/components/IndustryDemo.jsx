@@ -854,7 +854,7 @@ function HospitalityDash({ onInteract }) {
 
   return (
     <div className="idash idash--hosp">
-      <DashSidebar title="Hotel Dashboard" items={HOSP_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Hotel Dashboard" items={HOSP_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Hotel Dashboard" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -1046,7 +1046,7 @@ function HospitalityDash({ onInteract }) {
         </>}
 
         <Callout industry="hospitality" d={d} />
-        <ResetBtn onReset={() => { setData(clone(HOSP_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(HOSP_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -1097,7 +1097,7 @@ function ClinicsDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Clinic Dashboard" items={CLINIC_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Clinic Dashboard" items={CLINIC_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Clinic Dashboard" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -1210,7 +1210,7 @@ function ClinicsDash({ onInteract }) {
         </>}
 
         <Callout industry="clinics" d={d} />
-        <ResetBtn onReset={() => { setData(clone(CLINIC_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(CLINIC_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -1244,7 +1244,7 @@ function RealEstateDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Real Estate CRM" items={RE_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Real Estate CRM" items={RE_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Real Estate CRM" alerts={5} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -1358,7 +1358,7 @@ function RealEstateDash({ onInteract }) {
         </>}
 
         <Callout industry="real estate" d={d} />
-        <ResetBtn onReset={() => { setData(clone(RE_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(RE_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -1448,7 +1448,7 @@ function BarbershopDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Barbershop" items={BARBER_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Barbershop" items={BARBER_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Barbershop Manager" alerts={1} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -1588,7 +1588,7 @@ function BarbershopDash({ onInteract }) {
         </>}
 
         <Callout industry="barbershop & beauty" d={d} />
-        <ResetBtn onReset={() => { setData(clone(BARBER_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(BARBER_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -1666,7 +1666,7 @@ function VeterinaryDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Vet Clinic" items={VET_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Vet Clinic" items={VET_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Veterinary Dashboard" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -1783,7 +1783,7 @@ function VeterinaryDash({ onInteract }) {
         </>}
 
         <Callout industry="veterinary" d={d} />
-        <ResetBtn onReset={() => { setData(clone(VET_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(VET_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -1867,7 +1867,7 @@ function GymDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Gym Dashboard" items={GYM_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Gym Dashboard" items={GYM_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Gym & Fitness" alerts={4} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -1980,7 +1980,7 @@ function GymDash({ onInteract }) {
         </>}
 
         <Callout industry="gym & fitness" d={d} />
-        <ResetBtn onReset={() => { setData(clone(GYM_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(GYM_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -2055,7 +2055,7 @@ function OpticalDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Optical Store" items={OPT_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Optical Store" items={OPT_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Optical Dashboard" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -2167,7 +2167,7 @@ function OpticalDash({ onInteract }) {
         </>}
 
         <Callout industry="optical store" d={d} />
-        <ResetBtn onReset={() => { setData(clone(OPT_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(OPT_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -2244,7 +2244,7 @@ function LawDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Law Firm" items={LAW_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Law Firm" items={LAW_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Law Firm Dashboard" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -2365,7 +2365,7 @@ function LawDash({ onInteract }) {
         </>}
 
         <Callout industry="law firm" d={d} />
-        <ResetBtn onReset={() => { setData(clone(LAW_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(LAW_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -2455,7 +2455,7 @@ function AccountingDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Accounting" items={ACC_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Accounting" items={ACC_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Accounting Studio" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -2596,7 +2596,7 @@ function AccountingDash({ onInteract }) {
         </>}
 
         <Callout industry="accounting studio" d={d} />
-        <ResetBtn onReset={() => { setData(clone(ACC_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(ACC_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -2661,7 +2661,7 @@ function HardwareDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Hardware Dashboard" items={HW_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Hardware Dashboard" items={HW_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Hardware Store" alerts={data.lowStock} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -2732,7 +2732,7 @@ function HardwareDash({ onInteract }) {
         </>}
 
         <Callout industry="hardware store" d={d} />
-        <ResetBtn onReset={() => { setData(clone(HW_DEFAULTS)); setView('overview'); setQFilter('All'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(HW_DEFAULTS)); setView('overview'); setQFilter('All'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -2795,7 +2795,7 @@ function BuildSupplyDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Corralón Dashboard" items={BS_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Corralón Dashboard" items={BS_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Building Supply" alerts={data.pendingQuotes} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -2863,7 +2863,7 @@ function BuildSupplyDash({ onInteract }) {
         </>}
 
         <Callout industry="building supply" d={d} />
-        <ResetBtn onReset={() => { setData(clone(BS_DEFAULTS)); setView('overview'); setOFilter('All'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(BS_DEFAULTS)); setView('overview'); setOFilter('All'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -2922,7 +2922,7 @@ function PhotographyDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Photo Dashboard" items={PHOTO_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Photo Dashboard" items={PHOTO_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Photography Studio" alerts={data.pendingEdits} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -2985,7 +2985,7 @@ function PhotographyDash({ onInteract }) {
         </>}
 
         <Callout industry="photography studio" d={d} />
-        <ResetBtn onReset={() => { setData(clone(PHOTO_DEFAULTS)); setView('overview'); setTypeFilter('All'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(PHOTO_DEFAULTS)); setView('overview'); setTypeFilter('All'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3046,7 +3046,7 @@ function CarDealerDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Dealer Dashboard" items={CAR_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Dealer Dashboard" items={CAR_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Car Dealership" alerts={data.hotLeads} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -3109,7 +3109,7 @@ function CarDealerDash({ onInteract }) {
         </>}
 
         <Callout industry="car dealership" d={d} />
-        <ResetBtn onReset={() => { setData(clone(CAR_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(CAR_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3177,7 +3177,7 @@ function CafeDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Café Dashboard" items={CAFE_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Café Dashboard" items={CAFE_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Café & Coffee" alerts={2} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -3255,7 +3255,7 @@ function CafeDash({ onInteract }) {
         </>}
 
         <Callout industry="café" d={d} />
-        <ResetBtn onReset={() => { setData(clone(CAFE_DEFAULTS)); setView('overview'); setOrdFilter('All'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(CAFE_DEFAULTS)); setView('overview'); setOrdFilter('All'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3320,7 +3320,7 @@ function SchoolDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="School Dashboard" items={SCHOOL_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="School Dashboard" items={SCHOOL_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="School & Academy" alerts={data.pendingEnroll} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -3382,7 +3382,7 @@ function SchoolDash({ onInteract }) {
         </>}
 
         <Callout industry="school" d={d} />
-        <ResetBtn onReset={() => { setData(clone(SCHOOL_DEFAULTS)); setView('overview'); setGradeFilter('All'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(SCHOOL_DEFAULTS)); setView('overview'); setGradeFilter('All'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3440,7 +3440,7 @@ function RetailDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Retail Dashboard" items={RETAIL_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Retail Dashboard" items={RETAIL_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Retail & Commerce" alerts={data.lowStock} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -3496,7 +3496,7 @@ function RetailDash({ onInteract }) {
         </>}
 
         <Callout industry="retail" d={d} />
-        <ResetBtn onReset={() => { setData(clone(RETAIL_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(RETAIL_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3549,7 +3549,7 @@ function BakeryDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Bakery Dashboard" items={BAKERY_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Bakery Dashboard" items={BAKERY_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Bakery & Pastry" alerts={data.readyPickup} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -3603,7 +3603,7 @@ function BakeryDash({ onInteract }) {
         </>}
 
         <Callout industry="bakery" d={d} />
-        <ResetBtn onReset={() => { setData(clone(BAKERY_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(BAKERY_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3655,7 +3655,7 @@ function BankDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Finance Dashboard" items={BANK_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Finance Dashboard" items={BANK_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Financial Services" alerts={3} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -3711,7 +3711,7 @@ function BankDash({ onInteract }) {
         </>}
 
         <Callout industry="financial services" d={d} />
-        <ResetBtn onReset={() => { setData(clone(BANK_DEFAULTS)); setView('overview'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(BANK_DEFAULTS)); setView('overview'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3763,7 +3763,7 @@ function TattooDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Tattoo Dashboard" items={TATTOO_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Tattoo Dashboard" items={TATTOO_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Tattoo Studio" alerts={data.pendingDeposits} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -3822,7 +3822,7 @@ function TattooDash({ onInteract }) {
         </>}
 
         <Callout industry="tattoo studio" d={d} />
-        <ResetBtn onReset={() => { setData(clone(TATTOO_DEFAULTS)); setView('overview'); setStyleFilter('All'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(TATTOO_DEFAULTS)); setView('overview'); setStyleFilter('All'); act(); }} d={d} />
       </div>
     </div>
   );
@@ -3924,7 +3924,7 @@ function SupermarketDash({ onInteract }) {
 
   return (
     <div className="idash">
-      <DashSidebar title="Super Dashboard" items={SUPER_NAV} active={view} onNav={v => { setView(v); act(); }} />
+      <DashSidebar title="Super Dashboard" items={SUPER_NAV} active={view} onNav={v => { setView(v); act(); }} d={d} />
       <div className="idash__main">
         <DashTopbar title="Supermarket" alerts={data.lowStock} onSettings={() => showToast(d('Settings available in your live system'))} d={d} />
         <Toast message={toast} />
@@ -4069,7 +4069,7 @@ function SupermarketDash({ onInteract }) {
         </>}
 
         <Callout industry="supermarket" d={d} />
-        <ResetBtn onReset={() => { setData(clone(SUPER_DEFAULTS)); setView('overview'); setOrderFilter('All'); act(); }} />
+        <ResetBtn onReset={() => { setData(clone(SUPER_DEFAULTS)); setView('overview'); setOrderFilter('All'); act(); }} d={d} />
       </div>
     </div>
   );
