@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -9,7 +9,6 @@ import Home from '../pages/Home.jsx';
 const Services = lazy(() => import('../pages/Services.jsx'));
 const Studio = lazy(() => import('../pages/Studio.jsx'));
 const ContactPage = lazy(() => import('../pages/ContactPage.jsx'));
-const AnalyzerPage = lazy(() => import('../pages/AnalyzerPage.jsx'));
 const Analyze = lazy(() => import('../pages/Analyze.jsx'));
 const BarberDemo = lazy(() => import('../pages/demos/BarberDemo.jsx'));
 const CafeDemo = lazy(() => import('../pages/demos/CafeDemo.jsx'));
@@ -107,7 +106,8 @@ export default function AnimatedRoutes() {
           <Route path="/studio" element={<Studio />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/analyze" element={<Analyze />} />
-          <Route path="/analyzer" element={<AnalyzerPage />} />
+          {/* Legacy URL — keep redirecting old /analyzer bookmarks to the new page. */}
+          <Route path="/analyzer" element={<Navigate to="/analyze" replace />} />
           <Route path="/demos/barbershop" element={<BarberDemo />} />
           <Route path="/demos/cafe" element={<CafeDemo />} />
           <Route path="/demos/arch" element={<ArchDemo />} />
